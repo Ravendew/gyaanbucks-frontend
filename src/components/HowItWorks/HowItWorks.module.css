@@ -1,0 +1,70 @@
+.section {
+  background: linear-gradient(180deg, #f2fbf6, var(--soft-section-bg));
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.card {
+  position: relative;
+  background: white;
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  border-radius: 22px;
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 16px 34px rgba(16, 24, 39, 0.06);
+  transition: 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+.step {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--primary-green);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  background: var(--soft-section-bg);
+}
+
+.title {
+  font-size: 19px;
+  font-weight: 950;
+  margin-bottom: 8px;
+}
+
+.text {
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 650;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,14 @@
+:root {
+  --primary-green: #16a34a;
+  --deep-green: #065f46;
+  --gold: #f8c52c;
+  --premium-gold: #d4af37;
+  --white-bg: #f7f9fc;
+  --soft-section-bg: #ecfdf5;
+  --text-dark: #101827;
+  --text-light: #6b7280;
+  --success-green: #22c55e;
+  --danger-red: #ef4444;
+  --hero-gradient-start: #e8f8f0;
+  --hero-gradient-end: #fff7d6;
+}

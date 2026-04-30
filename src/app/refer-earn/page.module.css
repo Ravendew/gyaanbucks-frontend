@@ -1,0 +1,409 @@
+.page {
+  min-height: 100vh;
+  background: #f7f9fc;
+}
+
+.hero {
+  padding: 72px 0 54px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(248, 197, 44, 0.28),
+      transparent 34%
+    ),
+    linear-gradient(135deg, #e8f8f0 0%, #fff7d6 100%);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 34px;
+  align-items: center;
+}
+
+.heroContent {
+  max-width: 720px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(248, 197, 44, 0.24);
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  color: #065f46;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 18px;
+}
+
+.heroContent h1 {
+  margin: 0;
+  color: #101827;
+  font-size: 58px;
+  line-height: 1.04;
+  letter-spacing: -2px;
+  font-weight: 950;
+}
+
+.heroContent h1 span {
+  display: block;
+  color: #16a34a;
+}
+
+.heroContent p {
+  margin: 22px 0 0;
+  max-width: 620px;
+  color: #6b7280;
+  font-size: 18px;
+  line-height: 1.75;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.primaryButton,
+.secondaryButton,
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 900;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primaryButton,
+.ctaButton {
+  color: #ffffff;
+  background: linear-gradient(135deg, #16a34a, #065f46);
+  box-shadow: 0 14px 30px rgba(22, 163, 74, 0.28);
+}
+
+.secondaryButton {
+  color: #065f46;
+  background: #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.16);
+  box-shadow: 0 12px 28px rgba(6, 95, 70, 0.08);
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.ctaButton:hover {
+  transform: translateY(-2px);
+}
+
+.rewardCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  padding: 34px;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, rgba(22, 163, 74, 0.42), rgba(248, 197, 44, 0.7))
+      border-box;
+  border: 1px solid transparent;
+  box-shadow: 0 28px 70px rgba(6, 95, 70, 0.16);
+}
+
+.rewardCard::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -70px;
+  top: -70px;
+  border-radius: 50%;
+  background: rgba(248, 197, 44, 0.26);
+}
+
+.coinGlow {
+  width: 86px;
+  height: 86px;
+  border-radius: 28px;
+  display: grid;
+  place-items: center;
+  color: #065f46;
+  font-size: 38px;
+  font-weight: 950;
+  background: linear-gradient(135deg, #f8c52c, #fff4bd);
+  box-shadow: 0 18px 38px rgba(212, 175, 55, 0.38);
+  margin-bottom: 24px;
+}
+
+.rewardCard h2 {
+  margin: 0;
+  color: #101827;
+  font-size: 30px;
+  font-weight: 950;
+  letter-spacing: -0.8px;
+}
+
+.rewardCard p {
+  margin: 8px 0 22px;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.rewardBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 22px;
+  background: #ecfdf5;
+  border: 1px solid rgba(22, 163, 74, 0.14);
+}
+
+.rewardBox span {
+  color: #065f46;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.rewardBox strong {
+  color: #d4af37;
+  font-size: 16px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.rewardNote {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 20px;
+  color: #6b7280;
+  background: rgba(247, 249, 252, 0.92);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 650;
+}
+
+.infoSection {
+  padding: 64px 0;
+}
+
+.sectionHeader {
+  max-width: 720px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.sectionHeader span {
+  color: #16a34a;
+  font-size: 14px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.sectionHeader h2 {
+  margin: 10px 0 12px;
+  color: #101827;
+  font-size: 38px;
+  line-height: 1.18;
+  font-weight: 950;
+  letter-spacing: -1px;
+}
+
+.sectionHeader p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.stepCard {
+  padding: 24px;
+  border-radius: 26px;
+  background: #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  box-shadow: 0 18px 42px rgba(6, 95, 70, 0.08);
+}
+
+.stepNumber {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  color: #065f46;
+  background: linear-gradient(135deg, #f8c52c, #fff4bd);
+  font-size: 15px;
+  font-weight: 950;
+  margin-bottom: 18px;
+}
+
+.stepCard h3 {
+  margin: 0 0 10px;
+  color: #101827;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.stepCard p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.65;
+  font-weight: 600;
+}
+
+.ctaSection {
+  padding: 0 0 70px;
+}
+
+.ctaCard {
+  overflow: hidden;
+  position: relative;
+  padding: 42px;
+  border-radius: 34px;
+  text-align: center;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(248, 197, 44, 0.3),
+      transparent 34%
+    ),
+    linear-gradient(135deg, #065f46, #16a34a);
+  box-shadow: 0 26px 60px rgba(6, 95, 70, 0.22);
+}
+
+.ctaCard span {
+  display: inline-flex;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: #065f46;
+  background: #f8c52c;
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ctaCard h2 {
+  margin: 18px auto 12px;
+  max-width: 720px;
+  color: #ffffff;
+  font-size: 36px;
+  line-height: 1.18;
+  font-weight: 950;
+  letter-spacing: -1px;
+}
+
+.ctaCard p {
+  max-width: 640px;
+  margin: 0 auto 26px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+
+.ctaButton {
+  background: #ffffff;
+  color: #065f46;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16);
+}
+
+@media (max-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .rewardCard {
+    max-width: 620px;
+  }
+
+  .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 46px 0 38px;
+  }
+
+  .heroContent h1 {
+    font-size: 40px;
+    letter-spacing: -1.2px;
+  }
+
+  .heroContent p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .ctaButton {
+    width: 100%;
+  }
+
+  .rewardCard {
+    border-radius: 28px;
+    padding: 24px;
+  }
+
+  .rewardBox {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .infoSection {
+    padding: 48px 0;
+  }
+
+  .sectionHeader {
+    text-align: left;
+  }
+
+  .sectionHeader h2 {
+    font-size: 30px;
+  }
+
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaSection {
+    padding-bottom: 48px;
+  }
+
+  .ctaCard {
+    padding: 28px 22px;
+    border-radius: 28px;
+  }
+
+  .ctaCard h2 {
+    font-size: 28px;
+  }
+}

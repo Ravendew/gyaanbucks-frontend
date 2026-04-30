@@ -1,0 +1,45 @@
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.button {
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  background: white;
+  color: var(--text-dark);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.25s ease;
+  white-space: nowrap;
+}
+
+.button:hover,
+.active {
+  background: var(--primary-green);
+  color: white;
+  border-color: var(--primary-green);
+}
+
+@media (max-width: 900px) {
+  .filters {
+    margin-top: 18px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .button {
+    flex: 0 0 auto;
+    font-size: 13px;
+    padding: 11px 16px;
+  }
+}

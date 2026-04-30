@@ -1,0 +1,75 @@
+.section {
+  background: var(--white-bg);
+}
+
+.box {
+  background: linear-gradient(135deg, var(--deep-green), var(--primary-green));
+  border-radius: 26px;
+  padding: 42px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 28px;
+  box-shadow: 0 22px 55px rgba(6, 95, 70, 0.18);
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(248, 197, 44, 0.18);
+  color: var(--gold);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.title {
+  color: white;
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 950;
+  margin-bottom: 12px;
+}
+
+.text {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 620px;
+  font-weight: 700;
+}
+
+.button {
+  background: var(--gold);
+  color: var(--text-dark);
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-weight: 950;
+  white-space: nowrap;
+  box-shadow: 0 16px 35px rgba(248, 197, 44, 0.28);
+  transition: 0.25s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+  .box {
+    grid-template-columns: 1fr;
+    padding: 28px;
+    gap: 24px;
+    overflow: visible;
+  }
+
+  .title {
+    font-size: 27px;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
+  }
+}

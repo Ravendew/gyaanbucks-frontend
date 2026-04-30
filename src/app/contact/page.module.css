@@ -1,0 +1,326 @@
+.page {
+  min-height: 100vh;
+  background: #f7f9fc;
+}
+
+.hero {
+  padding: 74px 0 56px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(22, 163, 74, 0.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(248, 197, 44, 0.3),
+      transparent 34%
+    ),
+    linear-gradient(135deg, #e8f8f0 0%, #fff7d6 100%);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 34px;
+  align-items: center;
+}
+
+.heroContent {
+  max-width: 720px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(22, 163, 74, 0.12);
+  color: #065f46;
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.title {
+  margin: 18px 0 16px;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -2px;
+  color: #101827;
+  font-weight: 950;
+}
+
+.description {
+  max-width: 650px;
+  color: #4b5563;
+  font-size: 18px;
+  line-height: 1.75;
+  font-weight: 500;
+}
+
+.heroCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  padding: 34px;
+  background:
+    linear-gradient(145deg, rgba(6, 95, 70, 0.96), rgba(22, 163, 74, 0.92)),
+    #065f46;
+  color: #ffffff;
+  box-shadow: 0 28px 70px rgba(6, 95, 70, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.heroCard::before {
+  content: '';
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -70px;
+  top: -70px;
+  border-radius: 50%;
+  background: rgba(248, 197, 44, 0.28);
+}
+
+.cardIcon {
+  width: 76px;
+  height: 76px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #f8c52c, #d4af37);
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+  box-shadow: 0 18px 40px rgba(248, 197, 44, 0.28);
+  position: relative;
+  z-index: 1;
+}
+
+.heroCard h2 {
+  position: relative;
+  z-index: 1;
+  margin: 24px 0 10px;
+  font-size: 30px;
+  font-weight: 950;
+}
+
+.heroCard p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.contactSection {
+  padding: 64px 0 24px;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.contactCard {
+  padding: 26px;
+  border-radius: 28px;
+  background: #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.14);
+  box-shadow: 0 18px 44px rgba(16, 24, 39, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.contactCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 28px 60px rgba(6, 95, 70, 0.14);
+  border-color: rgba(22, 163, 74, 0.28);
+}
+
+.iconBox {
+  width: 58px;
+  height: 58px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #ecfdf5, #fff7d6);
+  font-size: 30px;
+  box-shadow: inset 0 0 0 1px rgba(22, 163, 74, 0.12);
+}
+
+.contactCard h3 {
+  margin: 22px 0 10px;
+  color: #101827;
+  font-size: 22px;
+  font-weight: 950;
+}
+
+.contactCard p {
+  margin: 0 0 16px;
+  color: #6b7280;
+  font-size: 15px;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+.contactCard strong {
+  display: block;
+  color: #065f46;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.formSection {
+  padding: 40px 0 78px;
+}
+
+.formCard {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 34px;
+  padding: 36px;
+  border-radius: 34px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(236, 253, 245, 0.96)
+    ),
+    #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.16);
+  box-shadow: 0 26px 70px rgba(16, 24, 39, 0.1);
+}
+
+.formContent h2 {
+  margin: 18px 0 12px;
+  color: #101827;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -1px;
+  font-weight: 950;
+}
+
+.formContent p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: grid;
+  gap: 8px;
+}
+
+.inputGroup label {
+  color: #101827;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  width: 100%;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 15px 16px;
+  color: #101827;
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: 0 10px 24px rgba(16, 24, 39, 0.04);
+}
+
+.inputGroup textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  border-color: rgba(22, 163, 74, 0.55);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
+}
+
+.submitButton {
+  min-height: 52px;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #16a34a, #065f46);
+  box-shadow: 0 16px 34px rgba(6, 95, 70, 0.22);
+  font-size: 15px;
+  font-weight: 950;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 44px rgba(6, 95, 70, 0.28);
+}
+
+@media (max-width: 1024px) {
+  .heroGrid,
+  .formCard {
+    grid-template-columns: 1fr;
+  }
+
+  .contactGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .heroCard {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 46px 0 40px;
+  }
+
+  .title {
+    letter-spacing: -1px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .heroCard {
+    padding: 26px;
+    border-radius: 26px;
+  }
+
+  .contactSection {
+    padding: 48px 0 18px;
+  }
+
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formSection {
+    padding: 32px 0 56px;
+  }
+
+  .formCard {
+    padding: 24px;
+    border-radius: 26px;
+  }
+}
