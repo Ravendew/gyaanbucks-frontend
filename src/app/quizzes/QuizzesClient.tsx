@@ -47,8 +47,7 @@ type LoggedInUser = {
 };
 
 function getApiBaseUrl() {
-  if (typeof window === 'undefined') return 'http://localhost:5000';
-  return `http://${window.location.hostname}:5000`;
+  return 'https://gyaanbucks-backend-production.up.railway.app';
 }
 
 function getLoggedInUser(): LoggedInUser | null {
