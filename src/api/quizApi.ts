@@ -1,13 +1,9 @@
-function getApiBaseUrl() {
-  if (typeof window !== 'undefined') {
-    return `http://${window.location.hostname}:5000`;
-  }
-
-  return 'http://localhost:5000';
-}
+const BASE_URL = 'https://gyaanbucks-backend-production.up.railway.app';
 
 export async function fetchQuizzes() {
-  const res = await fetch(`${getApiBaseUrl()}/quiz`);
+  const res = await fetch(`${BASE_URL}/quiz`, {
+    cache: 'no-store',
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch quizzes');
@@ -17,7 +13,9 @@ export async function fetchQuizzes() {
 }
 
 export async function fetchQuizBySlug(slug: string) {
-  const res = await fetch(`${getApiBaseUrl()}/quiz/${slug}`);
+  const res = await fetch(`${BASE_URL}/quiz/${slug}`, {
+    cache: 'no-store',
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch quiz');
