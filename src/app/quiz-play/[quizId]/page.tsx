@@ -311,7 +311,7 @@ export default function QuizPlayPage() {
 
     const isCorrect = optionIndex === currentQuestion.correctIndex;
 
-    playQuizFeedback(isCorrect);
+    playQuizFeedback(isCorrect ? 'correct' : 'wrong');
 
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
