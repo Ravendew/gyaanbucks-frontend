@@ -3,7 +3,7 @@
 import Header from '@/components/Header/Header';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 function getApiBaseUrl() {
@@ -23,7 +23,7 @@ function isEmailLike(value: string) {
   return value.includes('@');
 }
 
-export default function AuthPage() {
+function AuthPageContent() {
   const params = useSearchParams();
   const router = useRouter();
 
@@ -80,50 +80,20 @@ export default function AuthPage() {
     const cleanMobile = onlyNumbers(form.mobile);
     const cleanEmail = form.email.trim().toLowerCase();
 
-    if (!cleanName) {
-      setMessage('Please enter your name.');
-      return;
-    }
-
-    if (!cleanMobile) {
-      setMessage('Please enter your phone number.');
-      return;
-    }
-
-    if (cleanMobile.length < 10) {
-      setMessage('Please enter a valid phone number.');
-      return;
-    }
-
-    if (!cleanEmail) {
-      setMessage('Please enter your email.');
-      return;
-    }
-
-    if (!isValidEmail(cleanEmail)) {
-      setMessage('Please enter a valid email address.');
-      return;
-    }
-
-    if (!form.password) {
-      setMessage('Please enter password.');
-      return;
-    }
-
-    if (form.password.length < 6) {
-      setMessage('Password must be at least 6 characters.');
-      return;
-    }
-
-    if (form.password !== form.confirmPassword) {
-      setMessage('Passwords do not match.');
-      return;
-    }
-
-    if (!form.acceptTerms) {
-      setMessage('Please accept Terms & Conditions and Privacy Policy.');
-      return;
-    }
+    if (!cleanName) return setMessage('Please enter your name.');
+    if (!cleanMobile) return setMessage('Please enter your phone number.');
+    if (cleanMobile.length < 10)
+      return setMessage('Please enter a valid phone number.');
+    if (!cleanEmail) return setMessage('Please enter your email.');
+    if (!isValidEmail(cleanEmail))
+      return setMessage('Please enter a valid email address.');
+    if (!form.password) return setMessage('Please enter password.');
+    if (form.password.length < 6)
+      return setMessage('Password must be at least 6 characters.');
+    if (form.password !== form.confirmPassword)
+      return setMessage('Passwords do not match.');
+    if (!form.acceptTerms)
+      return setMessage('Please accept Terms & Conditions and Privacy Policy.');
 
     try {
       setLoading(true);
@@ -171,25 +141,12 @@ export default function AuthPage() {
       ? rawIdentifier.toLowerCase()
       : onlyNumbers(rawIdentifier);
 
-    if (!identifier) {
-      setMessage('Please enter phone number or email.');
-      return;
-    }
-
-    if (isEmailLike(identifier) && !isValidEmail(identifier)) {
-      setMessage('Please enter a valid email address.');
-      return;
-    }
-
-    if (!isEmailLike(identifier) && identifier.length < 10) {
-      setMessage('Please enter a valid phone number.');
-      return;
-    }
-
-    if (!form.password) {
-      setMessage('Please enter password.');
-      return;
-    }
+    if (!identifier) return setMessage('Please enter phone number or email.');
+    if (isEmailLike(identifier) && !isValidEmail(identifier))
+      return setMessage('Please enter a valid email address.');
+    if (!isEmailLike(identifier) && identifier.length < 10)
+      return setMessage('Please enter a valid phone number.');
+    if (!form.password) return setMessage('Please enter password.');
 
     try {
       setLoading(true);
@@ -197,10 +154,7 @@ export default function AuthPage() {
       const res = await fetch(`${getApiBaseUrl()}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          identifier,
-          password: form.password,
-        }),
+        body: JSON.stringify({ identifier, password: form.password }),
       });
 
       const data = await res.json();
@@ -395,5 +349,13 @@ export default function AuthPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={null}>
+      <AuthPageContent />
+    </Suspense>
   );
 }
