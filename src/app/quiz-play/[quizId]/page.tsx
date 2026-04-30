@@ -5,11 +5,12 @@ import { playQuizFeedback } from '@/utils/quizFeedback';
 import { getWalletPoints } from '@/utils/walletStorage';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './page.module.css';
 
 const POINTS_PER_CORRECT = 10;
+const API_BASE_URL = 'https://gyaanbucks-backend-production.up.railway.app';
 
 type BackendQuestion = {
   id: string;
@@ -35,28 +36,45 @@ type BackendQuiz = {
   questions: BackendQuestion[];
 };
 
+type LoggedInUser = {
+  id?: string;
+  name?: string;
+  mobile?: string;
+  email?: string;
+  wallet?: number;
+};
+
 type AttemptResponse = {
   allowed: boolean;
   remaining: number;
   attemptsUsed?: number;
 };
 
-function getApiBaseUrl() {
-  if (typeof window === 'undefined') return 'http://localhost:5000';
-  return `http://${window.location.hostname}:5000`;
+function getLoggedInUser(): LoggedInUser | null {
+  if (typeof window === 'undefined') return null;
+
+  const savedUser = localStorage.getItem('gyaanbucks_user');
+
+  if (!savedUser) return null;
+
+  try {
+    return JSON.parse(savedUser);
+  } catch {
+    localStorage.removeItem('gyaanbucks_user');
+    return null;
+  }
 }
 
-function getDeviceId() {
-  if (typeof window === 'undefined') return 'server-device';
+function getPlayerId() {
+  const user = getLoggedInUser();
 
-  let id = localStorage.getItem('deviceId');
+  if (!user) return null;
 
-  if (!id) {
-    id = 'device-' + Math.random().toString(36).substring(2, 12);
-    localStorage.setItem('deviceId', id);
-  }
+  if (user.id) return `user-${user.id}`;
+  if (user.mobile) return `mobile-${user.mobile}`;
+  if (user.email) return `email-${user.email}`;
 
-  return id;
+  return null;
 }
 
 async function checkBackendAttempt(
@@ -64,13 +82,24 @@ async function checkBackendAttempt(
   quizSlug: string,
 ): Promise<AttemptResponse> {
   try {
-    const res = await fetch(`${getApiBaseUrl()}/question/attempt`, {
+    const playerId = getPlayerId();
+
+    if (!playerId) {
+      return {
+        allowed: false,
+        remaining: 0,
+        attemptsUsed: 0,
+      };
+    }
+
+    const res = await fetch(`${API_BASE_URL}/question/attempt`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store',
       body: JSON.stringify({
         quizId,
         quizSlug,
-        deviceId: getDeviceId(),
+        deviceId: playerId,
       }),
     });
 
@@ -87,6 +116,7 @@ async function checkBackendAttempt(
 
 export default function QuizPlayPage() {
   const params = useParams();
+  const router = useRouter();
   const quizSlug = String(params.quizId || '');
 
   const allowLeaveRef = useRef(false);
@@ -110,21 +140,14 @@ export default function QuizPlayPage() {
 
   const fetchUserWallet = async () => {
     try {
-      const savedUser = localStorage.getItem('gyaanbucks_user');
-
-      if (!savedUser) {
-        setWalletPoints(getWalletPoints());
-        return;
-      }
-
-      const user = JSON.parse(savedUser);
+      const user = getLoggedInUser();
 
       if (!user?.id) {
         setWalletPoints(getWalletPoints());
         return;
       }
 
-      const res = await fetch(`${getApiBaseUrl()}/users/profile/${user.id}`, {
+      const res = await fetch(`${API_BASE_URL}/users/profile/${user.id}`, {
         cache: 'no-store',
       });
 
@@ -147,7 +170,7 @@ export default function QuizPlayPage() {
   };
 
   const questions = useMemo(() => {
-    if (!quiz) return [];
+    if (!quiz?.questions) return [];
 
     return quiz.questions.map((q) => ({
       id: q.id,
@@ -159,7 +182,6 @@ export default function QuizPlayPage() {
 
   const currentQuestion = questions[currentIndex];
   const maxAttempts = quiz?.attemptsPerDay || 2;
-  const quizDuration = quiz?.timeLimit || 300;
 
   const progress =
     questions.length > 0 ? ((currentIndex + 1) / questions.length) * 100 : 0;
@@ -171,12 +193,19 @@ export default function QuizPlayPage() {
   ).padStart(2, '0')}`;
 
   useEffect(() => {
+    const user = getLoggedInUser();
+
+    if (!user) {
+      router.replace(`/auth?tab=login&redirect=/quiz-play/${quizSlug}`);
+      return;
+    }
+
     const loadQuiz = async () => {
       try {
         setLoading(true);
         setIsLocked(false);
 
-        const res = await fetch(`${getApiBaseUrl()}/quiz/${quizSlug}`, {
+        const res = await fetch(`${API_BASE_URL}/quiz/${quizSlug}`, {
           cache: 'no-store',
         });
 
@@ -193,13 +222,17 @@ export default function QuizPlayPage() {
         setTimeLeft(data.timeLimit || 300);
         await fetchUserWallet();
 
-        const usedAttempts = data.attemptsPerDay - attemptData.remaining;
+        const usedAttempts =
+          attemptData.attemptsUsed ??
+          (data.attemptsPerDay || 2) - attemptData.remaining;
+
         setAttemptsUsed(usedAttempts < 0 ? 0 : usedAttempts);
 
         if (!attemptData.allowed) {
           setIsLocked(true);
         }
-      } catch {
+      } catch (err) {
+        console.error('Quiz load error:', err);
         setQuiz(null);
       } finally {
         setLoading(false);
@@ -207,7 +240,7 @@ export default function QuizPlayPage() {
     };
 
     if (quizSlug) loadQuiz();
-  }, [quizSlug]);
+  }, [quizSlug, router]);
 
   useEffect(() => {
     if (isFinished) {
@@ -216,7 +249,7 @@ export default function QuizPlayPage() {
   }, [isFinished]);
 
   useEffect(() => {
-    if (!quiz || isFinished || isLocked) return;
+    if (!quiz || isFinished || isLocked || questions.length === 0) return;
 
     if (timeLeft <= 0) {
       setIsFinished(true);
@@ -228,7 +261,7 @@ export default function QuizPlayPage() {
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, [quiz, timeLeft, isFinished, isLocked]);
+  }, [quiz, timeLeft, isFinished, isLocked, questions.length]);
 
   useEffect(() => {
     if (selected === null || isFinished || isLocked) return;
@@ -257,28 +290,28 @@ export default function QuizPlayPage() {
   }, [isFinished, confettiPlayed, correctCount, questions.length]);
 
   useEffect(() => {
-    if (isFinished || isLocked) return;
+    if (isFinished || isLocked || loading) return;
 
-    window.history.pushState({ quizGuard: true }, '', window.location.href);
-
-    const handleBack = () => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       if (allowLeaveRef.current) return;
-      setShowExitPopup(true);
-      window.history.pushState({ quizGuard: true }, '', window.location.href);
+
+      event.preventDefault();
+      event.returnValue = '';
     };
 
-    window.addEventListener('popstate', handleBack);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
-    return () => window.removeEventListener('popstate', handleBack);
-  }, [isFinished, isLocked]);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isFinished, isLocked, loading]);
 
-  const handleSelect = (index: number) => {
-    if (!currentQuestion || selected !== null || isFinished || isLocked) return;
+  const handleOptionPress = (optionIndex: number) => {
+    if (selected !== null || !currentQuestion) return;
 
-    const isCorrect = index === currentQuestion.correctIndex;
+    setSelected(optionIndex);
 
-    playQuizFeedback(isCorrect ? 'correct' : 'wrong');
-    setSelected(index);
+    const isCorrect = optionIndex === currentQuestion.correctIndex;
+
+    playQuizFeedback(isCorrect);
 
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
@@ -287,14 +320,12 @@ export default function QuizPlayPage() {
 
       window.setTimeout(() => {
         setShowPointsPop(false);
-      }, 900);
+      }, 700);
     }
   };
 
   const goNext = () => {
-    if (selected === null || isLocked) return;
-
-    if (currentIndex === questions.length - 1) {
+    if (currentIndex >= questions.length - 1) {
       setIsFinished(true);
       return;
     }
@@ -303,229 +334,176 @@ export default function QuizPlayPage() {
     setSelected(null);
   };
 
-  const claimPoints = async () => {
+  const handleClaimReward = async () => {
+    if (isClaimed || earnedPoints <= 0) return;
+
     try {
-      const savedUser = localStorage.getItem('gyaanbucks_user');
+      const user = getLoggedInUser();
 
-      if (!savedUser) {
-        alert('Please login to claim rewards');
+      if (!user?.id) {
+        setIsClaimed(true);
         return;
       }
 
-      const user = JSON.parse(savedUser);
-      const points = earnedPoints;
-
-      if (points <= 0) {
-        alert('Invalid reward');
-        return;
-      }
-
-      const res = await fetch(`${getApiBaseUrl()}/users/claim-reward`, {
+      const res = await fetch(`${API_BASE_URL}/users/claim-reward`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: user.id,
-          points,
+          points: earnedPoints,
         }),
       });
 
       const data = await res.json();
 
-      if (!res.ok) {
-        alert(data.message || 'Failed to claim reward');
-        return;
-      }
-
-      setIsClaimed(true);
-
-      if (data?.wallet !== undefined) {
-        setWalletPoints(data.wallet);
+      if (res.ok) {
+        setWalletPoints(data.wallet ?? walletPoints + earnedPoints);
 
         localStorage.setItem(
           'gyaanbucks_user',
           JSON.stringify({
             ...user,
-            wallet: data.wallet,
+            wallet: data.wallet ?? walletPoints + earnedPoints,
           }),
         );
-      } else {
-        await fetchUserWallet();
       }
 
-      alert(`${data?.points || points} Points added to wallet`);
+      setIsClaimed(true);
     } catch (err) {
-      console.error(err);
-      alert('Something went wrong');
+      console.error('Claim reward error:', err);
+      setIsClaimed(true);
     }
   };
 
-  const restartQuiz = async () => {
-    if (!quiz) return;
-
-    const attemptData = await checkBackendAttempt(quiz.id, quiz.slug);
-
-    if (!attemptData.allowed) {
-      setIsLocked(true);
-      return;
-    }
-
-    const usedAttempts = quiz.attemptsPerDay - attemptData.remaining;
-    setAttemptsUsed(usedAttempts < 0 ? 0 : usedAttempts);
-
-    setCurrentIndex(0);
-    setSelected(null);
-    setCorrectCount(0);
-    setEarnedPoints(0);
-    await fetchUserWallet();
-    setIsClaimed(false);
-    setIsFinished(false);
-    setConfettiPlayed(false);
-    setTimeLeft(quizDuration);
-  };
-
-  const exitQuiz = () => {
+  const handleLeaveQuiz = () => {
     allowLeaveRef.current = true;
-    window.location.href = '/quizzes';
+    router.push('/quizzes');
   };
 
   if (loading) {
     return (
       <main className={styles.page}>
         <Header />
-        <div className={styles.wrap}>
-          <section className={`${styles.card} ${styles.resultCard}`}>
-            <div className={styles.resultBadge}>⏳ Loading</div>
-            <h1 className={styles.resultTitle}>Preparing Quiz...</h1>
-            <p className={styles.resultSub}>
-              Please wait while we load questions.
-            </p>
-          </section>
-        </div>
+
+        <section className={styles.centerSection}>
+          <div className={styles.statusCard}>
+            <span className={styles.statusBadge}>⏳ Loading</span>
+            <h1>Preparing your quiz...</h1>
+            <p>Please wait while we load questions.</p>
+          </div>
+        </section>
       </main>
     );
   }
 
-  if (!quiz || questions.length === 0 || !currentQuestion) {
+  if (!quiz) {
     return (
       <main className={styles.page}>
         <Header />
-        <div className={styles.wrap}>
-          <section className={`${styles.card} ${styles.resultCard}`}>
-            <div className={styles.resultBadge}>⚠️ Not Available</div>
-            <h1 className={styles.resultTitle}>Quiz questions not added yet</h1>
-            <p className={styles.resultSub}>
-              Please add questions from admin panel.
-            </p>
 
-            <div className={styles.resultActions}>
-              <Link href="/quizzes" className={styles.primaryBtn}>
-                Play Other Quizzes
-              </Link>
-            </div>
-          </section>
-        </div>
+        <section className={styles.centerSection}>
+          <div className={styles.statusCard}>
+            <span className={styles.statusBadge}>⚠️ Not Found</span>
+            <h1>Quiz not found</h1>
+            <p>This quiz is not available right now.</p>
+            <Link href="/quizzes" className={styles.primaryButton}>
+              Play Other Quizzes
+            </Link>
+          </div>
+        </section>
       </main>
     );
   }
 
-  if (isLocked && !isFinished) {
+  if (questions.length === 0) {
     return (
       <main className={styles.page}>
         <Header />
-        <div className={styles.wrap}>
-          <section className={`${styles.card} ${styles.resultCard}`}>
-            <div className={styles.resultBadge}>🔒 Daily Limit Reached</div>
-            <h1 className={styles.resultTitle}>Please come back tomorrow</h1>
-            <p className={styles.resultSub}>
-              You used all {maxAttempts} attempts for this quiz today.
-            </p>
 
-            <div className={styles.resultActions}>
-              <Link href="/quizzes" className={styles.primaryBtn}>
-                Play Other Quizzes
-              </Link>
-            </div>
-          </section>
-        </div>
+        <section className={styles.centerSection}>
+          <div className={styles.statusCard}>
+            <span className={styles.statusBadge}>⚠️ Not Available</span>
+            <h1>Quiz questions not added yet</h1>
+            <p>Please add questions from admin panel.</p>
+            <Link href="/quizzes" className={styles.primaryButton}>
+              Play Other Quizzes
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (isLocked) {
+    return (
+      <main className={styles.page}>
+        <Header />
+
+        <section className={styles.centerSection}>
+          <div className={styles.statusCard}>
+            <span className={styles.statusBadge}>🔒 Daily Limit Reached</span>
+            <h1>Please come back tomorrow</h1>
+            <p>You used all {maxAttempts} attempts for this quiz today.</p>
+            <Link href="/quizzes" className={styles.primaryButton}>
+              Play Other Quizzes
+            </Link>
+          </div>
+        </section>
       </main>
     );
   }
 
   if (isFinished) {
     const accuracy = Math.round((correctCount / questions.length) * 100);
-    const canRetry = attemptsUsed < maxAttempts;
 
     return (
       <main className={styles.page}>
         <Header />
 
-        <div className={styles.wrap}>
-          <section className={`${styles.card} ${styles.resultCard}`}>
-            {earnedPoints > 0 && (
-              <div className={styles.coinBurst}>
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
-              </div>
-            )}
+        <section className={styles.centerSection}>
+          <div className={styles.resultCard}>
+            <span className={styles.statusBadge}>🎉 Quiz Completed</span>
 
-            <div className={styles.resultBadge}>🎉 Quiz Completed</div>
+            <h1>Your Result</h1>
 
-            <h1 className={styles.resultTitle}>{quiz.title}</h1>
-
-            <p className={styles.resultSub}>
-              You answered {correctCount} out of {questions.length} correctly.
-            </p>
-
-            <div className={styles.scoreCircle}>{accuracy}%</div>
-
-            <div className={styles.resultBox}>
+            <div className={styles.resultGrid}>
               <div>
+                <strong>
+                  {correctCount}/{questions.length}
+                </strong>
                 <span>Correct Answers</span>
-                <strong>{correctCount}</strong>
               </div>
 
               <div>
+                <strong>{accuracy}%</strong>
+                <span>Accuracy</span>
+              </div>
+
+              <div>
+                <strong>+{earnedPoints}</strong>
                 <span>Earned Points</span>
-                <strong>{earnedPoints}</strong>
+              </div>
+
+              <div>
+                <strong>{walletPoints}</strong>
+                <span>Wallet Points</span>
               </div>
             </div>
 
-            <div className={styles.walletPreview}>
-              <span>Wallet Balance</span>
-              <strong>{walletPoints} Points</strong>
-            </div>
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={handleClaimReward}
+              disabled={isClaimed}
+            >
+              {isClaimed ? 'Reward Claimed' : 'Claim Reward'}
+            </button>
 
-            <div className={styles.resultActions}>
-              <button
-                className={`${styles.primaryBtn} ${
-                  isClaimed || earnedPoints <= 0 ? styles.claimDisabled : ''
-                }`}
-                onClick={claimPoints}
-                disabled={isClaimed || earnedPoints <= 0}
-              >
-                {isClaimed ? 'Points Claimed' : `Claim ${earnedPoints} Points`}
-              </button>
-
-              <Link href="/quizzes" className={styles.secondaryBtn}>
-                Back to Quizzes
-              </Link>
-
-              {canRetry ? (
-                <button className={styles.secondaryBtn} onClick={restartQuiz}>
-                  Retry Quiz
-                </button>
-              ) : (
-                <Link href="/quizzes" className={styles.secondaryBtn}>
-                  Play More Quizzes
-                </Link>
-              )}
-            </div>
-          </section>
-        </div>
+            <Link href="/quizzes" className={styles.secondaryButton}>
+              Play Other Quizzes
+            </Link>
+          </div>
+        </section>
       </main>
     );
   }
@@ -534,125 +512,110 @@ export default function QuizPlayPage() {
     <main className={styles.page}>
       <Header />
 
-      <div className={styles.wrap}>
-        <div className={styles.topBar}>
-          <button
-            className={styles.back}
-            onClick={() => setShowExitPopup(true)}
-          >
-            ← Exit Quiz
-          </button>
+      <section className={styles.quizSection}>
+        <div className={styles.quizCard}>
+          <div className={styles.quizTop}>
+            <div>
+              <span className={styles.category}>{quiz.category}</span>
+              <h1>{quiz.title}</h1>
+              <p>{quiz.subtitle}</p>
+            </div>
 
-          <div
-            className={`${styles.timer} ${
-              timeLeft <= 30 ? styles.timerDanger : ''
-            }`}
-          >
-            ⏱ {formattedTime}
-          </div>
-        </div>
-
-        <section className={styles.card}>
-          <div className={styles.quizInfo}>
-            <span className={styles.badge}>{quiz.category}</span>
-
-            <div
-              className={`${styles.points} ${
-                showPointsPop ? styles.pointsGlow : ''
-              }`}
-            >
-              +{earnedPoints} Points
-              {showPointsPop && (
-                <span className={styles.pointsPop}>+{POINTS_PER_CORRECT}</span>
-              )}
+            <div className={styles.timerBox}>
+              <span>Time Left</span>
+              <strong>{formattedTime}</strong>
             </div>
           </div>
 
-          <div className={styles.progress}>
+          <div className={styles.metaRow}>
+            <span>
+              Question {currentIndex + 1}/{questions.length}
+            </span>
+            <span>
+              Attempts {attemptsUsed}/{maxAttempts}
+            </span>
+            <span>Wallet {walletPoints}</span>
+          </div>
+
+          <div className={styles.progressTrack}>
             <div
               className={styles.progressFill}
               style={{ width: `${progress}%` }}
             />
           </div>
 
-          <div className={styles.questionCount}>
-            Question {currentIndex + 1} of {questions.length}
-          </div>
+          <div className={styles.questionBox}>
+            {showPointsPop && <div className={styles.pointsPop}>+10</div>}
 
-          <h1 className={styles.question}>{currentQuestion.question}</h1>
+            <h2>{currentQuestion.question}</h2>
 
-          <div className={styles.options}>
-            {currentQuestion.options.map((option, index) => {
-              const isSelected = selected === index;
-              const isCorrect = index === currentQuestion.correctIndex;
-              const showCorrect = selected !== null && isCorrect;
-              const showWrong = isSelected && !isCorrect;
+            <div className={styles.optionsGrid}>
+              {currentQuestion.options.map((option, index) => {
+                const isSelected = selected === index;
+                const isCorrect = currentQuestion.correctIndex === index;
+                const showCorrect = selected !== null && isCorrect;
+                const showWrong = isSelected && !isCorrect;
 
-              return (
-                <label
-                  key={index}
-                  className={`${styles.option} ${
-                    isSelected ? styles.optionActive : ''
-                  } ${showCorrect ? styles.optionCorrect : ''} ${
-                    showWrong ? styles.optionWrong : ''
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="answer"
-                    className={styles.radioInput}
-                    checked={isSelected}
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`${styles.optionBtn} ${
+                      showCorrect ? styles.correctOption : ''
+                    } ${showWrong ? styles.wrongOption : ''}`}
+                    onClick={() => handleOptionPress(index)}
                     disabled={selected !== null}
-                    onChange={() => handleSelect(index)}
-                  />
-
-                  <span className={styles.optionText}>
-                    {String.fromCharCode(65 + index)}. {option}
-                  </span>
-                </label>
-              );
-            })}
+                  >
+                    <span>{String.fromCharCode(65 + index)}</span>
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div className={styles.footer}>
-            <p className={styles.note}>
-              Attempt {attemptsUsed}/{maxAttempts}
-            </p>
+          <div className={styles.bottomActions}>
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={() => setShowExitPopup(true)}
+            >
+              Exit Quiz
+            </button>
 
             <button
-              className={`${styles.next} ${
-                selected === null ? styles.nextDisabled : ''
-              }`}
+              type="button"
+              className={styles.primaryButton}
               onClick={goNext}
               disabled={selected === null}
             >
-              {currentIndex === questions.length - 1 ? 'Finish Quiz' : 'Next'}
+              {currentIndex >= questions.length - 1 ? 'Finish Quiz' : 'Next'}
             </button>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       {showExitPopup && (
         <div className={styles.exitOverlay}>
           <div className={styles.exitModal}>
-            <div className={styles.exitIcon}>⚠️</div>
-
-            <h2 className={styles.exitTitle}>Leave this quiz?</h2>
-
-            <p className={styles.exitText}>
-              Your current progress will be lost if you exit now.
-            </p>
+            <h3>Exit quiz?</h3>
+            <p>Your current quiz progress will not be saved.</p>
 
             <div className={styles.exitActions}>
               <button
-                className={styles.exitStay}
+                type="button"
+                className={styles.secondaryButton}
                 onClick={() => setShowExitPopup(false)}
               >
-                Stay in Quiz
+                Continue Quiz
               </button>
 
-              <button className={styles.exitLeave} onClick={exitQuiz}>
-                Exit Quiz
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={handleLeaveQuiz}
+              >
+                Exit
               </button>
             </div>
           </div>
