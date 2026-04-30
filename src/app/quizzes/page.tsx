@@ -6,7 +6,7 @@ import Header from '@/components/Header/Header';
 import QuizCard from '@/components/QuizCard/QuizCard';
 import QuizFilters from '@/components/QuizFilters/QuizFilters';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 type BackendQuestion = {
@@ -177,7 +177,7 @@ function getQuizIcon(category: string) {
   return icons[category] || '🧩';
 }
 
-export default function QuizzesPage() {
+function QuizzesPageContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
 
@@ -363,5 +363,13 @@ export default function QuizzesPage() {
 
       <Footer />
     </main>
+  );
+}
+
+export default function QuizzesPage() {
+  return (
+    <Suspense fallback={null}>
+      <QuizzesPageContent />
+    </Suspense>
   );
 }
