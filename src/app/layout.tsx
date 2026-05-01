@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://gyaanbucks.com'),
 
+  // ✅ Google verification (auto creates meta tag)
+  verification: {
+    google: 'r8JWV6EQHqua6mVFE7yxPvIY_5lKo_2yqpBt3-pvHWs',
+  },
+
   title: {
     default: 'GyaanBucks - Play Quiz, Earn Rewards & Redeem Cash Online',
     template: '%s | GyaanBucks',
@@ -41,17 +46,10 @@ export const metadata: Metadata = {
     'redeem coins to cash',
     'real money earning app',
     'earn cash rewards',
-    'online work from home',
-    'online work earning',
-    'online work without investment',
-    'best online work platform',
-    'online earning work',
     'play quiz and earn money',
     'online quiz with rewards',
     'daily quiz earn cash',
-    'earn money without investment',
     'best quiz earning website',
-    'work from home quiz earning',
   ],
 
   authors: [{ name: 'GyaanBucks' }],
@@ -118,13 +116,13 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-        if (!window.location.pathname.includes('/quiz-play')) {
-          (function(s){
-            s.dataset.zone='10949633',
-            s.src='https://nap5k.com/tag.min.js'
-          })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-        }
-      `,
+              if (!window.location.pathname.includes('/quiz-play')) {
+                (function(s){
+                  s.dataset.zone='10949633',
+                  s.src='https://nap5k.com/tag.min.js'
+                })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+              }
+            `,
           }}
         />
       </body>
