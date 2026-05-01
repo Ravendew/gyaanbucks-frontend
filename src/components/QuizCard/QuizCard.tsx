@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import { openDirectAdOncePerSession } from '@/utils/monetagAds';
 import styles from './QuizCard.module.css';
 
 type Quiz = {
@@ -94,14 +95,20 @@ export default function QuizCard({ quiz }: QuizCardProps) {
   }, [baseOnlineCount]);
 
   const handleStartQuiz = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (quiz.isLocked) return;
+    if (quiz.isLocked) {
+      event.preventDefault();
+      return;
+    }
 
     const savedUser = localStorage.getItem('gyaanbucks_user');
 
     if (!savedUser) {
       event.preventDefault();
       router.push('/auth?tab=login');
+      return;
     }
+
+    openDirectAdOncePerSession();
   };
 
   const onlineText = quiz.onlineText ?? `${onlineCount} players online`;
