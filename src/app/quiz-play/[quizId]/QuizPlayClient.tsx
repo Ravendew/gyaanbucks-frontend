@@ -251,9 +251,13 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   }, [quizSlug, router]);
 
   useEffect(() => {
-    if (isFinished) {
+    if (!isFinished) return;
+
+    const timeout = window.setTimeout(() => {
       fetchUserWallet();
-    }
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
   }, [isFinished]);
 
   useEffect(() => {

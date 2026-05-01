@@ -77,7 +77,9 @@ export default function QuizCard({ quiz }: QuizCardProps) {
   const [onlineCount, setOnlineCount] = useState(baseOnlineCount);
 
   useEffect(() => {
-    setOnlineCount(baseOnlineCount);
+    const timeout = window.setTimeout(() => {
+      setOnlineCount(baseOnlineCount);
+    }, 0);
 
     const interval = window.setInterval(() => {
       setOnlineCount((current) => {
