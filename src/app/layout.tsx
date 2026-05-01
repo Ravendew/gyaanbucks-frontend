@@ -13,8 +13,38 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'GyaanBucks',
-  description: 'Play quizzes and earn rewards',
+  metadataBase: new URL('https://gyaanbucks.com'),
+
+  title: {
+    default: 'GyaanBucks - Play Quizzes, Earn Rewards & Redeem Cash',
+    template: '%s | GyaanBucks',
+  },
+
+  description:
+    'Play quizzes online on GyaanBucks, earn coins, win exciting rewards, and redeem your earnings easily. Daily quizzes, GK, science, and more.',
+
+  keywords: [
+    'GyaanBucks',
+    'play quizzes online',
+    'earn rewards',
+    'earn coins',
+    'redeem cash',
+    'quiz rewards website',
+    'earn money playing quizzes',
+    'daily quiz rewards',
+    'GK quiz online',
+    'current affairs quiz',
+    'science quiz',
+  ],
+
+  authors: [{ name: 'GyaanBucks' }],
+  creator: 'GyaanBucks',
+  publisher: 'GyaanBucks',
+
+  alternates: {
+    canonical: '/',
+  },
+
   other: {
     monetag: '3a8f1e81a6fe40153bfed9fac52e2470',
   },
