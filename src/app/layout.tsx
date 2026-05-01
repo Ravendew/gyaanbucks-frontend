@@ -103,12 +103,28 @@ export default function RootLayout({
       <body>
         {children}
 
+        {/* Vignette */}
         <Script
           id="monetag-vignette"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html:
-              "(function(s){s.dataset.zone='10949601',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));",
+            __html: `(function(s){s.dataset.zone='10949601',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`,
+          }}
+        />
+
+        {/* In-Page Push */}
+        <Script
+          id="monetag-inpage"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+        if (!window.location.pathname.includes('/quiz-play')) {
+          (function(s){
+            s.dataset.zone='10949633',
+            s.src='https://nap5k.com/tag.min.js'
+          })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+        }
+      `,
           }}
         />
       </body>
