@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
@@ -24,10 +25,7 @@ export const metadata: Metadata = {
     'Play quizzes online and earn real rewards on GyaanBucks. Answer GK and current affairs questions, earn coins, and redeem to cash. Best online work platform to earn money with quizzes.',
 
   keywords: [
-    // Brand
     'GyaanBucks',
-
-    // Quiz core
     'play quizzes online',
     'GK quiz online',
     'current affairs quiz',
@@ -35,8 +33,6 @@ export const metadata: Metadata = {
     'general knowledge quiz',
     'science quiz',
     'online quiz platform',
-
-    // Earn money (HIGH CTR)
     'earn money online',
     'earn money by playing quizzes',
     'quiz earn money app',
@@ -45,15 +41,11 @@ export const metadata: Metadata = {
     'redeem coins to cash',
     'real money earning app',
     'earn cash rewards',
-
-    // Online work (NEW ADD)
     'online work from home',
     'online work earning',
     'online work without investment',
     'best online work platform',
     'online earning work',
-
-    // Long tail (SEO gold)
     'play quiz and earn money',
     'online quiz with rewards',
     'daily quiz earn cash',
@@ -71,7 +63,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'GyaanBucks - Play Quizzes, Earn Rewards & Redeem Cash Online',
+    title: 'GyaanBucks - Play Quiz, Earn Rewards & Redeem Cash Online',
     description:
       'Play quizzes online, earn coins, and redeem cash on GyaanBucks. Daily GK, current affairs, and reward quizzes.',
     url: 'https://gyaanbucks.com',
@@ -90,7 +82,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'GyaanBucks - Play Quizzes & Earn Money',
+    title: 'GyaanBucks - Play Quiz, Earn Rewards & Redeem Cash Online',
     description:
       'Play quizzes, earn rewards, and redeem to cash. Join GyaanBucks now.',
     images: ['/og-image.png'],
@@ -108,7 +100,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+
+        <Script
+          id="monetag-vignette"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(s){s.dataset.zone='10949601',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));",
+          }}
+        />
+      </body>
     </html>
   );
 }
