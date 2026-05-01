@@ -50,6 +50,16 @@
   color: white;
 }
 
+.email {
+  color: var(--gold);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.email:hover {
+  color: #ffffff;
+}
+
 .newsletter {
   display: flex;
   gap: 8px;
@@ -74,6 +84,13 @@
   cursor: pointer;
 }
 
+.message {
+  margin-top: 10px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   margin-top: 34px;
@@ -83,6 +100,15 @@
   text-align: center;
 }
 
+.bottom a {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+}
+
+.bottom span {
+  margin-left: 8px;
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
@@ -90,5 +116,11 @@
 
   .newsletter {
     flex-direction: column;
+  }
+
+  .bottom span {
+    display: block;
+    margin-left: 0;
+    margin-top: 6px;
   }
 }
