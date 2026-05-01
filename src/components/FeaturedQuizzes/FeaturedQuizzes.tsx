@@ -51,8 +51,7 @@ const fallbackQuizzes: BackendQuiz[] = [
 ];
 
 function getApiBaseUrl() {
-  if (typeof window === 'undefined') return 'http://localhost:5000';
-  return `http://${window.location.hostname}:5000`;
+  return 'https://gyaanbucks-backend-production.up.railway.app';
 }
 
 function getQuizIcon(category: string, title: string) {
