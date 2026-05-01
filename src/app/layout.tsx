@@ -70,6 +70,32 @@ export const metadata: Metadata = {
     canonical: '/',
   },
 
+  openGraph: {
+    title: 'GyaanBucks - Play Quizzes & Earn Money',
+    description:
+      'Play quizzes online, earn coins, and redeem cash on GyaanBucks. Daily GK, current affairs, and reward quizzes.',
+    url: 'https://gyaanbucks.com',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'GyaanBucks - Play Quiz & Earn Rewards',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'GyaanBucks - Play Quizzes & Earn Money',
+    description:
+      'Play quizzes, earn rewards, and redeem to cash. Join GyaanBucks now.',
+    images: ['/og-image.png'],
+  },
+
   other: {
     monetag: '3a8f1e81a6fe40153bfed9fac52e2470',
   },
