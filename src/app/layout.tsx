@@ -21,20 +21,45 @@ export const metadata: Metadata = {
   },
 
   description:
-    'Play quizzes online on GyaanBucks, earn coins, win exciting rewards, and redeem your earnings easily. Daily quizzes, GK, science, and more.',
+    'Play quizzes online and earn real rewards on GyaanBucks. Answer GK and current affairs questions, earn coins, and redeem to cash. Best online work platform to earn money with quizzes.',
 
   keywords: [
+    // Brand
     'GyaanBucks',
+
+    // Quiz core
     'play quizzes online',
-    'earn rewards',
-    'earn coins',
-    'redeem cash',
-    'quiz rewards website',
-    'earn money playing quizzes',
-    'daily quiz rewards',
     'GK quiz online',
     'current affairs quiz',
+    'daily quiz',
+    'general knowledge quiz',
     'science quiz',
+    'online quiz platform',
+
+    // Earn money (HIGH CTR)
+    'earn money online',
+    'earn money by playing quizzes',
+    'quiz earn money app',
+    'earn rewards online',
+    'earn coins online',
+    'redeem coins to cash',
+    'real money earning app',
+    'earn cash rewards',
+
+    // Online work (NEW ADD)
+    'online work from home',
+    'online work earning',
+    'online work without investment',
+    'best online work platform',
+    'online earning work',
+
+    // Long tail (SEO gold)
+    'play quiz and earn money',
+    'online quiz with rewards',
+    'daily quiz earn cash',
+    'earn money without investment',
+    'best quiz earning website',
+    'work from home quiz earning',
   ],
 
   authors: [{ name: 'GyaanBucks' }],
