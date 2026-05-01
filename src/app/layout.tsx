@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://gyaanbucks.com'),
 
   title: {
-    default: 'GyaanBucks - Play Quizzes, Earn Rewards & Redeem Cash',
+    default: 'GyaanBucks - Play Quiz, Earn Rewards & Redeem Cash Online',
     template: '%s | GyaanBucks',
   },
 
