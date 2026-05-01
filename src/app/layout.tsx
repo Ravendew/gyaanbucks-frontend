@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'GyaanBucks - Play Quizzes & Earn Money',
+    title: 'GyaanBucks - Play Quizzes, Earn Rewards & Redeem Cash Online',
     description:
       'Play quizzes online, earn coins, and redeem cash on GyaanBucks. Daily GK, current affairs, and reward quizzes.',
     url: 'https://gyaanbucks.com',
