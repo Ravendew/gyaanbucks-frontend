@@ -4,9 +4,9 @@ import QuizPlayClient from './QuizPlayClient';
 const API_BASE_URL = 'https://gyaanbucks-backend-production.up.railway.app';
 
 type PageProps = {
-  params: {
+  params: Promise<{
     quizId: string;
-  };
+  }>;
 };
 
 type SeoQuiz = {
@@ -15,7 +15,6 @@ type SeoQuiz = {
   category?: string;
 };
 
-// 👉 Fetch for SEO only
 async function getQuizForSeo(slug: string): Promise<SeoQuiz | null> {
   try {
     const res = await fetch(`${API_BASE_URL}/quiz/${slug}`, {
@@ -30,17 +29,20 @@ async function getQuizForSeo(slug: string): Promise<SeoQuiz | null> {
   }
 }
 
-// 👉 Dynamic SEO
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const quiz = await getQuizForSeo(params.quizId);
+  const { quizId } = await params;
+  const quiz = await getQuizForSeo(quizId);
 
   if (!quiz?.title) {
     return {
       title: 'Quiz Not Found | GyaanBucks',
       description:
         'This quiz is not available. Play other quizzes on GyaanBucks.',
+      alternates: {
+        canonical: `/quiz-play/${quizId}`,
+      },
     };
   }
 
@@ -54,7 +56,6 @@ export async function generateMetadata({
   return {
     title,
     description,
-
     keywords: [
       `${quiz.title} quiz`,
       `${quiz.title} questions and answers`,
@@ -70,19 +71,16 @@ export async function generateMetadata({
       'play quiz online and earn rewards',
       'earn coins by playing quiz',
     ],
-
     alternates: {
-      canonical: `/quiz-play/${params.quizId}`,
+      canonical: `/quiz-play/${quizId}`,
     },
-
     openGraph: {
       title,
       description,
-      url: `https://gyaanbucks.com/quiz-play/${params.quizId}`,
+      url: `https://gyaanbucks.com/quiz-play/${quizId}`,
       siteName: 'GyaanBucks',
       type: 'website',
     },
-
     twitter: {
       card: 'summary_large_image',
       title,
@@ -91,7 +89,8 @@ export async function generateMetadata({
   };
 }
 
-// 👉 Render UI (safe)
-export default function QuizPlayPage({ params }: PageProps) {
-  return <QuizPlayClient quizSlug={params.quizId} />;
+export default async function QuizPlayPage({ params }: PageProps) {
+  const { quizId } = await params;
+
+  return <QuizPlayClient quizSlug={quizId} />;
 }
