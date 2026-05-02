@@ -1,0 +1,278 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Script from 'next/script';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
+import PercentageCalculatorClient from './PercentageCalculatorClient';
+import styles from './page.module.css';
+
+export const metadata: Metadata = {
+  title: 'Percentage Calculator - Calculate Percentage Online',
+  description:
+    'Use GyaanBucks free percentage calculator to calculate percentage, marks percentage, discount percentage and percentage increase or decrease online.',
+  keywords: [
+    'percentage calculator',
+    'percentage calculator online',
+    'calculate percentage',
+    'marks percentage calculator',
+    'discount percentage calculator',
+    'percentage increase calculator',
+    'percentage decrease calculator',
+    'free percentage calculator',
+    'earn money online quiz',
+  ],
+  alternates: {
+    canonical: '/tools/percentage-calculator',
+  },
+};
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Percentage Calculator',
+  url: 'https://gyaanbucks.com/tools/percentage-calculator',
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'All',
+  description:
+    'Free online percentage calculator to calculate percentage, marks percentage, discount percentage and percentage change.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a percentage calculator?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A percentage calculator is an online tool that helps you calculate percentages quickly using simple values.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the percentage formula?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The percentage formula is value divided by total multiplied by 100. For example, 450 divided by 500 multiplied by 100 equals 90%.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How to calculate marks percentage?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'To calculate marks percentage, divide obtained marks by total marks and multiply the answer by 100.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How to calculate percentage increase?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Percentage increase is calculated by finding the increase amount, dividing it by the original value and multiplying by 100.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How to calculate percentage difference?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Percentage difference is calculated by dividing the difference between two values by their average and multiplying by 100.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I calculate discount percentage?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, you can use this percentage calculator to calculate discount percentage, final price and savings.',
+      },
+    },
+  ],
+};
+
+const moreTools = [
+  {
+    title: 'Age Calculator',
+    text: 'Calculate exact age from date of birth.',
+    href: '/tools/age-calculator',
+  },
+  {
+    title: 'EMI Calculator',
+    text: 'Calculate monthly loan EMI and interest.',
+    href: '/tools/emi-calculator',
+  },
+  {
+    title: 'Salary Calculator',
+    text: 'Estimate monthly and yearly salary.',
+    href: '/tools/salary-calculator',
+  },
+  {
+    title: 'GST Calculator',
+    text: 'Calculate GST inclusive and exclusive values.',
+    href: '/tools/gst-calculator',
+  },
+  {
+    title: 'Time Calculator',
+    text: 'Calculate time difference and duration.',
+    href: '/tools/time-calculator',
+  },
+];
+
+export default function PercentageCalculatorPage() {
+  return (
+    <>
+      <Script
+        id="percentage-calculator-tool-schema"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(toolSchema),
+        }}
+      />
+
+      <Script
+        id="percentage-calculator-faq-schema"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+
+      <Header />
+
+      <main className={styles.page}>
+        <section className={styles.hero}>
+          <div className={styles.heroInner}>
+            <span className={styles.kicker}>Free Tool</span>
+            <h1 className={styles.title}>Percentage Calculator</h1>
+            <p className={styles.subtitle}>
+              Calculate percentages, marks percentage, discounts and percentage
+              change easily using this free online percentage calculator.
+            </p>
+          </div>
+        </section>
+
+        <PercentageCalculatorClient />
+
+        <section className={styles.moreToolsSection}>
+          <div className={styles.moreToolsHeader}>
+            <h2>More Free Tools</h2>
+            <p>Explore more useful calculators and tools.</p>
+          </div>
+
+          <div className={styles.toolsGrid}>
+            {moreTools.map((tool) => (
+              <Link
+                key={tool.title}
+                href={tool.href}
+                className={styles.toolCard}
+              >
+                <h3>{tool.title}</h3>
+                <p>{tool.text}</p>
+                <span>Open Tool →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.contentSection}>
+          <div className={styles.contentCard}>
+            <h2>What is a Percentage Calculator?</h2>
+            <p>
+              A percentage calculator is a free online tool that helps you
+              calculate percentage values quickly and accurately. You can use
+              this percentage calculator online to find what percentage one
+              number is of another number, calculate percentage of a number,
+              find marks percentage, discount percentage, percentage increase
+              and percentage difference.
+            </p>
+
+            <p>
+              This tool also works as a percentage finder and find percentage
+              calculator for students, shoppers, business users and anyone who
+              needs quick calculations. Instead of using manual percentage
+              formula every time, you can enter values and get instant results.
+            </p>
+
+            <h2>How to Use This Percentage Calculator?</h2>
+            <p>
+              Select the required percentage calculator section, enter the
+              values and click Calculate. You can calculate basic percentage,
+              marks percentage, discount percentage, percentage change,
+              percentage increase and percentage difference from the same page.
+            </p>
+
+            <h2>Percentage Formula</h2>
+            <p>
+              The basic percentage formula is: percentage equals value divided
+              by total, multiplied by 100. For example, if you scored 450 marks
+              out of 500, your marks percentage is 90%. This formula is useful
+              for exams, discounts, profit, loss and business calculations.
+            </p>
+
+            <h2>Why Use GyaanBucks Tools?</h2>
+            <p>
+              GyaanBucks provides free tools and quiz-based learning in one
+              place. After using the calculator, you can play quizzes, improve
+              your general knowledge and earn rewards online.
+            </p>
+
+            <div className={styles.contentCta}>
+              <Link href="/quizzes">Play Quiz & Earn Money</Link>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.faqSection}>
+          <div className={styles.faqContainer}>
+            <h2>Frequently Asked Questions</h2>
+
+            <div className={styles.faqItem}>
+              <h3>What is the percentage formula?</h3>
+              <p>
+                The percentage formula is value divided by total multiplied by
+                100. For example, 450 divided by 500 multiplied by 100 equals
+                90%.
+              </p>
+            </div>
+
+            <div className={styles.faqItem}>
+              <h3>How to calculate marks percentage?</h3>
+              <p>
+                To calculate marks percentage, divide obtained marks by total
+                marks and multiply the answer by 100.
+              </p>
+            </div>
+
+            <div className={styles.faqItem}>
+              <h3>How to calculate percentage increase?</h3>
+              <p>
+                Percentage increase is calculated by finding the increase
+                amount, dividing it by the original value and multiplying by
+                100.
+              </p>
+            </div>
+
+            <div className={styles.faqItem}>
+              <h3>How to calculate percentage difference?</h3>
+              <p>
+                Percentage difference is calculated by dividing the difference
+                between two values by their average and multiplying by 100.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
+}
