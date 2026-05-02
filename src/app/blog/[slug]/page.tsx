@@ -8,12 +8,33 @@ import {
 import styles from './page.module.css';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
 
 type Props = {
   params: Promise<{
     slug: string;
   }>;
+};
+
+type BlogJsonLd = {
+  '@context': string;
+  '@type': string;
+  headline: string;
+  description: string;
+  image?: string[];
+  datePublished: string;
+  dateModified: string;
+  author: {
+    '@type': string;
+    name: string;
+  };
+  publisher: {
+    '@type': string;
+    name: string;
+  };
+  mainEntityOfPage: {
+    '@type': string;
+    '@id': string;
+  };
 };
 
 export async function generateMetadata({ params }: Props) {
@@ -26,9 +47,37 @@ export async function generateMetadata({ params }: Props) {
     };
   }
 
+  const blogImage = getBlogImageUrl(blog.imageUrl);
+
   return {
     title: blog.metaTitle || blog.title,
     description: blog.metaDesc || blog.excerpt,
+    alternates: {
+      canonical: `https://gyaanbucks.com/blog/${blog.slug}`,
+    },
+    openGraph: {
+      title: blog.metaTitle || blog.title,
+      description: blog.metaDesc || blog.excerpt,
+      url: `https://gyaanbucks.com/blog/${blog.slug}`,
+      siteName: 'GyaanBucks',
+      type: 'article',
+      images: blogImage
+        ? [
+            {
+              url: blogImage,
+              width: 1200,
+              height: 630,
+              alt: blog.title,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: blog.metaTitle || blog.title,
+      description: blog.metaDesc || blog.excerpt,
+      images: blogImage ? [blogImage] : [],
+    },
   };
 }
 
@@ -47,9 +96,38 @@ export default async function BlogDetailPage({ params }: Props) {
 
   const blogImage = getBlogImageUrl(blog.imageUrl);
 
+  const jsonLd: BlogJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: blog.title,
+    description: blog.metaDesc || blog.excerpt,
+    ...(blogImage ? { image: [blogImage] } : {}),
+    datePublished: blog.createdAt,
+    dateModified: blog.updatedAt || blog.createdAt,
+    author: {
+      '@type': 'Organization',
+      name: 'GyaanBucks',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'GyaanBucks',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://gyaanbucks.com/blog/${blog.slug}`,
+    },
+  };
+
   return (
     <>
       <Header />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
 
       <main className={styles.page}>
         <section className={styles.hero}>
@@ -82,11 +160,10 @@ export default async function BlogDetailPage({ params }: Props) {
 
             <div className={styles.layout}>
               <article className={styles.article}>
-                <div className={styles.adBox}>Sponsored Section</div>
-
-                <div className={styles.content}>
-                  <ReactMarkdown>{blog.content}</ReactMarkdown>
-                </div>
+                <div
+                  className={styles.content}
+                  dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
 
                 <div className={styles.ctaBox}>
                   <h3>Start earning with quizzes</h3>
@@ -98,8 +175,6 @@ export default async function BlogDetailPage({ params }: Props) {
                     Start Playing Now
                   </Link>
                 </div>
-
-                <div className={styles.adBox}>Sponsored Section</div>
               </article>
 
               <aside className={styles.sidebar}>
@@ -111,8 +186,6 @@ export default async function BlogDetailPage({ params }: Props) {
                   </p>
                   <Link href="/how-it-works">How it works →</Link>
                 </div>
-
-                <div className={styles.sideAd}>Sponsored Section</div>
               </aside>
             </div>
 
