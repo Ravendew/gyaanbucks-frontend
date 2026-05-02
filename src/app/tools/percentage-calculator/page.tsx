@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: 'Percentage Calculator - Calculate Percentage Online',
   description:
     'Calculate percentage, marks percentage, discount percentage, percentage increase and percentage difference online for free.',
+
   keywords: [
     'percentage calculator',
     'percentage calculator online',
@@ -19,8 +20,9 @@ export const metadata: Metadata = {
     'percentage increase calculator',
     'percentage difference calculator',
   ],
+
   alternates: {
-    canonical: '/tools/percentage-calculator',
+    canonical: 'https://gyaanbucks.com/tools/percentage-calculator',
   },
 
   openGraph: {
@@ -29,14 +31,16 @@ export const metadata: Metadata = {
       'Free percentage calculator for marks, discounts, percentage increase and difference.',
     url: 'https://gyaanbucks.com/tools/percentage-calculator',
     siteName: 'GyaanBucks',
+
     images: [
       {
-        url: '/og-percentage-calculator.png', // important
+        url: 'https://gyaanbucks.com/og-percentage-calculator.png',
         width: 1200,
         height: 630,
         alt: 'Percentage Calculator',
       },
     ],
+
     type: 'website',
   },
 
@@ -45,7 +49,7 @@ export const metadata: Metadata = {
     title: 'Percentage Calculator - Calculate Percentage Online',
     description:
       'Free online percentage calculator for marks, discounts and percentage change.',
-    images: ['/og-percentage-calculator.png'],
+    images: ['https://gyaanbucks.com/og-percentage-calculator.png'],
   },
 };
 
