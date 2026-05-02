@@ -9,19 +9,41 @@ import styles from './page.module.css';
 export const metadata: Metadata = {
   title: 'Age Calculator - Calculate Age by Date of Birth',
   description:
-    'Use GyaanBucks free age calculator to calculate your exact age in years, months and days from date of birth. Simple online age calculator for India users.',
+    'Calculate your exact age in years, months and days using this free online age calculator. Simple DOB calculator for India users.',
   keywords: [
     'age calculator',
     'age calculator india',
     'date of birth calculator',
     'dob calculator',
-    'calculate age by date of birth',
-    'free age calculator online',
-    'earn money online quiz',
-    'play quiz and earn money',
+    'calculate age',
+    'birthday calculator',
   ],
   alternates: {
     canonical: '/tools/age-calculator',
+  },
+
+  openGraph: {
+    title: 'Age Calculator - Calculate Age by Date of Birth',
+    description:
+      'Free online age calculator to calculate exact age in years, months and days.',
+    url: 'https://gyaanbucks.com/tools/age-calculator',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-age-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'Age Calculator',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Age Calculator - Calculate Age by Date of Birth',
+    description: 'Calculate your age instantly using this free DOB calculator.',
+    images: ['/og-age-calculator.png'],
   },
 };
 

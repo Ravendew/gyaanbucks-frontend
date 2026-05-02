@@ -9,20 +9,43 @@ import styles from './page.module.css';
 export const metadata: Metadata = {
   title: 'Percentage Calculator - Calculate Percentage Online',
   description:
-    'Use GyaanBucks free percentage calculator to calculate percentage, marks percentage, discount percentage and percentage increase or decrease online.',
+    'Calculate percentage, marks percentage, discount percentage, percentage increase and percentage difference online for free.',
   keywords: [
     'percentage calculator',
     'percentage calculator online',
     'calculate percentage',
     'marks percentage calculator',
-    'discount percentage calculator',
+    'discount calculator',
     'percentage increase calculator',
-    'percentage decrease calculator',
-    'free percentage calculator',
-    'earn money online quiz',
+    'percentage difference calculator',
   ],
   alternates: {
     canonical: '/tools/percentage-calculator',
+  },
+
+  openGraph: {
+    title: 'Percentage Calculator - Calculate Percentage Online',
+    description:
+      'Free percentage calculator for marks, discounts, percentage increase and difference.',
+    url: 'https://gyaanbucks.com/tools/percentage-calculator',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-percentage-calculator.png', // important
+        width: 1200,
+        height: 630,
+        alt: 'Percentage Calculator',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Percentage Calculator - Calculate Percentage Online',
+    description:
+      'Free online percentage calculator for marks, discounts and percentage change.',
+    images: ['/og-percentage-calculator.png'],
   },
 };
 
