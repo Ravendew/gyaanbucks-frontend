@@ -6,6 +6,8 @@ import { getWalletPoints } from '@/utils/walletStorage';
 import {
   loadPopunderEvery2QuizClaims,
   openClaimDirectAdOncePerSession,
+  openSponsorBreakAd,
+} from '@/utils/monetagAds';
 } from '@/utils/monetagAds';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
@@ -379,12 +381,14 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   };
 
   const handleContinueAfterSponsorBreak = () => {
-    const nextIndex = currentIndex + 1;
+  openSponsorBreakAd();
 
-    setShowSponsorBreak(false);
-    setCurrentIndex(nextIndex);
-    setSelected(null);
-  };
+  const nextIndex = currentIndex + 1;
+
+  setShowSponsorBreak(false);
+  setCurrentIndex(nextIndex);
+  setSelected(null);
+};
 
   const handleLoginToClaimReward = () => {
     allowLeaveRef.current = true;
