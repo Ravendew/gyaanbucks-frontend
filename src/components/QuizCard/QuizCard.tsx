@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { openDirectAdOncePerSession } from '@/utils/monetagAds';
 import styles from './QuizCard.module.css';
@@ -68,8 +67,6 @@ function getUrgencyText(quiz: Quiz) {
 }
 
 export default function QuizCard({ quiz }: QuizCardProps) {
-  const router = useRouter();
-
   const baseOnlineCount = useMemo(() => {
     return quiz.onlinePlayers ?? getStableOnlineCount(quiz.title);
   }, [quiz.onlinePlayers, quiz.title]);
@@ -93,20 +90,15 @@ export default function QuizCard({ quiz }: QuizCardProps) {
       });
     }, 4500);
 
-    return () => window.clearInterval(interval);
+    return () => {
+      window.clearTimeout(timeout);
+      window.clearInterval(interval);
+    };
   }, [baseOnlineCount]);
 
   const handleStartQuiz = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (quiz.isLocked) {
       event.preventDefault();
-      return;
-    }
-
-    const savedUser = localStorage.getItem('gyaanbucks_user');
-
-    if (!savedUser) {
-      event.preventDefault();
-      router.push('/auth?tab=login');
       return;
     }
 
