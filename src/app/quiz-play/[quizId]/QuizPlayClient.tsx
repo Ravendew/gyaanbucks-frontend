@@ -8,7 +8,6 @@ import {
   openClaimDirectAdOncePerSession,
   openSponsorBreakAd,
 } from '@/utils/monetagAds';
-} from '@/utils/monetagAds';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -381,14 +380,14 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   };
 
   const handleContinueAfterSponsorBreak = () => {
-  openSponsorBreakAd();
+    openSponsorBreakAd();
 
-  const nextIndex = currentIndex + 1;
+    const nextIndex = currentIndex + 1;
 
-  setShowSponsorBreak(false);
-  setCurrentIndex(nextIndex);
-  setSelected(null);
-};
+    setShowSponsorBreak(false);
+    setCurrentIndex(nextIndex);
+    setSelected(null);
+  };
 
   const handleLoginToClaimReward = () => {
     allowLeaveRef.current = true;
