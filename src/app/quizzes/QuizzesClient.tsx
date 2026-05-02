@@ -345,9 +345,7 @@ export default function QuizzesClient() {
                       questions: quiz.questions.length,
                       time: `${quiz.timeLimit / 60} min`,
                       icon: getQuizIcon(quiz.category),
-                      href: isLoggedIn
-                        ? `/quiz-play/${quiz.slug}`
-                        : `/auth?tab=login&redirect=/quiz-play/${quiz.slug}`,
+                      href: `/quiz-play/${quiz.slug}`,
                       attemptsText: `Attempts: ${attemptsUsed}/${attemptsPerDay}`,
                       isLocked,
                       onlinePlayers: quiz.onlinePlayers,
