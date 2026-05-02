@@ -178,17 +178,18 @@ export default function AgeCalculatorPage() {
             </p>
 
             <p>
-              The GyaanBucks age calculator is useful for school forms, college
-              applications, job applications, government forms, competitive
-              exams and personal records. It works on mobile, tablet and
-              desktop.
+              This age calculator also works as a date of birth calculator,
+              birthday calculator and DOB calculator. You can use it to
+              calculate your age online instantly without manual calculations.
+              It is useful for students, job applications, forms and daily use.
             </p>
 
             <h2>How to Use This Age Calculator?</h2>
             <p>
-              Select your birth month, day and year. Then select the date on
-              which you want to calculate your age and click Calculate Age. The
-              tool will show your exact age in years, months and days.
+              To calculate age from date of birth, select your birth month, day
+              and year. Then choose the date on which you want to calculate your
+              age and click on Calculate Age. This age calculator online tool
+              will instantly show your age in years, months and days.
             </p>
 
             <h2>Why Use GyaanBucks Tools?</h2>
@@ -221,6 +222,15 @@ export default function AgeCalculatorPage() {
               <p>
                 Yes, you can select any date in the Age at the Date of section
                 to calculate age at a specific point in time.
+              </p>
+            </div>
+
+            <div className={styles.faqItem}>
+              <h3>How to calculate age from date of birth?</h3>
+              <p>
+                You can calculate age from date of birth by entering your birth
+                date and selecting the calculation date. The tool automatically
+                calculates your age accurately in years, months and days.
               </p>
             </div>
 
