@@ -94,8 +94,8 @@ async function checkBackendAttempt(
 
     if (!playerId) {
       return {
-        allowed: false,
-        remaining: 0,
+        allowed: true,
+        remaining: 1,
         attemptsUsed: 0,
       };
     }
@@ -145,13 +145,14 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   const [confettiPlayed, setConfettiPlayed] = useState(false);
   const [showExitPopup, setShowExitPopup] = useState(false);
   const [showSponsorBreak, setShowSponsorBreak] = useState(false);
+  const [isGuestUser, setIsGuestUser] = useState(false);
 
   const fetchUserWallet = async () => {
     try {
       const user = getLoggedInUser();
 
       if (!user?.id) {
-        setWalletPoints(getWalletPoints());
+        setWalletPoints(0);
         return;
       }
 
@@ -201,17 +202,15 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   ).padStart(2, '0')}`;
 
   useEffect(() => {
-    const user = getLoggedInUser();
-
-    if (!user) {
-      router.replace(`/auth?tab=login&redirect=/quiz-play/${quizSlug}`);
-      return;
-    }
-
     const loadQuiz = async () => {
       try {
         setLoading(true);
         setIsLocked(false);
+
+        const user = getLoggedInUser();
+        const guestMode = !user?.id;
+
+        setIsGuestUser(guestMode);
 
         const res = await fetch(`${API_BASE_URL}/quiz/${quizSlug}`, {
           cache: 'no-store',
@@ -224,7 +223,13 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
 
         const data: BackendQuiz = await res.json();
 
-        const attemptData = await checkBackendAttempt(data.id, data.slug);
+        const attemptData = guestMode
+          ? {
+              allowed: true,
+              remaining: data.attemptsPerDay || 2,
+              attemptsUsed: 0,
+            }
+          : await checkBackendAttempt(data.id, data.slug);
 
         setQuiz(data);
         setTimeLeft(data.timeLimit || 300);
@@ -236,7 +241,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
 
         setAttemptsUsed(usedAttempts < 0 ? 0 : usedAttempts);
 
-        if (!attemptData.allowed) {
+        if (!guestMode && !attemptData.allowed) {
           setIsLocked(true);
         }
       } catch (err) {
@@ -248,17 +253,17 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
     };
 
     if (quizSlug) loadQuiz();
-  }, [quizSlug, router]);
+  }, [quizSlug]);
 
   useEffect(() => {
-    if (!isFinished) return;
+    if (!isFinished || isGuestUser) return;
 
     const timeout = window.setTimeout(() => {
       fetchUserWallet();
     }, 0);
 
     return () => window.clearTimeout(timeout);
-  }, [isFinished]);
+  }, [isFinished, isGuestUser]);
 
   useEffect(() => {
     if (
@@ -381,20 +386,25 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
     setSelected(null);
   };
 
+  const handleLoginToClaimReward = () => {
+    allowLeaveRef.current = true;
+    router.push(`/auth?tab=login&redirect=/quiz-play/${quizSlug}`);
+  };
+
   const handleClaimReward = async () => {
     if (isClaimed || earnedPoints <= 0) return;
+
+    const user = getLoggedInUser();
+
+    if (!user?.id) {
+      handleLoginToClaimReward();
+      return;
+    }
 
     openClaimDirectAdOncePerSession();
     loadPopunderEvery2QuizClaims();
 
     try {
-      const user = getLoggedInUser();
-
-      if (!user?.id) {
-        setIsClaimed(true);
-        return;
-      }
-
       const res = await fetch(`${API_BASE_URL}/users/claim-reward`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -562,18 +572,31 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
               </div>
 
               <div>
-                <strong>{walletPoints}</strong>
+                <strong>{isGuestUser ? 0 : walletPoints}</strong>
                 <span>Wallet Points</span>
               </div>
             </div>
 
+            {isGuestUser && (
+              <p>
+                Login now to claim rewards. Guest users can play quizzes and see
+                results, but rewards are added only after login.
+              </p>
+            )}
+
             <button
               type="button"
               className={styles.primaryButton}
-              onClick={handleClaimReward}
-              disabled={isClaimed}
+              onClick={
+                isGuestUser ? handleLoginToClaimReward : handleClaimReward
+              }
+              disabled={!isGuestUser && isClaimed}
             >
-              {isClaimed ? 'Reward Claimed' : 'Claim Reward'}
+              {isGuestUser
+                ? 'Login Now to Claim Rewards'
+                : isClaimed
+                  ? 'Reward Claimed'
+                  : 'Claim Reward'}
             </button>
 
             <Link href="/quizzes" className={styles.secondaryButton}>
@@ -609,9 +632,9 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
               Question {currentIndex + 1}/{questions.length}
             </span>
             <span>
-              Attempts {attemptsUsed}/{maxAttempts}
+              Attempts {isGuestUser ? 0 : attemptsUsed}/{maxAttempts}
             </span>
-            <span>Wallet {walletPoints}</span>
+            <span>Wallet {isGuestUser ? 0 : walletPoints}</span>
           </div>
 
           <div className={styles.progressTrack}>
