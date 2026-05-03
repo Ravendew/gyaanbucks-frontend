@@ -8,164 +8,206 @@ function getApiBaseUrl() {
   return 'https://gyaanbucks-backend-production.up.railway.app';
 }
 
-type RedeemSetting = {
-  minimumPoints: number;
-  allowedDayOfMonth: number;
+type ProfileUser = {
+  id: string;
+  name?: string;
+  mobile?: string;
+  email?: string;
+  wallet?: number;
 };
 
-function getDayText(day: number) {
-  if (day >= 11 && day <= 13) return `${day}th`;
+type SavedUser = {
+  id?: string;
+  name?: string;
+  mobile?: string;
+  email?: string;
+};
 
-  const lastDigit = day % 10;
+type LearningAttempt = {
+  quizId?: string;
+  quizTitle?: string;
+  category?: string;
+  correctCount?: number;
+  totalQuestions?: number;
+  earnedPoints?: number;
+  createdAt?: string;
+};
 
-  if (lastDigit === 1) return `${day}st`;
-  if (lastDigit === 2) return `${day}nd`;
-  if (lastDigit === 3) return `${day}rd`;
+function getSavedUser(): SavedUser | null {
+  if (typeof window === 'undefined') return null;
 
-  return `${day}th`;
+  const saved = localStorage.getItem('gyaanbucks_user');
+  if (!saved) return null;
+
+  try {
+    return JSON.parse(saved) as SavedUser;
+  } catch {
+    localStorage.removeItem('gyaanbucks_user');
+    return null;
+  }
+}
+
+function getLearningPoints() {
+  if (typeof window === 'undefined') return 0;
+  return Number(localStorage.getItem('gyaanbucks_points') || 0);
+}
+
+function getLocalAttempts(): LearningAttempt[] {
+  if (typeof window === 'undefined') return [];
+
+  const saved =
+    localStorage.getItem('gyaanbucks_attempts') ||
+    localStorage.getItem('quiz_attempts') ||
+    localStorage.getItem('learning_attempts');
+
+  if (!saved) return [];
+
+  try {
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? (parsed as LearningAttempt[]) : [];
+  } catch {
+    return [];
+  }
 }
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null);
-  const [redeems, setRedeems] = useState<any[]>([]);
-  const [form, setForm] = useState<any>({});
-  const [redeemPoints, setRedeemPoints] = useState('');
+  const [user, setUser] = useState<ProfileUser | null>(null);
+  const [attempts, setAttempts] = useState<LearningAttempt[]>([]);
+  const [learningPoints, setLearningPoints] = useState(0);
   const [message, setMessage] = useState('');
-  const [redeemSetting, setRedeemSetting] = useState<RedeemSetting>({
-    minimumPoints: 5000,
-    allowedDayOfMonth: 5,
-  });
-
-  const today = new Date();
-  const isRedeemDay = today.getDate() === redeemSetting.allowedDayOfMonth;
-  const redeemDayText = getDayText(redeemSetting.allowedDayOfMonth);
-
-  const redeemAmount = useMemo(() => {
-    const points = Number(redeemPoints);
-    if (!points || points <= 0) return 0;
-    return points / 100;
-  }, [redeemPoints]);
-
-  const pendingRedeems = redeems.filter((item) => item.status === 'PENDING');
-  const approvedRedeems = redeems.filter((item) => item.status === 'APPROVED');
-
-  const fetchRedeemSetting = async () => {
-    try {
-      const res = await fetch(`${getApiBaseUrl()}/redeem-setting`);
-      const data = await res.json();
-
-      if (res.ok && data) {
-        setRedeemSetting({
-          minimumPoints: Number(data.minimumPoints || 5000),
-          allowedDayOfMonth: Number(data.allowedDayOfMonth || 5),
-        });
-      }
-    } catch {
-      // Keep default settings if API fails
-    }
-  };
-
-  const fetchProfile = async () => {
-    const saved = localStorage.getItem('gyaanbucks_user');
-    if (!saved) return;
-
-    const u = JSON.parse(saved);
-    const res = await fetch(`${getApiBaseUrl()}/users/profile/${u.id}`);
-    const data = await res.json();
-
-    setUser(data);
-    setForm(data);
-  };
-
-  const fetchRedeems = async () => {
-    const saved = localStorage.getItem('gyaanbucks_user');
-    if (!saved) return;
-
-    const u = JSON.parse(saved);
-    const res = await fetch(`${getApiBaseUrl()}/redeem/user/${u.id}`);
-    const data = await res.json();
-
-    setRedeems(Array.isArray(data) ? data : []);
-  };
 
   useEffect(() => {
-    fetchRedeemSetting();
-    fetchProfile();
-    fetchRedeems();
-  }, []);
+    let isMounted = true;
 
-  const handleChange = (key: string, value: string) => {
-    setForm((prev: any) => ({ ...prev, [key]: value }));
-  };
+    async function loadProfile() {
+      const savedUser = getSavedUser();
 
-  const savePayment = async () => {
-    const saved = localStorage.getItem('gyaanbucks_user');
-    if (!saved) return;
-
-    const u = JSON.parse(saved);
-
-    await fetch(`${getApiBaseUrl()}/users/payment-details/${u.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-
-    setMessage('Payment details updated successfully.');
-    fetchProfile();
-  };
-
-  const submitRedeem = async () => {
-    setMessage('');
-
-    const saved = localStorage.getItem('gyaanbucks_user');
-    if (!saved) return;
-
-    const u = JSON.parse(saved);
-    const points = Number(redeemPoints);
-
-    if (!isRedeemDay) {
-      setMessage(
-        `Redeem is available only on ${redeemDayText} of every month.`,
-      );
-      return;
-    }
-
-    if (!points || points < redeemSetting.minimumPoints) {
-      setMessage(
-        `Minimum redeem limit is ${redeemSetting.minimumPoints} points.`,
-      );
-      return;
-    }
-
-    if (user.wallet < points) {
-      setMessage('You do not have enough wallet points.');
-      return;
-    }
-
-    try {
-      const res = await fetch(`${getApiBaseUrl()}/redeem/request`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: u.id, points }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setMessage(data.message || 'Redeem request failed.');
+      if (!savedUser?.id) {
+        if (isMounted) {
+          setMessage('Please login to view your learning dashboard.');
+        }
         return;
       }
 
-      setMessage('Redeem request submitted successfully.');
-      setRedeemPoints('');
-      fetchProfile();
-      fetchRedeems();
-    } catch {
-      setMessage('Something went wrong. Please try again.');
-    }
-  };
+      try {
+        const res = await fetch(
+          `${getApiBaseUrl()}/users/profile/${savedUser.id}`,
+          { cache: 'no-store' },
+        );
 
-  if (!user) return null;
+        const data = (await res.json()) as ProfileUser;
+
+        if (isMounted) {
+          setUser(data);
+          setLearningPoints(getLearningPoints());
+          setAttempts(getLocalAttempts());
+        }
+      } catch {
+        if (isMounted) {
+          setUser({
+            id: savedUser.id || '',
+            name: savedUser.name,
+            mobile: savedUser.mobile,
+            email: savedUser.email,
+          });
+          setLearningPoints(getLearningPoints());
+          setAttempts(getLocalAttempts());
+        }
+      }
+    }
+
+    void loadProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const totalQuizzesPlayed = attempts.length;
+
+  const totalQuestions = useMemo(() => {
+    return attempts.reduce((sum, item) => sum + (item.totalQuestions || 0), 0);
+  }, [attempts]);
+
+  const totalCorrect = useMemo(() => {
+    return attempts.reduce((sum, item) => sum + (item.correctCount || 0), 0);
+  }, [attempts]);
+
+  const accuracy =
+    totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+
+  const categoryStats = useMemo(() => {
+    const map = new Map<
+      string,
+      {
+        category: string;
+        attempts: number;
+        correct: number;
+        total: number;
+        points: number;
+      }
+    >();
+
+    attempts.forEach((item) => {
+      const category = item.category || 'General';
+      const current = map.get(category) || {
+        category,
+        attempts: 0,
+        correct: 0,
+        total: 0,
+        points: 0,
+      };
+
+      current.attempts += 1;
+      current.correct += item.correctCount || 0;
+      current.total += item.totalQuestions || 0;
+      current.points += item.earnedPoints || 0;
+
+      map.set(category, current);
+    });
+
+    return Array.from(map.values());
+  }, [attempts]);
+
+  const bestCategory = useMemo(() => {
+    if (categoryStats.length === 0) return 'Start practicing';
+
+    return categoryStats
+      .map((item) => ({
+        ...item,
+        accuracy: item.total > 0 ? (item.correct / item.total) * 100 : 0,
+      }))
+      .sort((a, b) => b.accuracy - a.accuracy)[0].category;
+  }, [categoryStats]);
+
+  const weakCategory = useMemo(() => {
+    if (categoryStats.length === 0) return 'Start practicing';
+
+    return categoryStats
+      .map((item) => ({
+        ...item,
+        accuracy: item.total > 0 ? (item.correct / item.total) * 100 : 0,
+      }))
+      .sort((a, b) => a.accuracy - b.accuracy)[0].category;
+  }, [categoryStats]);
+
+  if (!user) {
+    return (
+      <>
+        <Header />
+
+        <main className={styles.page}>
+          <div className={`container ${styles.wrapper}`}>
+            <div className={styles.card}>
+              <span className={styles.badge}>Learning Dashboard</span>
+              <h1 className={styles.title}>My Progress</h1>
+              {message && <div className={styles.message}>{message}</div>}
+            </div>
+          </div>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
@@ -174,20 +216,20 @@ export default function ProfilePage() {
       <main className={styles.page}>
         <div className={`container ${styles.wrapper}`}>
           <div className={styles.card}>
-            <span className={styles.badge}>Profile</span>
-            <h1 className={styles.title}>My Account</h1>
+            <span className={styles.badge}>Learning Dashboard</span>
+            <h1 className={styles.title}>My Progress</h1>
 
             {message && <div className={styles.message}>{message}</div>}
 
             <div className={styles.profileGrid}>
               <div className={styles.profileBox}>
                 <span>Name</span>
-                <strong>{user.name}</strong>
+                <strong>{user.name || '-'}</strong>
               </div>
 
               <div className={styles.profileBox}>
                 <span>Mobile</span>
-                <strong>{user.mobile}</strong>
+                <strong>{user.mobile || '-'}</strong>
               </div>
 
               <div className={styles.profileBox}>
@@ -197,142 +239,104 @@ export default function ProfilePage() {
             </div>
 
             <div className={styles.walletBox}>
-              <span>Wallet Balance</span>
-              <strong>{user.wallet} Points</strong>
+              <span>Learning Points</span>
+              <strong>{learningPoints} Points</strong>
             </div>
 
             <div className={styles.redeemHero}>
               <div>
-                <span className={styles.redeemBadge}>
-                  {isRedeemDay ? 'Redeem Open Today' : 'Redeem Opens Monthly'}
-                </span>
-                <h3>Redeem Your Points</h3>
+                <span className={styles.redeemBadge}>Progress Overview</span>
+                <h3>Track Your Learning Performance</h3>
                 <p>
-                  Minimum redeem limit is{' '}
-                  <strong>{redeemSetting.minimumPoints} points</strong>.
-                  Requests are accepted only on the{' '}
-                  <strong>{redeemDayText} of every month</strong>.
+                  Your profile helps you understand quiz practice, accuracy,
+                  learning points, best category, and areas where you can
+                  improve.
                 </p>
               </div>
 
               <div className={styles.redeemStats}>
                 <div>
-                  <span>Pending</span>
-                  <strong>{pendingRedeems.length}</strong>
+                  <span>Played</span>
+                  <strong>{totalQuizzesPlayed}</strong>
                 </div>
                 <div>
-                  <span>Approved</span>
-                  <strong>{approvedRedeems.length}</strong>
+                  <span>Accuracy</span>
+                  <strong>{accuracy}%</strong>
                 </div>
               </div>
             </div>
 
             <div className={styles.redeemBox}>
               <div className={styles.redeemInputRow}>
-                <div className={styles.redeemInputWrap}>
-                  <label>Points to redeem</label>
-                  <input
-                    placeholder="Enter points"
-                    value={redeemPoints}
-                    onChange={(e) => setRedeemPoints(e.target.value)}
-                    className={styles.input}
-                  />
+                <div className={styles.amountPreview}>
+                  <span>Best Category</span>
+                  <strong>{bestCategory}</strong>
                 </div>
 
                 <div className={styles.amountPreview}>
-                  <span>Estimated Amount</span>
-                  <strong>₹{redeemAmount}</strong>
+                  <span>Improve Category</span>
+                  <strong>{weakCategory}</strong>
                 </div>
               </div>
 
-              <button
-                className={styles.primaryBtn}
-                onClick={submitRedeem}
-                disabled={
-                  !isRedeemDay ||
-                  Number(redeemPoints) < redeemSetting.minimumPoints
-                }
-              >
-                {isRedeemDay
-                  ? 'Submit Redeem Request'
-                  : `Available on ${redeemDayText}`}
-              </button>
-
               <p className={styles.note}>
-                Your payment details must be correct before admin approval.
+                Points are used only for learning progress and gamification.
+                They are not cash, rewards, or redeemable balance.
               </p>
             </div>
 
             <div className={styles.rulesBox}>
-              <h3>Payment Details</h3>
+              <h3>Category-wise Analytics</h3>
 
-              <input
-                placeholder="UPI ID"
-                value={form.upiId || ''}
-                onChange={(e) => handleChange('upiId', e.target.value)}
-                className={styles.input}
-              />
-              <input
-                placeholder="Google Pay Number"
-                value={form.googlePay || ''}
-                onChange={(e) => handleChange('googlePay', e.target.value)}
-                className={styles.input}
-              />
-              <input
-                placeholder="PhonePe Number"
-                value={form.phonePe || ''}
-                onChange={(e) => handleChange('phonePe', e.target.value)}
-                className={styles.input}
-              />
-              <input
-                placeholder="Account Holder Name"
-                value={form.bankHolder || ''}
-                onChange={(e) => handleChange('bankHolder', e.target.value)}
-                className={styles.input}
-              />
-              <input
-                placeholder="Bank Name"
-                value={form.bankName || ''}
-                onChange={(e) => handleChange('bankName', e.target.value)}
-                className={styles.input}
-              />
-              <input
-                placeholder="Account Number"
-                value={form.accountNo || ''}
-                onChange={(e) => handleChange('accountNo', e.target.value)}
-                className={styles.input}
-              />
-              <input
-                placeholder="IFSC Code"
-                value={form.ifscCode || ''}
-                onChange={(e) => handleChange('ifscCode', e.target.value)}
-                className={styles.input}
-              />
+              {categoryStats.length === 0 && (
+                <p>
+                  No quiz analytics yet. Start practicing quizzes to see your
+                  category-wise performance here.
+                </p>
+              )}
 
-              <button className={styles.primaryBtn} onClick={savePayment}>
-                Save Payment Details
-              </button>
+              {categoryStats.map((item) => {
+                const itemAccuracy =
+                  item.total > 0
+                    ? Math.round((item.correct / item.total) * 100)
+                    : 0;
+
+                return (
+                  <div key={item.category} className={styles.redeemHistoryCard}>
+                    <div>
+                      <strong>{item.category}</strong>
+                      <span>
+                        {item.attempts} attempts • {itemAccuracy}% accuracy
+                      </span>
+                    </div>
+
+                    <span className={styles.status}>{item.points} Points</span>
+                  </div>
+                );
+              })}
             </div>
 
             <div className={styles.rulesBox}>
-              <h3>My Redeem Requests</h3>
+              <h3>Recent Practice</h3>
 
-              {redeems.length === 0 && <p>No redeem requests yet.</p>}
+              {attempts.length === 0 && <p>No recent quiz attempts yet.</p>}
 
-              {redeems.map((r) => (
-                <div key={r.id} className={styles.redeemHistoryCard}>
+              {attempts.slice(0, 5).map((item, index) => (
+                <div
+                  key={`${item.quizId || item.quizTitle || 'quiz'}-${index}`}
+                  className={styles.redeemHistoryCard}
+                >
                   <div>
-                    <strong>{r.points} Points</strong>
-                    <span>₹{r.amount}</span>
+                    <strong>{item.quizTitle || 'Quiz Practice'}</strong>
+                    <span>
+                      {item.correctCount || 0}/{item.totalQuestions || 0}{' '}
+                      correct
+                    </span>
                   </div>
 
-                  <span
-                    className={`${styles.status} ${styles[r.status.toLowerCase()]}`}
-                  >
-                    {r.status}
+                  <span className={styles.status}>
+                    {item.earnedPoints || 0} Points
                   </span>
-
-                  {r.adminNote && <p>{r.adminNote}</p>}
                 </div>
               ))}
             </div>

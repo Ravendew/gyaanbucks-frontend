@@ -2,7 +2,6 @@
 
 import Header from '@/components/Header/Header';
 import { playQuizFeedback } from '@/utils/quizFeedback';
-import { getWalletPoints } from '@/utils/walletStorage';
 import {
   loadPopunderEvery2QuizClaims,
   openClaimDirectAdOncePerSession,

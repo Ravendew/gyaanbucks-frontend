@@ -7,7 +7,6 @@ import {
   canPlayQuiz,
   getQuizAttempts,
 } from '@/utils/quizAttemptStorage';
-import { addWalletPoints, getWalletPoints } from '@/utils/walletStorage';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -31,10 +30,46 @@ const questions = [
   },
 ];
 
-const quizId = 'daily-rewards-quiz';
+type LearningAttempt = {
+  quizId: string;
+  quizTitle: string;
+  category: string;
+  correctCount: number;
+  totalQuestions: number;
+  earnedPoints: number;
+  createdAt: string;
+};
+
+const quizId = 'daily-practice-quiz';
+const quizTitle = 'Daily Practice Quiz';
+const quizCategory = 'General Knowledge';
 const maxQuizAttempts = 2;
 const pointsPerCorrectAnswer = 10;
 const quizDurationSeconds = 5 * 60;
+
+function getLearningPoints() {
+  if (typeof window === 'undefined') return 0;
+  return Number(localStorage.getItem('gyaanbucks_points') || 0);
+}
+
+function saveLearningAttempt(attempt: LearningAttempt) {
+  if (typeof window === 'undefined') return;
+
+  const saved = localStorage.getItem('gyaanbucks_attempts');
+
+  let attempts: LearningAttempt[] = [];
+
+  try {
+    attempts = saved ? (JSON.parse(saved) as LearningAttempt[]) : [];
+  } catch {
+    attempts = [];
+  }
+
+  localStorage.setItem(
+    'gyaanbucks_attempts',
+    JSON.stringify([attempt, ...attempts].slice(0, 50)),
+  );
+}
 
 export default function QuizPlayPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -64,7 +99,7 @@ export default function QuizPlayPage() {
   useEffect(() => {
     const savedAttempts = getQuizAttempts(quizId);
 
-    setWalletPoints(getWalletPoints());
+    setWalletPoints(getLearningPoints());
     setAttemptsUsed(savedAttempts);
     setIsLocked(!canPlayQuiz(quizId, maxQuizAttempts));
   }, []);
@@ -74,13 +109,23 @@ export default function QuizPlayPage() {
 
     const updatedAttempts = addQuizAttempt(quizId);
 
+    saveLearningAttempt({
+      quizId,
+      quizTitle,
+      category: quizCategory,
+      correctCount,
+      totalQuestions: questions.length,
+      earnedPoints,
+      createdAt: new Date().toISOString(),
+    });
+
     setAttemptsUsed(updatedAttempts);
     setAttemptSaved(true);
 
     if (updatedAttempts >= maxQuizAttempts) {
       setIsLocked(true);
     }
-  }, [isFinished, attemptSaved, isLocked]);
+  }, [isFinished, attemptSaved, isLocked, correctCount, earnedPoints]);
 
   useEffect(() => {
     if (isFinished || isLocked) return;
@@ -167,9 +212,12 @@ export default function QuizPlayPage() {
   const claimPoints = () => {
     if (isClaimed || earnedPoints <= 0) return;
 
-    const updatedWalletPoints = addWalletPoints(earnedPoints);
+    const currentPoints = getLearningPoints();
+    const updatedPoints = currentPoints + earnedPoints;
 
-    setWalletPoints(updatedWalletPoints);
+    localStorage.setItem('gyaanbucks_points', String(updatedPoints));
+
+    setWalletPoints(updatedPoints);
     setIsClaimed(true);
   };
 
@@ -180,7 +228,7 @@ export default function QuizPlayPage() {
     setSelected(null);
     setCorrectCount(0);
     setEarnedPoints(0);
-    setWalletPoints(getWalletPoints());
+    setWalletPoints(getLearningPoints());
     setIsClaimed(false);
     setShowPointsPop(false);
     setAttemptSaved(false);
@@ -202,18 +250,18 @@ export default function QuizPlayPage() {
 
             <p className={styles.resultSub}>
               You have already used {maxQuizAttempts} / {maxQuizAttempts}{' '}
-              attempts for this quiz. Please come back tomorrow or play another
-              quiz and earn more points.
+              attempts for this quiz. Please come back tomorrow or practice
+              another quiz to continue learning.
             </p>
 
             <div className={styles.walletPreview}>
-              <span>Total Wallet Points</span>
+              <span>Total Learning Points</span>
               <strong>{walletPoints}</strong>
             </div>
 
             <div className={styles.resultActions}>
               <Link href="/quizzes" className={styles.primaryBtn}>
-                Play Other Quizzes
+                Practice Other Quizzes
               </Link>
 
               <Link href="/" className={styles.secondaryBtn}>
@@ -237,12 +285,12 @@ export default function QuizPlayPage() {
           <section className={`${styles.card} ${styles.resultCard}`}>
             {accuracy > 40 && (
               <div className={styles.coinBurst} aria-hidden="true">
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
-                <span>🪙</span>
+                <span>⭐</span>
+                <span>⭐</span>
+                <span>⭐</span>
+                <span>⭐</span>
+                <span>⭐</span>
+                <span>⭐</span>
               </div>
             )}
 
@@ -250,7 +298,9 @@ export default function QuizPlayPage() {
               {timeLeft <= 0 ? '⏱ Time Over' : '🎉 Quiz Completed'}
             </div>
 
-            <h1 className={styles.resultTitle}>{earnedPoints} Points Earned</h1>
+            <h1 className={styles.resultTitle}>
+              {earnedPoints} Learning Points
+            </h1>
 
             <p className={styles.resultSub}>
               You got {correctCount} / {questions.length} correct ({accuracy}%).
@@ -262,14 +312,14 @@ export default function QuizPlayPage() {
             </div>
 
             <div className={styles.walletPreview}>
-              <span>Total Wallet Points</span>
+              <span>Total Learning Points</span>
               <strong>{walletPoints}</strong>
             </div>
 
             {attemptsUsed >= maxQuizAttempts && (
               <p className={styles.resultSub}>
                 You completed all attempts for this quiz. Please come back
-                tomorrow or play another quiz and earn more points.
+                tomorrow or practice another quiz.
               </p>
             )}
 
@@ -282,13 +332,11 @@ export default function QuizPlayPage() {
                   isClaimed || earnedPoints <= 0 ? styles.claimDisabled : ''
                 }`}
               >
-                {isClaimed
-                  ? 'Points Claimed ✅'
-                  : `Claim ${earnedPoints} Points`}
+                {isClaimed ? 'Points Saved ✅' : `Save ${earnedPoints} Points`}
               </button>
 
               <Link href="/quizzes" className={styles.secondaryBtn}>
-                Play Other Quizzes
+                Practice Other Quizzes
               </Link>
 
               <button
@@ -301,7 +349,7 @@ export default function QuizPlayPage() {
               >
                 {attemptsUsed >= maxQuizAttempts
                   ? 'Attempts Completed'
-                  : 'Play Again'}
+                  : 'Practice Again'}
               </button>
             </div>
           </section>
@@ -321,7 +369,9 @@ export default function QuizPlayPage() {
           </Link>
 
           <div
-            className={`${styles.timer} ${timeLeft <= 30 ? styles.timerDanger : ''}`}
+            className={`${styles.timer} ${
+              timeLeft <= 30 ? styles.timerDanger : ''
+            }`}
           >
             ⏱ {formattedTime}
           </div>
@@ -329,12 +379,14 @@ export default function QuizPlayPage() {
 
         <section className={styles.card}>
           <div className={styles.quizInfo}>
-            <span className={styles.badge}>Daily Rewards Quiz</span>
+            <span className={styles.badge}>Daily Practice Quiz</span>
 
             <span
-              className={`${styles.points} ${showPointsPop ? styles.pointsGlow : ''}`}
+              className={`${styles.points} ${
+                showPointsPop ? styles.pointsGlow : ''
+              }`}
             >
-              Earned: {earnedPoints}
+              Points: {earnedPoints}
               {showPointsPop && (
                 <span className={styles.pointsPop}>
                   +{pointsPerCorrectAnswer}
@@ -400,7 +452,7 @@ export default function QuizPlayPage() {
               {selected === null
                 ? 'Select one answer to continue.'
                 : selected === currentQuestion.correctIndex
-                  ? `Correct! +${pointsPerCorrectAnswer} points added.`
+                  ? `Correct! +${pointsPerCorrectAnswer} learning points added.`
                   : 'Wrong answer. Correct answer highlighted.'}
             </p>
 
