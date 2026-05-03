@@ -10,38 +10,39 @@ import StatsSection from '@/components/StatsSection/StatsSection';
 import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
-  title: 'Play Quiz and Earn Money Online in India | GyaanBucks',
+  title: 'GyaanBucks - Free Online Quizzes, GK Tests & Calculators',
   description:
-    'Play free online quizzes on GyaanBucks and earn rewards, coins, and cash. Try GK quiz, current affairs quiz, cricket quiz, movie quiz, fun quiz, and daily quiz challenges in India.',
+    'Practice free online quizzes, GK questions, current affairs tests and useful calculators on GyaanBucks. Learn and improve your knowledge with simple quiz and tool pages.',
   keywords: [
-    'play quiz and earn money online',
-    'earn money online by playing quiz',
-    'online quiz earning website India',
-    'play GK quiz and earn rewards',
-    'current affairs quiz with rewards',
-    'free quiz website to earn coins',
-    'earn cash rewards by playing quizzes',
-    'daily quiz earn money India',
-    'quiz rewards website India',
-    'GyaanBucks quiz earning',
-    'play quizzes online for rewards',
-    'earn coins redeem cash quiz',
-    'GK quiz India online',
-    'current affairs quiz India',
-    'cricket quiz online India',
-    'movie quiz online India',
-    'fun quiz online with rewards',
+    'GyaanBucks',
+    'free online quizzes',
+    'GK quiz online',
+    'general knowledge quiz',
+    'current affairs quiz',
+    'online quiz test',
+    'India GK quiz',
+    'educational quiz website',
+    'free online calculators',
+    'age calculator',
+    'percentage calculator',
   ],
   alternates: {
     canonical: 'https://gyaanbucks.com',
   },
   openGraph: {
-    title: 'Play Quiz and Earn Money Online in India | GyaanBucks',
+    title: 'GyaanBucks - Free Online Quizzes, GK Tests & Calculators',
     description:
-      'Play daily quizzes, earn coins, collect rewards, and redeem cash on GyaanBucks.',
+      'Practice quizzes, GK tests, current affairs questions and useful online calculators on GyaanBucks.',
     url: 'https://gyaanbucks.com',
     siteName: 'GyaanBucks',
+    images: ['/og-image.png'],
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'GyaanBucks - Free Online Quizzes, GK Tests & Calculators',
+    description: 'Practice quizzes and use useful calculators online.',
+    images: ['/og-image.png'],
   },
 };
 
