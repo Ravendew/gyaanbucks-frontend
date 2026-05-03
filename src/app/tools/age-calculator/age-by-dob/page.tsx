@@ -287,15 +287,20 @@ export default function AgeByDobPage() {
               <h3>Popular Tools</h3>
               <ul>
                 <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
+                  <Link prefetch={false} href="/tools/age-calculator">
+                    Age Calculator
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/tools/age-calculator/age-in-days">
+                  <Link
+                    prefetch={false}
+                    href="/tools/age-calculator/age-in-days"
+                  >
                     Age in Days
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/percentage-calculator">
+                  <Link prefetch={false} href="/tools/percentage-calculator">
                     Percentage Calculator
                   </Link>
                 </li>
@@ -306,15 +311,23 @@ export default function AgeByDobPage() {
               <h3>Age Calculator Pages</h3>
               <ul>
                 <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
+                  <Link
+                    prefetch={false}
+                    href="/tools/age-calculator/age-by-dob"
+                  >
                     Age Calculator by DOB
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/age-calculator">Exact Age Calculator</Link>
+                  <Link prefetch={false} href="/tools/age-calculator">
+                    Exact Age Calculator
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/tools/age-calculator/age-in-days">
+                  <Link
+                    prefetch={false}
+                    href="/tools/age-calculator/age-in-days"
+                  >
                     Days Lived Calculator
                   </Link>
                 </li>
@@ -325,16 +338,24 @@ export default function AgeByDobPage() {
               <h3>Explore GyaanBucks</h3>
               <ul>
                 <li>
-                  <Link href="/tools">All Calculators</Link>
+                  <Link prefetch={false} href="/tools">
+                    All Calculators
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/quizzes">Play Quizzes</Link>
+                  <Link prefetch={false} href="/quizzes">
+                    Play Quizzes
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/categories">Quiz Categories</Link>
+                  <Link prefetch={false} href="/categories">
+                    Quiz Categories
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/refer-earn">Refer and Earn</Link>
+                  <Link prefetch={false} href="/contact">
+                    Contact GyaanBucks
+                  </Link>
                 </li>
               </ul>
             </div>
