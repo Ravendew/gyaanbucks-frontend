@@ -131,24 +131,34 @@ const moreTools = [
     href: '/tools/age-calculator',
   },
   {
-    title: 'EMI Calculator',
-    text: 'Calculate monthly loan EMI and interest.',
-    href: '/tools/emi-calculator',
+    title: 'Age by Date of Birth',
+    text: 'Find your exact age in years, months and days.',
+    href: '/tools/age-calculator/age-by-dob',
   },
   {
-    title: 'Salary Calculator',
-    text: 'Estimate monthly and yearly salary.',
-    href: '/tools/salary-calculator',
+    title: 'Age in Days Calculator',
+    text: 'Calculate your total age in days, weeks and months.',
+    href: '/tools/age-calculator/age-in-days',
   },
   {
-    title: 'GST Calculator',
-    text: 'Calculate GST inclusive and exclusive values.',
-    href: '/tools/gst-calculator',
+    title: 'Age Difference Calculator',
+    text: 'Compare age difference between two dates or people.',
+    href: '/tools/age-calculator/age-difference-calculator',
   },
   {
-    title: 'Time Calculator',
-    text: 'Calculate time difference and duration.',
-    href: '/tools/time-calculator',
+    title: 'Date Difference Calculator',
+    text: 'Find exact difference between two calendar dates.',
+    href: '/tools/age-calculator/date-difference-calculator',
+  },
+  {
+    title: 'Days Until Calculator',
+    text: 'Count days remaining until any event or date.',
+    href: '/tools/age-calculator/days-until-calculator',
+  },
+  {
+    title: 'Percentage Calculator',
+    text: 'Calculate percentages, discounts and value changes.',
+    href: '/tools/percentage-calculator',
   },
 ];
 

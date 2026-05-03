@@ -99,29 +99,29 @@ const ageTools = [
 
 const moreTools = [
   {
-    title: 'Percentage Calculator',
-    text: 'Calculate percentage, marks percentage, discounts and value changes.',
-    href: '/tools/percentage-calculator',
+    title: 'Age by Date of Birth',
+    text: 'Calculate exact age from date of birth with years, months and days.',
+    href: '/tools/age-calculator/age-by-dob',
   },
   {
-    title: 'EMI Calculator',
-    text: 'Calculate monthly loan EMI and interest.',
-    href: '/tools/emi-calculator',
+    title: 'Age in Days Calculator',
+    text: 'Find your total age in days, weeks, months and years.',
+    href: '/tools/age-calculator/age-in-days',
   },
   {
-    title: 'Salary Calculator',
-    text: 'Estimate monthly and yearly salary.',
-    href: '/tools/salary-calculator',
+    title: 'Age Difference Calculator',
+    text: 'Compare age difference between two people or two dates.',
+    href: '/tools/age-calculator/age-difference-calculator',
   },
   {
-    title: 'GST Calculator',
-    text: 'Calculate GST inclusive and exclusive values.',
-    href: '/tools/gst-calculator',
+    title: 'Date Difference Calculator',
+    text: 'Calculate the exact difference between two calendar dates.',
+    href: '/tools/age-calculator/date-difference-calculator',
   },
   {
-    title: 'Time Calculator',
-    text: 'Calculate time difference and duration.',
-    href: '/tools/time-calculator',
+    title: 'Days Until Calculator',
+    text: 'Count days left until an exam, birthday, event or deadline.',
+    href: '/tools/age-calculator/days-until-calculator',
   },
 ];
 

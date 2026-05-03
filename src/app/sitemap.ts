@@ -3,6 +3,8 @@ import { MetadataRoute } from 'next';
 const SITE_URL = 'https://gyaanbucks.com';
 const API_BASE_URL = 'https://gyaanbucks-backend-production.up.railway.app';
 
+const LAST_MODIFIED = new Date('2026-05-03');
+
 type QuizSitemapItem = {
   slug: string;
   updatedAt?: string;
@@ -15,6 +17,26 @@ type BlogSitemapItem = {
   createdAt?: string;
   isPublished?: boolean;
 };
+
+function getSafeDate(updatedAt?: string, createdAt?: string) {
+  if (updatedAt) return new Date(updatedAt);
+  if (createdAt) return new Date(createdAt);
+  return LAST_MODIFIED;
+}
+
+function normalizeSlug(slug: string) {
+  return slug.trim().replace(/^\/+|\/+$/g, '');
+}
+
+function uniqueByUrl(items: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const map = new Map<string, MetadataRoute.Sitemap[number]>();
+
+  items.forEach((item) => {
+    map.set(item.url, item);
+  });
+
+  return Array.from(map.values());
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = [
@@ -42,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticUrls: MetadataRoute.Sitemap = staticPages.map((path) => ({
     url: `${SITE_URL}${path}`,
-    lastModified: new Date(),
+    lastModified: LAST_MODIFIED,
     changeFrequency:
       path === '' || path === '/quizzes' || path.startsWith('/tools')
         ? 'weekly'
@@ -70,16 +92,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       quizUrls = quizzes
         .filter((quiz) => Boolean(quiz.slug))
-        .map((quiz) => ({
-          url: `${SITE_URL}/quiz-play/${quiz.slug}`,
-          lastModified: quiz.updatedAt
-            ? new Date(quiz.updatedAt)
-            : quiz.createdAt
-              ? new Date(quiz.createdAt)
-              : new Date(),
-          changeFrequency: 'daily',
-          priority: 0.9,
-        }));
+        .map((quiz) => {
+          const slug = normalizeSlug(quiz.slug);
+
+          return {
+            url: `${SITE_URL}/quiz-play/${slug}`,
+            lastModified: getSafeDate(quiz.updatedAt, quiz.createdAt),
+            changeFrequency: 'daily',
+            priority: 0.9,
+          };
+        });
     }
   } catch (err) {
     console.error('Sitemap quiz fetch error:', err);
@@ -96,20 +118,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       blogUrls = blogs
         .filter((blog) => Boolean(blog.slug))
         .filter((blog) => blog.isPublished !== false)
-        .map((blog) => ({
-          url: `${SITE_URL}/blog/${blog.slug}`,
-          lastModified: blog.updatedAt
-            ? new Date(blog.updatedAt)
-            : blog.createdAt
-              ? new Date(blog.createdAt)
-              : new Date(),
-          changeFrequency: 'weekly',
-          priority: 0.85,
-        }));
+        .map((blog) => {
+          const slug = normalizeSlug(blog.slug);
+
+          return {
+            url: `${SITE_URL}/blog/${slug}`,
+            lastModified: getSafeDate(blog.updatedAt, blog.createdAt),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+          };
+        });
     }
   } catch (err) {
     console.error('Sitemap blog fetch error:', err);
   }
 
-  return [...staticUrls, ...quizUrls, ...blogUrls];
+  return uniqueByUrl([...staticUrls, ...quizUrls, ...blogUrls]);
 }

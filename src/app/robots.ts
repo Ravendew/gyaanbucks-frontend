@@ -1,13 +1,15 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
+  const siteUrl = 'https://gyaanbucks.com';
+
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-      },
-    ],
-    sitemap: 'https://gyaanbucks.com/sitemap.xml',
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: ['/api/', '/admin/', '/auth/', '/profile/'],
+    },
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
   };
 }

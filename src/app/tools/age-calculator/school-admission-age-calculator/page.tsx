@@ -283,7 +283,7 @@ export default function SchoolAdmissionAgeCalculatorPage() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/age-calculator/school-admission-age-calculator-telangana">
+                  <Link href="/tools/age-calculator/school-admission-age-calculator/telangana">
                     Telangana School Age
                   </Link>
                 </li>
