@@ -20,10 +20,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = [
     '',
     '/quizzes',
+    '/tools',
+    '/tools/age-calculator',
+    '/tools/age-calculator/age-by-dob',
+    '/tools/age-calculator/age-in-days',
+    '/tools/age-calculator/age-difference-calculator',
+    '/tools/age-calculator/date-difference-calculator',
+    '/tools/age-calculator/days-until-calculator',
+    '/tools/age-calculator/upsc-age-calculator',
+    '/tools/age-calculator/ssc-age-calculator',
+    '/tools/age-calculator/retirement-age-calculator',
+    '/tools/age-calculator/school-admission-age-calculator',
+    '/tools/age-calculator/school-admission-age-calculator/telangana',
+    '/tools/percentage-calculator',
     '/blog',
     '/categories',
-    '/how-it-works',
-    '/refer-earn',
     '/contact',
     '/privacy',
     '/terms',
@@ -32,8 +43,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticUrls: MetadataRoute.Sitemap = staticPages.map((path) => ({
     url: `${SITE_URL}${path}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: path === '' ? 1 : 0.8,
+    changeFrequency:
+      path === '' || path === '/quizzes' || path.startsWith('/tools')
+        ? 'weekly'
+        : 'monthly',
+    priority:
+      path === ''
+        ? 1
+        : path === '/tools' || path === '/quizzes'
+          ? 0.9
+          : path.startsWith('/tools/')
+            ? 0.85
+            : 0.8,
   }));
 
   let quizUrls: MetadataRoute.Sitemap = [];

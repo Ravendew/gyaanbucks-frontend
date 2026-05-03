@@ -68,8 +68,7 @@ export default function Header() {
         <nav className={styles.nav}>
           <Link href="/">Home</Link>
           <Link href="/quizzes">Quizzes</Link>
-          <Link href="/refer-earn">Refer & Earn</Link>
-          <Link href="/how-it-works">How It Works</Link>
+          <Link href="/tools">Tools</Link>
           <Link href="/blog">Blog</Link>
           <Link href="/contact">Contact</Link>
         </nav>
@@ -123,11 +122,8 @@ export default function Header() {
           <Link href="/quizzes" onClick={closeMenu}>
             Quizzes
           </Link>
-          <Link href="/refer-earn" onClick={closeMenu}>
-            Refer & Earn
-          </Link>
-          <Link href="/how-it-works" onClick={closeMenu}>
-            How It Works
+          <Link href="/tools" onClick={closeMenu}>
+            Tools
           </Link>
           <Link href="/blog" onClick={closeMenu}>
             Blog

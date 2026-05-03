@@ -28,7 +28,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 75px;
 }
 
 .nav a {
