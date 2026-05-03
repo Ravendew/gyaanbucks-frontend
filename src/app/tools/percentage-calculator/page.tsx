@@ -7,18 +7,17 @@ import PercentageCalculatorClient from './PercentageCalculatorClient';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Percentage Calculator - Calculate Percentage Online',
+  title: 'Percentage Calculator - Calculate Percentages Easily Online',
   description:
-    'Calculate percentage, marks percentage, discount percentage, percentage increase and percentage difference online for free.',
+    'Use the Percentage Calculator to calculate percentages, increases, decreases, discounts and value changes instantly. Free online percentage tool for students and daily use.',
 
   keywords: [
     'percentage calculator',
-    'percentage calculator online',
-    'calculate percentage',
-    'marks percentage calculator',
-    'discount calculator',
+    'calculate percentage online',
     'percentage increase calculator',
-    'percentage difference calculator',
+    'percentage decrease calculator',
+    'discount calculator',
+    'percentage formula calculator',
   ],
 
   alternates: {
@@ -26,30 +25,27 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'Percentage Calculator - Calculate Percentage Online',
+    title: 'Percentage Calculator - Calculate Percentages Easily',
     description:
-      'Free percentage calculator for marks, discounts, percentage increase and difference.',
+      'Calculate percentages, discounts, increases and decreases instantly with this free tool.',
     url: 'https://gyaanbucks.com/tools/percentage-calculator',
     siteName: 'GyaanBucks',
-
     images: [
       {
-        url: 'https://gyaanbucks.com/og-percentage-calculator.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Percentage Calculator',
       },
     ],
-
     type: 'website',
   },
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Percentage Calculator - Calculate Percentage Online',
-    description:
-      'Free online percentage calculator for marks, discounts and percentage change.',
-    images: ['https://gyaanbucks.com/og-percentage-calculator.png'],
+    title: 'Percentage Calculator - Calculate Percentages Easily',
+    description: 'Find percentages, discounts and value changes instantly.',
+    images: ['/og-image.png'],
   },
 };
 

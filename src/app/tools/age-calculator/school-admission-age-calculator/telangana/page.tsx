@@ -25,6 +25,22 @@ export const metadata: Metadata = {
 };
 
 export default function TelanganaSchoolAdmissionAgePage() {
+  const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Age Difference Calculator',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free online age difference calculator to compare two ages or dates in years, months and days.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -314,6 +330,12 @@ export default function TelanganaSchoolAdmissionAgePage() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(faqSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
           }}
         />
       </main>

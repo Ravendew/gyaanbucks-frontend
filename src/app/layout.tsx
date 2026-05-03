@@ -16,43 +16,38 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://gyaanbucks.com'),
 
-  // ✅ Google verification (auto creates meta tag)
   verification: {
     google: 'r8JWV6EQHqua6mVFE7yxPvIY_5lKo_2yqpBt3-pvHWs',
   },
 
   title: {
-    default: 'GyaanBucks - Play Quiz, Earn Rewards & Redeem Cash Online',
+    default: 'GyaanBucks - Free Online Quizzes, GK Tests & Useful Calculators',
     template: '%s | GyaanBucks',
   },
 
   description:
-    'Play quizzes online and earn real rewards on GyaanBucks. Answer GK and current affairs questions, earn coins, and redeem to cash. Best online work platform to earn money with quizzes.',
+    'Practice free online quizzes, GK questions, current affairs tests and useful calculators on GyaanBucks. Improve your knowledge with simple quiz and tool pages.',
 
   keywords: [
     'GyaanBucks',
-    'play quizzes online',
+    'free online quizzes',
     'GK quiz online',
-    'current affairs quiz',
-    'daily quiz',
     'general knowledge quiz',
-    'science quiz',
-    'online quiz platform',
-    'earn money online',
-    'earn money by playing quizzes',
-    'quiz earn money app',
-    'earn rewards online',
-    'earn coins online',
-    'redeem coins to cash',
-    'real money earning app',
-    'earn cash rewards',
-    'play quiz and earn money',
-    'online quiz with rewards',
-    'daily quiz earn cash',
-    'best quiz earning website',
+    'current affairs quiz',
+    'daily quiz questions',
+    'online quiz test',
+    'India GK quiz',
+    'competitive exam quiz',
+    'practice quiz online',
+    'educational quiz website',
+    'quiz questions and answers',
+    'free online calculators',
+    'age calculator',
+    'percentage calculator',
+    'student tools online',
   ],
 
-  authors: [{ name: 'GyaanBucks' }],
+  authors: [{ name: 'GyaanBucks', url: 'https://gyaanbucks.com' }],
   creator: 'GyaanBucks',
   publisher: 'GyaanBucks',
 
@@ -61,17 +56,17 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'GyaanBucks - Play Quiz, Earn Rewards & Redeem Cash Online',
+    title: 'GyaanBucks - Free Online Quizzes, GK Tests & Useful Calculators',
     description:
-      'Play quizzes online, earn coins, and redeem cash on GyaanBucks. Daily GK, current affairs, and reward quizzes.',
-    url: 'https://gyaanbucks.com',
+      'Play free quizzes, practice GK and use helpful calculators online on GyaanBucks.',
+    url: '/',
     siteName: 'GyaanBucks',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'GyaanBucks - Play Quiz & Earn Rewards',
+        alt: 'GyaanBucks - Free Quiz & Tools',
       },
     ],
     locale: 'en_US',
@@ -80,64 +75,42 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'GyaanBucks - Play Quiz, Earn Rewards & Redeem Cash Online',
-    description:
-      'Play quizzes, earn rewards, and redeem to cash. Join GyaanBucks now.',
+    title: 'GyaanBucks - Free Online Quizzes & Calculators',
+    description: 'Practice quizzes and use useful calculators online.',
     images: ['/og-image.png'],
   },
 
-  other: {
-    monetag: '3a8f1e81a6fe40153bfed9fac52e2470',
+  robots: {
+    index: true,
+    follow: true,
   },
+
+  category: 'education',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         {children}
-
-        {/* Vignette */}
-        <Script
-          id="monetag-vignette"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(s){s.dataset.zone='10949601',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`,
-          }}
-        />
-
-        {/* In-Page Push */}
-        <Script
-          id="monetag-inpage"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (!window.location.pathname.includes('/quiz-play')) {
-                (function(s){
-                  s.dataset.zone='10949633',
-                  s.src='https://nap5k.com/tag.min.js'
-                })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-              }
-            `,
-          }}
-        />
 
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-BK5J08XMEP"
           strategy="afterInteractive"
         />
+
         <Script id="google-analytics" strategy="afterInteractive">
           {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-BK5J08XMEP');
-  `}
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-BK5J08XMEP');
+          `}
         </Script>
       </body>
     </html>

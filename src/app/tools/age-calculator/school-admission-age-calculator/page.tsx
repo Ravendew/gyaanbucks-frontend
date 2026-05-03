@@ -6,25 +6,67 @@ import styles from './page.module.css';
 import SchoolAdmissionAgeClient from './SchoolAdmissionAgeClient';
 
 export const metadata: Metadata = {
-  title: 'School Admission Age Calculator - Check Child Age for Admission',
+  title: 'Telangana School Admission Age Calculator (2026-27)',
   description:
-    'Use our School Admission Age Calculator to check your child age for school admission, LKG, UKG, Class 1 and eligibility by date of birth.',
+    'Check school admission age eligibility in Telangana for LKG, UKG and Class 1 based on date of birth. Calculate age as per Telangana education rules instantly.',
+
   keywords: [
-    'school admission age calculator',
-    'age calculator for school admission',
-    'child age calculator for school admission',
-    'lkg admission age calculator',
-    'ukg admission age calculator',
-    'class 1 admission age calculator',
-    'school age eligibility calculator',
+    'telangana school age calculator',
+    'school admission age telangana',
+    'lkg ukg age calculator telangana',
+    'class 1 age eligibility telangana',
+    'ts school admission age rule',
+    'dob school age calculator telangana',
   ],
+
   alternates: {
     canonical:
-      'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator',
+      'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator/telangana',
+  },
+
+  openGraph: {
+    title: 'Telangana School Admission Age Calculator',
+    description:
+      'Check eligibility age for LKG, UKG and Class 1 admissions in Telangana schools.',
+    url: 'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator/telangana',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Telangana School Age Calculator',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Telangana School Admission Age Calculator',
+    description:
+      'Calculate school admission age eligibility in Telangana instantly.',
+    images: ['/og-image.png'],
   },
 };
 
 export default function SchoolAdmissionAgeCalculatorPage() {
+  const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Age Difference Calculator',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free online age difference calculator to compare two ages or dates in years, months and days.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -317,6 +359,12 @@ export default function SchoolAdmissionAgeCalculatorPage() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(faqSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
           }}
         />
       </main>

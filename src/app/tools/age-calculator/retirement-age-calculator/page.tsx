@@ -6,39 +6,67 @@ import styles from './page.module.css';
 import RetirementAgeClient from './RetirementAgeClient';
 
 export const metadata: Metadata = {
-  title: 'Retirement Age Calculator - Calculate Retirement Date & Age',
+  title: 'Retirement Age Calculator - Calculate Retirement Date Online',
   description:
-    'Use Retirement Age Calculator to calculate your retirement age and retirement date based on your date of birth. Plan your future easily.',
+    'Use the Retirement Age Calculator to calculate your retirement date and remaining years based on your date of birth and selected retirement age.',
 
   keywords: [
     'retirement age calculator',
     'retirement date calculator',
     'calculate retirement age',
-    'retirement calculator by dob',
-    'pension age calculator india',
-    'retirement planning calculator',
+    'retirement calculator by date of birth',
+    'years left for retirement calculator',
+    'retirement eligibility calculator',
   ],
-
-  openGraph: {
-    title: 'Retirement Age Calculator',
-    description: 'Calculate your retirement age and retirement date instantly.',
-    url: 'https://gyaanbucks.com/tools/age-calculator/retirement-age-calculator',
-    images: [
-      {
-        url: 'https://gyaanbucks.com/og-images/retirement-age-calculator.png',
-        width: 1200,
-        height: 630,
-      },
-    ],
-  },
 
   alternates: {
     canonical:
       'https://gyaanbucks.com/tools/age-calculator/retirement-age-calculator',
   },
+
+  openGraph: {
+    title: 'Retirement Age Calculator - Calculate Retirement Date',
+    description:
+      'Calculate your retirement date and years left for retirement using this free online calculator.',
+    url: 'https://gyaanbucks.com/tools/age-calculator/retirement-age-calculator',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Retirement Age Calculator',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Retirement Age Calculator - Calculate Retirement Date',
+    description:
+      'Find your retirement date and remaining working years instantly.',
+    images: ['/og-image.png'],
+  },
 };
 
 export default function RetirementAgePage() {
+  const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Age Difference Calculator',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free online age difference calculator to compare two ages or dates in years, months and days.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -369,6 +397,12 @@ export default function RetirementAgePage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
+          }}
         />
       </main>
 

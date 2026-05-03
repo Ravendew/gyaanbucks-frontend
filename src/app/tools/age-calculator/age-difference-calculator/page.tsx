@@ -6,37 +6,103 @@ import styles from './page.module.css';
 import AgeDifferenceClient from './AgeDifferenceClient';
 
 export const metadata: Metadata = {
-  title: 'Age Difference Calculator - Calculate Age Gap Between Two People',
+  title: 'Age Difference Calculator - Compare Two Ages Online',
   description:
-    'Use Age Difference Calculator to calculate age gap between two people by date of birth. Get exact years, months and days difference instantly.',
+    'Use the Age Difference Calculator to compare two ages or dates and find the exact difference in years, months and days. Free online age comparison tool.',
 
   keywords: [
     'age difference calculator',
+    'compare two ages',
     'age gap calculator',
-    'calculate age difference between two people',
-    'age difference by date of birth',
-    'age gap between two dates',
-    'age difference calculator online',
+    'calculate age difference',
+    'difference between two ages',
+    'date age difference calculator',
   ],
-
-  openGraph: {
-    title: 'Age Difference Calculator',
-    description:
-      'Calculate age difference between two people instantly using date of birth.',
-    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
-    images: [
-      {
-        url: 'https://gyaanbucks.com/og-images/age-difference-calculator.png',
-        width: 1200,
-        height: 630,
-      },
-    ],
-  },
 
   alternates: {
     canonical:
       'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
   },
+
+  openGraph: {
+    title: 'Age Difference Calculator - Compare Two Ages Online',
+    description:
+      'Compare two ages or dates and find the exact age difference instantly.',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Age Difference Calculator',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Age Difference Calculator - Compare Two Ages Online',
+    description:
+      'Find the exact age gap between two people or dates instantly.',
+    images: ['/og-image.png'],
+  },
+};
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Age Difference Calculator',
+  url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'Any',
+  description:
+    'Free online age difference calculator to compare two ages or dates in years, months and days.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How to calculate age difference between two people?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Enter both dates of birth and click calculate. The tool will show the exact age difference in years, months and days.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I compare two dates using this calculator?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, you can enter any two dates to find the difference between them instantly.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is this age difference calculator free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, this tool is completely free to use on GyaanBucks.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does it show difference in months and days?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, the calculator shows detailed results including years, months and days.',
+      },
+    },
+  ],
 };
 
 export default function AgeDifferencePage() {
@@ -339,6 +405,21 @@ export default function AgeDifferencePage() {
           </aside>
         </div>
       </main>
+
+      <Footer />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(toolSchema),
+        }}
+      />
 
       <Footer />
     </>

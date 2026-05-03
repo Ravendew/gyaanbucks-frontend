@@ -7,30 +7,32 @@ import AgeInDaysClient from './AgeInDaysClient';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Age in Days Calculator - Calculate Total Days from Date of Birth',
+  title: 'Age in Days Calculator - Calculate Days Lived Online',
   description:
-    'Use this free age in days calculator to calculate your total days, weeks, hours, minutes and seconds from date of birth.',
+    'Use the Age in Days Calculator to find your total age in days, weeks, months and years from your date of birth. Free online days lived calculator.',
+
   keywords: [
-    'age calculator in days',
     'age in days calculator',
+    'days lived calculator',
     'calculate age in days',
-    'count age from date of birth',
-    'get age from date of birth',
-    'total days from birth',
-    'days from date of birth',
+    'how many days old am i',
+    'date of birth to days calculator',
+    'total days lived calculator',
   ],
+
   alternates: {
     canonical: 'https://gyaanbucks.com/tools/age-calculator/age-in-days',
   },
+
   openGraph: {
-    title: 'Age in Days Calculator - Calculate Total Days from Birth',
+    title: 'Age in Days Calculator - Calculate Days Lived Online',
     description:
-      'Find your exact age in total days, weeks, hours, minutes and seconds from your date of birth.',
+      'Find how many days you have lived using this free Age in Days Calculator.',
     url: 'https://gyaanbucks.com/tools/age-calculator/age-in-days',
     siteName: 'GyaanBucks',
     images: [
       {
-        url: 'https://gyaanbucks.com/og-age-calculator.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Age in Days Calculator',
@@ -38,12 +40,29 @@ export const metadata: Metadata = {
     ],
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'Age in Days Calculator',
+    title: 'Age in Days Calculator - Calculate Days Lived Online',
     description:
-      'Calculate your age in total days, weeks, hours, minutes and seconds instantly.',
-    images: ['https://gyaanbucks.com/og-age-calculator.png'],
+      'Calculate your total days lived from date of birth instantly.',
+    images: ['/og-image.png'],
+  },
+};
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Age Difference Calculator',
+  url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'Any',
+  description:
+    'Free online age difference calculator to compare two ages or dates in years, months and days.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
   },
 };
 
@@ -96,6 +115,13 @@ export default function AgeInDaysPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(faqSchema),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(toolSchema),
         }}
       />
 

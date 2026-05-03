@@ -6,9 +6,10 @@ import styles from './page.module.css';
 import AgeByDobClient from './AgeByDobClient';
 
 export const metadata: Metadata = {
-  title: 'Age Calculator by DOB - Calculate Exact Age from Date of Birth',
+  title: 'Age Calculator by DOB - Free Online Age Calculator',
   description:
     'Use our Age Calculator by DOB to calculate exact age from date of birth in years, months, days, weeks, hours, minutes and seconds instantly.',
+
   keywords: [
     'age calculator by dob',
     'calculate age from date of birth',
@@ -17,12 +18,53 @@ export const metadata: Metadata = {
     'exact age calculator by dob',
     'date of birth age calculator',
   ],
+
   alternates: {
     canonical: 'https://gyaanbucks.com/tools/age-calculator/age-by-dob',
+  },
+
+  openGraph: {
+    title: 'Age Calculator by DOB - Free Online Age Calculator',
+    description:
+      'Calculate your exact age from date of birth in years, months and days instantly using this free online DOB calculator.',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-by-dob',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Age Calculator by DOB',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Age Calculator by DOB - Free Online Age Calculator',
+    description:
+      'Find your exact age from date of birth instantly with this free tool.',
+    images: ['/og-image.png'],
   },
 };
 
 export default function AgeByDobPage() {
+  const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Age Difference Calculator',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free online age difference calculator to compare two ages or dates in years, months and days.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+  };
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -207,8 +249,8 @@ export default function AgeByDobPage() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    calculate age by dob online
+                  <Link href="/tools/age-calculator/age-difference-calculator">
+                    Age Difference Calculator
                   </Link>
                 </li>
                 <li>
@@ -311,11 +353,8 @@ export default function AgeByDobPage() {
               <h3>Age Calculator Pages</h3>
               <ul>
                 <li>
-                  <Link
-                    prefetch={false}
-                    href="/tools/age-calculator/age-by-dob"
-                  >
-                    Age Calculator by DOB
+                  <Link href="/tools/age-calculator/age-difference-calculator">
+                    Age Difference Calculator
                   </Link>
                 </li>
                 <li>
@@ -366,6 +405,12 @@ export default function AgeByDobPage() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(faqSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
           }}
         />
       </main>

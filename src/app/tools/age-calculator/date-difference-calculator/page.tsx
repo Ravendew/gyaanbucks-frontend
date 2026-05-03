@@ -6,29 +6,33 @@ import styles from './page.module.css';
 import DateDifferenceClient from './DateDifferenceClient';
 
 export const metadata: Metadata = {
-  title: 'Date Difference Calculator - Calculate Days Between Two Dates',
+  title: 'Date Difference Calculator - Days Between Two Dates',
   description:
-    'Use Date Difference Calculator to calculate days, weeks, months and years between two dates instantly. Free online date duration calculator.',
+    'Use the Date Difference Calculator to find the exact number of days, months and years between two dates. Free online date calculator tool.',
+
   keywords: [
     'date difference calculator',
     'days between two dates',
-    'calculate between two dates',
-    'calculate difference between two dates',
+    'calculate date difference',
     'date duration calculator',
-    'day counter between dates',
-    'calculate time between dates',
-    'date gap calculator',
-    'period between two dates calculator',
+    'difference between dates',
+    'days calculator online',
   ],
+
+  alternates: {
+    canonical:
+      'https://gyaanbucks.com/tools/age-calculator/date-difference-calculator',
+  },
+
   openGraph: {
-    title: 'Date Difference Calculator - Calculate Days Between Dates',
+    title: 'Date Difference Calculator - Days Between Two Dates',
     description:
-      'Calculate the exact difference between two dates in days, weeks, months and years.',
+      'Calculate the exact difference between two dates in days, months and years instantly.',
     url: 'https://gyaanbucks.com/tools/age-calculator/date-difference-calculator',
     siteName: 'GyaanBucks',
     images: [
       {
-        url: 'https://gyaanbucks.com/og-images/date-difference-calculator.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Date Difference Calculator',
@@ -36,20 +40,32 @@ export const metadata: Metadata = {
     ],
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'Date Difference Calculator',
-    description:
-      'Calculate days, weeks, months and years between two dates instantly.',
-    images: ['https://gyaanbucks.com/og-images/date-difference-calculator.png'],
-  },
-  alternates: {
-    canonical:
-      'https://gyaanbucks.com/tools/age-calculator/date-difference-calculator',
+    title: 'Date Difference Calculator - Days Between Two Dates',
+    description: 'Find number of days between any two dates instantly.',
+    images: ['/og-image.png'],
   },
 };
 
 export default function DateDifferencePage() {
+  const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Age Difference Calculator',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free online age difference calculator to compare two ages or dates in years, months and days.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -423,6 +439,12 @@ export default function DateDifferencePage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
+          }}
         />
       </main>
 

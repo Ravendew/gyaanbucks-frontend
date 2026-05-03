@@ -6,52 +6,65 @@ import styles from './page.module.css';
 import UpscAgeClient from './UpscAgeClient';
 
 export const metadata: Metadata = {
-  title: 'UPSC Age Calculator - Check IAS Age Eligibility by DOB',
+  title: 'UPSC Age Calculator - Check Age Eligibility for UPSC Exams',
   description:
-    'Use UPSC Age Calculator to check IAS eligibility using date of birth and cutoff date. Calculate exact age instantly for Civil Services Exam.',
+    'Use the UPSC Age Calculator to check your age eligibility for IAS, IPS and other UPSC exams based on your date of birth. Simple and accurate tool.',
 
   keywords: [
     'upsc age calculator',
-    'ias age calculator',
-    'upsc age eligibility calculator',
+    'ias age limit calculator',
+    'upsc eligibility age calculator',
     'calculate age for upsc exam',
-    'upsc age limit calculator india',
-    'civil services age calculator',
-    'ias eligibility age calculator',
-    'upsc cutoff date age calculator',
+    'upsc age limit by dob',
   ],
-
-  openGraph: {
-    title: 'UPSC Age Calculator - Check IAS Eligibility',
-    description:
-      'Check your UPSC age eligibility instantly using DOB and cutoff date.',
-    url: 'https://gyaanbucks.com/tools/age-calculator/upsc-age-calculator',
-    siteName: 'GyaanBucks',
-    images: [
-      {
-        url: 'https://gyaanbucks.com/og-images/upsc-age-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'UPSC Age Calculator',
-      },
-    ],
-  },
-
-  twitter: {
-    card: 'summary_large_image',
-    title: 'UPSC Age Calculator',
-    description:
-      'Check your UPSC age eligibility instantly using DOB and cutoff date.',
-    images: ['https://gyaanbucks.com/og-images/upsc-age-calculator.png'],
-  },
 
   alternates: {
     canonical:
       'https://gyaanbucks.com/tools/age-calculator/upsc-age-calculator',
   },
+
+  openGraph: {
+    title: 'UPSC Age Calculator - Check Eligibility',
+    description:
+      'Check your age eligibility for UPSC exams instantly using this calculator.',
+    url: 'https://gyaanbucks.com/tools/age-calculator/upsc-age-calculator',
+    siteName: 'GyaanBucks',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'UPSC Age Calculator',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'UPSC Age Calculator - Check Eligibility',
+    description: 'Find your eligibility age for UPSC exams instantly.',
+    images: ['/og-image.png'],
+  },
 };
 
 export default function UpscAgeCalculatorPage() {
+  const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Age Difference Calculator',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free online age difference calculator to compare two ages or dates in years, months and days.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -272,6 +285,12 @@ export default function UpscAgeCalculatorPage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
+          }}
         />
       </main>
 

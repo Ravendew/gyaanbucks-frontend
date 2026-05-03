@@ -8,28 +8,30 @@ import SscAgeClient from './SscAgeClient';
 export const metadata: Metadata = {
   title: 'SSC Age Calculator - Check Age Eligibility for SSC Exams',
   description:
-    'Use SSC Age Calculator to check your age eligibility for SSC CGL, CHSL, MTS and other exams based on date of birth and cutoff date.',
+    'Use the SSC Age Calculator to check your age eligibility for SSC CGL, CHSL, MTS and other SSC exams based on your date of birth and eligibility date.',
+
   keywords: [
     'ssc age calculator',
-    'ssc age eligibility calculator',
-    'ssc age limit calculator',
-    'calculate age for ssc exam',
     'ssc cgl age calculator',
     'ssc chsl age calculator',
     'ssc mts age calculator',
-    'age calculator for ssc exam',
-    'ssc eligibility age calculator india',
-    'ssc cutoff date age calculator',
+    'ssc age limit calculator',
+    'ssc eligibility age calculator',
   ],
+
+  alternates: {
+    canonical: 'https://gyaanbucks.com/tools/age-calculator/ssc-age-calculator',
+  },
+
   openGraph: {
-    title: 'SSC Age Calculator - Check SSC Eligibility',
+    title: 'SSC Age Calculator - Check SSC Exam Eligibility',
     description:
-      'Calculate your age for SSC exams instantly using DOB and cutoff date.',
+      'Check your age eligibility for SSC CGL, CHSL, MTS and other SSC exams instantly.',
     url: 'https://gyaanbucks.com/tools/age-calculator/ssc-age-calculator',
     siteName: 'GyaanBucks',
     images: [
       {
-        url: 'https://gyaanbucks.com/og-images/ssc-age-calculator.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'SSC Age Calculator',
@@ -37,15 +39,29 @@ export const metadata: Metadata = {
     ],
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'SSC Age Calculator',
+    title: 'SSC Age Calculator - Check SSC Exam Eligibility',
     description:
-      'Check SSC age eligibility instantly using DOB and cutoff date.',
-    images: ['https://gyaanbucks.com/og-images/ssc-age-calculator.png'],
+      'Find your SSC exam age eligibility instantly using this free calculator.',
+    images: ['/og-image.png'],
   },
-  alternates: {
-    canonical: 'https://gyaanbucks.com/tools/age-calculator/ssc-age-calculator',
+};
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Age Difference Calculator',
+  url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'Any',
+  description:
+    'Free online age difference calculator to compare two ages or dates in years, months and days.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
   },
 };
 
@@ -464,6 +480,12 @@ export default function SscAgeCalculatorPage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
+          }}
         />
       </main>
 

@@ -6,30 +6,33 @@ import styles from './page.module.css';
 import DaysUntilClient from './DaysUntilClient';
 
 export const metadata: Metadata = {
-  title: 'Days Until Calculator - Calculate Days Left Until Any Date',
+  title: 'Days Until Calculator - Count Days Until Any Date',
   description:
-    'Use Days Until Calculator to calculate how many days are left until any date, event, birthday, exam, trip or deadline instantly.',
+    'Use the Days Until Calculator to count how many days are left until an exam, birthday, event, deadline or future date. Free online countdown date calculator.',
+
   keywords: [
     'days until calculator',
+    'count days until date',
     'days left calculator',
-    'how many days until',
     'countdown calculator',
-    'days remaining calculator',
-    'days until date calculator',
-    'days left until date',
-    'event countdown calculator',
-    'date countdown calculator',
-    'calculate days until a date',
+    'days until birthday',
+    'days until exam calculator',
   ],
+
+  alternates: {
+    canonical:
+      'https://gyaanbucks.com/tools/age-calculator/days-until-calculator',
+  },
+
   openGraph: {
-    title: 'Days Until Calculator - Calculate Days Left',
+    title: 'Days Until Calculator - Count Days Until Any Date',
     description:
-      'Calculate how many days are left until any future date, event, exam, birthday or deadline.',
+      'Count days remaining until any future date, event, birthday, exam or deadline.',
     url: 'https://gyaanbucks.com/tools/age-calculator/days-until-calculator',
     siteName: 'GyaanBucks',
     images: [
       {
-        url: 'https://gyaanbucks.com/og-images/days-until-calculator.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Days Until Calculator',
@@ -37,20 +40,32 @@ export const metadata: Metadata = {
     ],
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'Days Until Calculator',
-    description:
-      'Calculate days left until any date, event, birthday, exam or deadline.',
-    images: ['https://gyaanbucks.com/og-images/days-until-calculator.png'],
-  },
-  alternates: {
-    canonical:
-      'https://gyaanbucks.com/tools/age-calculator/days-until-calculator',
+    title: 'Days Until Calculator - Count Days Until Any Date',
+    description: 'Find how many days are left until any date instantly.',
+    images: ['/og-image.png'],
   },
 };
 
 export default function DaysUntilCalculatorPage() {
+  const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Age Difference Calculator',
+    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free online age difference calculator to compare two ages or dates in years, months and days.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+  };
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -401,6 +416,12 @@ export default function DaysUntilCalculatorPage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(toolSchema),
+          }}
         />
       </main>
 
