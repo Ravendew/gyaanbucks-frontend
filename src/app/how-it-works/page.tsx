@@ -82,7 +82,7 @@ export default function HowItWorksPage() {
                 <span className={styles.badge}>How GyaanBucks Works</span>
 
                 <h1 className={styles.title}>
-                  Play quizzes, build knowledge, and earn reward points.
+                  Play quizzes, build knowledge, and track learning points.
                 </h1>
 
                 <p className={styles.description}>

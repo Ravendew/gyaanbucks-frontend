@@ -469,7 +469,7 @@ export default function PercentageCalculatorClient() {
           </div>
 
           <Link href="/quizzes" className={styles.quizCta}>
-            Play Quiz & Earn Money
+            Play Quizzes
           </Link>
         </div>
       </div>

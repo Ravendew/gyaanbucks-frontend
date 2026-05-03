@@ -5,9 +5,9 @@ import Hero from '@/components/Hero/Hero';
 import PopularCategories from '@/components/PopularCategories/PopularCategories';
 import FeaturedQuizzes from '@/components/FeaturedQuizzes/FeaturedQuizzes';
 import HowItWorks from '@/components/HowItWorks/HowItWorks';
-import ReferralSection from '@/components/ReferralSection/ReferralSection';
 import StatsSection from '@/components/StatsSection/StatsSection';
 import Footer from '@/components/Footer/Footer';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
   title: 'GyaanBucks - Free Online Quizzes, GK Tests & Calculators',
@@ -53,36 +53,52 @@ export default function Home() {
       <Hero />
       <PopularCategories />
       <FeaturedQuizzes />
+      <HowItWorks />
 
-      <section
-        style={{
-          maxWidth: '1180px',
-          margin: '0 auto',
-          padding: '24px 20px 8px',
-        }}
-      >
-        <h2 style={{ fontSize: '28px', marginBottom: '14px' }}>
-          Popular Online Quizzes
-        </h2>
+      <section className={styles.learningSection}>
+        <div className={styles.learningCard}>
+          <div className={styles.learningContent}>
+            <span className={styles.learningBadge}>📚 Learning Progress</span>
 
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '12px',
-          }}
-        >
-          <Link href="/quiz-play/gk-boss-challenge">GK Boss Challenge</Link>
-          <Link href="/quiz-play/brainy-india-quiz">Brainy India Quiz</Link>
-          <Link href="/quiz-play/todays-hot-affairs">
-            Today&apos;s Hot Affairs
-          </Link>
-          <Link href="/quizzes">View All Quizzes</Link>
+            <h2 className={styles.learningTitle}>Learn More with GyaanBucks</h2>
+
+            <p className={styles.learningText}>
+              GyaanBucks helps you practice quizzes, improve general knowledge,
+              follow current affairs, and use simple educational tools.
+              Registered users can save their progress, track learning points,
+              and understand category-wise performance over time.
+            </p>
+
+            <div className={styles.learningActions}>
+              <Link href="/tools" className={styles.primaryBtn}>
+                Explore Learning Tools
+              </Link>
+
+              <Link href="/quizzes" className={styles.secondaryBtn}>
+                Practice Quizzes
+              </Link>
+            </div>
+          </div>
+
+          <div className={styles.learningVisual} aria-hidden="true">
+            <div className={styles.visualCard}>
+              <span>🧠</span>
+              <strong>Quiz Practice</strong>
+            </div>
+
+            <div className={styles.visualCard}>
+              <span>📊</span>
+              <strong>Progress Analytics</strong>
+            </div>
+
+            <div className={styles.visualCard}>
+              <span>🛠️</span>
+              <strong>Useful Tools</strong>
+            </div>
+          </div>
         </div>
       </section>
 
-      <HowItWorks />
-      <ReferralSection />
       <StatsSection />
       <Footer />
     </>

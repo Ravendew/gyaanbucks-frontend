@@ -240,55 +240,6 @@ export default function SchoolAdmissionAgeCalculatorPage() {
                 on the official school admission rules.
               </p>
             </section>
-
-            <section className={styles.content}>
-              <h2>People Also Search For</h2>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    age calculator by dob
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    age in days calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator">exact age calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    percentage calculator online
-                  </Link>
-                </li>
-              </ul>
-            </section>
-
-            <section className={styles.links}>
-              <h3>Related Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    Age Calculator by DOB
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    Age in Days Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools">All Online Calculators</Link>
-                </li>
-                <li>
-                  <Link href="/quizzes">Play Quiz and Earn Rewards</Link>
-                </li>
-              </ul>
-            </section>
           </div>
 
           <aside className={styles.sidebar}>
@@ -346,9 +297,6 @@ export default function SchoolAdmissionAgeCalculatorPage() {
                 </li>
                 <li>
                   <Link href="/categories">Quiz Categories</Link>
-                </li>
-                <li>
-                  <Link href="/refer-earn">Refer and Earn</Link>
                 </li>
               </ul>
             </div>

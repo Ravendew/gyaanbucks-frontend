@@ -15,7 +15,11 @@ export type Quiz = {
   title: string;
   subtitle: string;
   category: string;
+
+  // Keeping this key same to avoid UI/logic break.
+  // This means learning points now, not rewards/cash.
   reward: number;
+
   timeLimit: number;
   attemptsPerDay: number;
   questions: QuizQuestion[];
@@ -25,7 +29,7 @@ export const quizzes: Quiz[] = [
   {
     id: 'gk-basic',
     title: 'General Knowledge Quiz',
-    subtitle: 'Test your basic GK and earn rewards',
+    subtitle: 'Test your basic GK and improve your knowledge',
     category: 'GK',
     reward: 100,
     timeLimit: 5 * 60,
@@ -69,7 +73,7 @@ export const quizzes: Quiz[] = [
   {
     id: 'science-basic',
     title: 'Science Quiz',
-    subtitle: 'Simple science questions for quick rewards',
+    subtitle: 'Simple science questions for quick practice',
     category: 'Science',
     reward: 100,
     timeLimit: 5 * 60,

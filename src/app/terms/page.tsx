@@ -33,7 +33,7 @@ export default function TermsPage() {
                 <h2>1. Platform Usage</h2>
                 <p>
                   GyaanBucks is a quiz-based reward platform where users can
-                  participate in quizzes and earn reward points based on
+                  participate in quizzes and track learning points based on
                   performance. Users must provide accurate information during
                   registration.
                 </p>

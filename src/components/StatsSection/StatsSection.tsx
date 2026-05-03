@@ -1,17 +1,17 @@
 import styles from './StatsSection.module.css';
 
 const stats = [
-  { value: '25K+', label: 'Registered Users' },
-  { value: '1.2L+', label: 'Quizzes Played' },
-  { value: '8K+', label: 'Winners' },
-  { value: '₹5L+', label: 'Paid Out' },
+  { value: '25K+', label: 'Learners Registered' },
+  { value: '1.2L+', label: 'Quizzes Practiced' },
+  { value: '8K+', label: 'Daily Practice Users' },
+  { value: '50+', label: 'Quiz Categories' },
 ];
 
 export default function StatsSection() {
   return (
     <section className={`section ${styles.section}`}>
       <div className="container">
-        <h2 className="section-title">Trusted by Smart Earners</h2>
+        <h2 className="section-title">Trusted by Active Learners</h2>
 
         <div className={styles.grid}>
           {stats.map((item) => (

@@ -275,57 +275,6 @@ export default function DaysUntilCalculatorPage() {
                 date using actual date values.
               </p>
             </section>
-
-            <section className={styles.content}>
-              <h2>People Also Search For</h2>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/date-difference-calculator">
-                    date difference calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-difference-calculator">
-                    age difference calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    age calculator by dob
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator">exact age calculator</Link>
-                </li>
-              </ul>
-            </section>
-
-            <section className={styles.links}>
-              <h3>Related Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/date-difference-calculator">
-                    Date Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-difference-calculator">
-                    Age Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    Percentage Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools">All Online Calculators</Link>
-                </li>
-              </ul>
-            </section>
           </div>
 
           <aside className={styles.sidebar}>
@@ -397,13 +346,10 @@ export default function DaysUntilCalculatorPage() {
                   <Link href="/tools">All Online Calculators</Link>
                 </li>
                 <li>
-                  <Link href="/quizzes">Play Quiz and Earn Rewards</Link>
+                  <Link href="/quizzes">Play Quizzes</Link>
                 </li>
                 <li>
                   <Link href="/categories">Quiz Categories</Link>
-                </li>
-                <li>
-                  <Link href="/refer-earn">Refer and Earn</Link>
                 </li>
                 <li>
                   <Link href="/blog">Latest Articles</Link>

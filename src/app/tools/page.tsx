@@ -145,11 +145,11 @@ export default function ToolsPage() {
 
             <div className={styles.heroActions}>
               <Link href="/quizzes" className={styles.primaryBtn}>
-                Play Quiz & Earn Money
+                Practice Quizzes
               </Link>
 
-              <Link href="/blog" className={styles.secondaryBtn}>
-                Read Earning Guides
+              <Link href="/tools" className={styles.secondaryBtn}>
+                Explore Learning Tools
               </Link>
             </div>
           </div>
@@ -333,7 +333,8 @@ export default function ToolsPage() {
               </h2>
               <p className={styles.ctaText}>
                 GyaanBucks helps users learn with quizzes, improve general
-                knowledge and earn rewards through quiz participation.
+                knowledge, and track their learning progress through quiz
+                practice.
               </p>
             </div>
 

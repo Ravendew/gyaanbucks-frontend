@@ -318,7 +318,9 @@ export default function AgeByDobPage() {
                   <Link href="/tools">All Online Calculators</Link>
                 </li>
                 <li>
-                  <Link href="/quizzes">Play Quiz and Earn Rewards</Link>
+                  <Link href="/quizzes">
+                    Practice Quizzes and Improve Your Knowledge
+                  </Link>
                 </li>
               </ul>
             </section>

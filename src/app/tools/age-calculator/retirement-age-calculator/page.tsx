@@ -351,25 +351,6 @@ export default function RetirementAgePage() {
               <h3>Can I retire early?</h3>
               <p>Yes, if financial planning supports it.</p>
             </section>
-
-            <section className={styles.links}>
-              <h3>Related Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/date-difference-calculator">
-                    Date Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-difference-calculator">
-                    Age Difference Calculator
-                  </Link>
-                </li>
-              </ul>
-            </section>
           </div>
 
           <aside className={styles.sidebar}>

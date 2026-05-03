@@ -324,59 +324,6 @@ export default function SscAgeCalculatorPage() {
                 official age relaxation rules for your category.
               </p>
             </section>
-
-            <section className={styles.content}>
-              <h2>People Also Search For</h2>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/upsc-age-calculator">
-                    UPSC Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    Age Calculator by DOB
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/date-difference-calculator">
-                    Date Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/days-until-calculator">
-                    Days Until Calculator
-                  </Link>
-                </li>
-              </ul>
-            </section>
-
-            <section className={styles.links}>
-              <h3>Related Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/upsc-age-calculator">
-                    UPSC Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    Age Calculator by DOB
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/retirement-age-calculator">
-                    Retirement Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools">All Online Calculators</Link>
-                </li>
-              </ul>
-            </section>
           </div>
 
           <aside className={styles.sidebar}>
@@ -464,7 +411,7 @@ export default function SscAgeCalculatorPage() {
                   <Link href="/tools">All Online Calculators</Link>
                 </li>
                 <li>
-                  <Link href="/quizzes">Play Quiz and Earn Rewards</Link>
+                  <Link href="/quizzes">Play Quizzes</Link>
                 </li>
                 <li>
                   <Link href="/categories">Quiz Categories</Link>

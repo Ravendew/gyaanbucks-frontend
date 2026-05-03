@@ -193,11 +193,11 @@ export default function QuizzesClient() {
   }, []);
 
   useEffect(() => {
-    if (categoryFromUrl) {
-      setActiveFilter(categoryFromUrl);
-    } else {
-      setActiveFilter('All');
-    }
+    const nextFilter = categoryFromUrl || 'All';
+
+    setActiveFilter((currentFilter) =>
+      currentFilter === nextFilter ? currentFilter : nextFilter,
+    );
   }, [categoryFromUrl]);
 
   useEffect(() => {
@@ -267,13 +267,15 @@ export default function QuizzesClient() {
 
       <section className={styles.hero}>
         <div className="container">
-          <span className={styles.badge}>⚡ Play daily. Earn smarter.</span>
+          <span className={styles.badge}>
+            ⚡ Practice daily. Learn smarter.
+          </span>
           <h1 className={styles.title}>
-            Choose quizzes and <span>earn reward points</span>
+            Choose quizzes and <span>track learning points</span>
           </h1>
           <p className={styles.text}>
-            Select a category, play valid quizzes, complete questions within
-            time, and collect points for withdrawals.
+            Select a category, practice valid quizzes, complete questions within
+            time, and use points to track your learning progress.
           </p>
         </div>
       </section>
@@ -283,7 +285,7 @@ export default function QuizzesClient() {
           <div className={styles.topRow}>
             <div>
               <span className={styles.sectionLabel}>Available Quizzes</span>
-              <h2 className={styles.sectionTitle}>Start Playing Today</h2>
+              <h2 className={styles.sectionTitle}>Start Practicing Today</h2>
             </div>
 
             <QuizFilters

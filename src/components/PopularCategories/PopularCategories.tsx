@@ -36,7 +36,7 @@ function getFallbackCategoryDescription(name: string) {
   if (value.includes('history'))
     return 'Learn important events, leaders, and timelines.';
 
-  return 'Play topic-based quizzes and earn reward points.';
+  return 'Play topic-based quizzes and track learning points.';
 }
 
 export default function PopularCategories() {

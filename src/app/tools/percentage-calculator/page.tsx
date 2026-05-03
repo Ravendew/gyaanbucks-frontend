@@ -259,7 +259,7 @@ export default function PercentageCalculatorPage() {
             </p>
 
             <div className={styles.contentCta}>
-              <Link href="/quizzes">Play Quiz & Earn Money</Link>
+              <Link href="/quizzes">Play Quizzes</Link>
             </div>
           </div>
         </section>

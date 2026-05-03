@@ -3,9 +3,9 @@ import { Suspense } from 'react';
 import QuizzesClient from './QuizzesClient';
 
 export const metadata: Metadata = {
-  title: 'Online Quizzes - GK, Current Affairs & Rewards',
+  title: 'Online Quizzes - GK, Current Affairs & Practice Tests',
   description:
-    'Play online quizzes on GyaanBucks and earn rewards. Explore GK quizzes, current affairs quizzes, India quizzes, history quizzes, science quizzes, and daily quiz challenges.',
+    'Practice free online quizzes on GyaanBucks. Explore GK quizzes, current affairs quizzes, India quizzes, history quizzes, science quizzes, and daily quiz practice tests.',
   keywords: [
     'online quiz',
     'play quiz online',
@@ -15,32 +15,31 @@ export const metadata: Metadata = {
     'daily quiz India',
     'quiz questions and answers',
     'free online quiz games',
-    'quiz competition online',
+    'online quiz test',
     'India GK quiz',
     'latest current affairs quiz',
     'history quiz online',
     'science quiz online',
-    'quiz and earn rewards',
-    'earn coins by quiz',
-    'play quiz and win rewards',
+    'practice quiz online',
+    'free GK practice test',
     'GyaanBucks quiz platform',
   ],
   alternates: {
     canonical: '/quizzes',
   },
   openGraph: {
-    title: 'Online Quizzes - GK, Current Affairs & Rewards | GyaanBucks',
+    title: 'Online Quizzes - GK, Current Affairs & Practice Tests | GyaanBucks',
     description:
-      'Play GK, current affairs, India, history, and science quizzes online. Earn coins and rewards on GyaanBucks.',
+      'Practice GK, current affairs, India, history, and science quizzes online. Improve your knowledge with free quizzes on GyaanBucks.',
     url: 'https://gyaanbucks.com/quizzes',
     siteName: 'GyaanBucks',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Online Quizzes - GK, Current Affairs & Rewards | GyaanBucks',
+    title: 'Online Quizzes - GK, Current Affairs & Practice Tests | GyaanBucks',
     description:
-      'Play online quizzes, test your knowledge, earn coins, and redeem rewards on GyaanBucks.',
+      'Practice online quizzes, test your knowledge, and track learning progress on GyaanBucks.',
   },
 };
 

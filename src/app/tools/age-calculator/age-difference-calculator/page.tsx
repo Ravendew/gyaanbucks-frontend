@@ -397,9 +397,6 @@ export default function AgeDifferencePage() {
                 <li>
                   <Link href="/quizzes">Play Quiz</Link>
                 </li>
-                <li>
-                  <Link href="/refer-earn">Refer & Earn</Link>
-                </li>
               </ul>
             </div>
           </aside>

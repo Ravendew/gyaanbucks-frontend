@@ -252,27 +252,6 @@ export default function AgeCalculatorPage() {
           </div>
         </section>
 
-        <section className={styles.moreToolsSection}>
-          <div className={styles.moreToolsHeader}>
-            <h2>More Free Tools</h2>
-            <p>Explore more useful calculators and tools.</p>
-          </div>
-
-          <div className={styles.toolsGrid}>
-            {moreTools.map((tool) => (
-              <Link
-                key={tool.title}
-                href={tool.href}
-                className={styles.toolCard}
-              >
-                <h3>{tool.title}</h3>
-                <p>{tool.text}</p>
-                <span>Open Tool →</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-
         <section className={styles.contentSection}>
           <div className={styles.contentCard}>
             <h2>What is an Age Calculator?</h2>
@@ -406,7 +385,7 @@ export default function AgeCalculatorPage() {
             </p>
 
             <div className={styles.contentCta}>
-              <Link href="/quizzes">Play Quiz & Earn Money</Link>
+              <Link href="/quizzes">Practice Quiz Now</Link>
             </div>
           </div>
         </section>
