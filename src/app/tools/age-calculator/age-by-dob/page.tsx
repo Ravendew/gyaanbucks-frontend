@@ -1,423 +1,271 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import styles from './page.module.css';
+import Script from 'next/script';
+import ToolPageLayout from '@/components/ToolPageLayout/ToolPageLayout';
 import AgeByDobClient from './AgeByDobClient';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Age Calculator by DOB - Free Online Age Calculator',
+  title: 'Age by DOB Calculator - Find Age from Date of Birth',
   description:
-    'Use our Age Calculator by DOB to calculate exact age from date of birth in years, months, days, weeks, hours, minutes and seconds instantly.',
-
+    'Use the free Age by DOB Calculator to find exact age from date of birth in years, months and days. Simple DOB based age calculator for students and forms.',
   keywords: [
-    'age calculator by dob',
-    'calculate age from date of birth',
+    'age by dob',
+    'age by date of birth',
     'dob age calculator',
-    'age finder by birth date',
-    'exact age calculator by dob',
-    'date of birth age calculator',
+    'calculate age from dob',
+    'find age from date of birth',
   ],
-
   alternates: {
     canonical: 'https://gyaanbucks.com/tools/age-calculator/age-by-dob',
   },
-
   openGraph: {
-    title: 'Age Calculator by DOB - Free Online Age Calculator',
+    title: 'Age by DOB Calculator - Find Age from Date of Birth',
     description:
-      'Calculate your exact age from date of birth in years, months and days instantly using this free online DOB calculator.',
+      'Calculate exact age from date of birth using the free GyaanBucks DOB age calculator.',
     url: 'https://gyaanbucks.com/tools/age-calculator/age-by-dob',
     siteName: 'GyaanBucks',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Age Calculator by DOB',
-      },
-    ],
     type: 'website',
   },
-
   twitter: {
     card: 'summary_large_image',
-    title: 'Age Calculator by DOB - Free Online Age Calculator',
+    title: 'Age by DOB Calculator - Find Age from Date of Birth',
     description:
-      'Find your exact age from date of birth instantly with this free tool.',
-    images: ['/og-image.png'],
+      'Free DOB based age calculator to find age in years, months and days.',
   },
 };
 
-export default function AgeByDobPage() {
-  const toolSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'Age Difference Calculator',
-    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
-    applicationCategory: 'UtilityApplication',
-    operatingSystem: 'Any',
-    description:
-      'Free online age difference calculator to compare two ages or dates in years, months and days.',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'INR',
+const webApplicationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Age by DOB Calculator',
+  url: 'https://gyaanbucks.com/tools/age-calculator/age-by-dob',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'All',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is an Age by DOB Calculator?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'An Age by DOB Calculator finds your exact age from your date of birth in completed years, months and days.',
+      },
     },
-  };
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'How do I calculate my age by DOB?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Enter your date of birth and click Calculate Age. The tool will show your exact age in years, months and days.',
-        },
+    {
+      '@type': 'Question',
+      name: 'How do I calculate age by DOB?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Enter your date of birth and the tool compares it with the current date to calculate completed age.',
       },
-      {
-        '@type': 'Question',
-        name: 'Can I calculate age on a specific date?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Change the Age at Date fields to any date and the calculator will show your age on that selected date.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is DOB age calculation useful for forms?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, DOB based age calculation is useful for school forms, student records, applications and basic eligibility checks.',
       },
-      {
-        '@type': 'Question',
-        name: 'Is this DOB age calculator free?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, this age calculator is completely free to use on GyaanBucks.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does this tool calculate total days lived?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, it also shows the approximate total days lived from your date of birth.',
       },
-      {
-        '@type': 'Question',
-        name: 'Does this calculator show total days lived?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Along with exact age, it also shows total days, weeks, months, hours, minutes and seconds.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is this Age by DOB Calculator free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, this GyaanBucks educational calculator is free to use.',
       },
-      {
-        '@type': 'Question',
-        name: 'Is this useful for government exam age eligibility?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. You can use the Age at Date option to calculate age based on the eligibility date mentioned in an exam notification.',
-        },
-      },
-    ],
-  };
+    },
+  ],
+};
+
+export default function AgeByDobPage() {
+  const hero = (
+    <div className={styles.hero}>
+      <div className={styles.heroInner}>
+        <p className={styles.eyebrow}>DOB Based Learning Tool</p>
+        <h1>Age by DOB Calculator</h1>
+        <p>
+          Find your exact age from your date of birth with a simple DOB based
+          calculator. Get your age in years, months and days instantly.
+        </p>
+      </div>
+    </div>
+  );
 
   return (
-    <>
-      <Header />
+    <ToolPageLayout hero={hero}>
+      <Script
+        id="age-by-dob-webapplication-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webApplicationSchema),
+        }}
+      />
 
-      <main className={styles.container}>
-        <div className={styles.layout}>
-          <div className={styles.mainContent}>
-            <nav className={styles.breadcrumb}>
-              <Link href="/">Home</Link>
-              <span>/</span>
-              <Link href="/tools">Tools</Link>
-              <span>/</span>
-              <Link href="/tools/age-calculator">Age Calculator</Link>
-              <span>/</span>
-              <strong>Age by DOB</strong>
-            </nav>
+      <Script
+        id="age-by-dob-faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
 
-            <h1 className={styles.title}>Age Calculator by Date of Birth</h1>
+      <AgeByDobClient />
 
-            <p className={styles.description}>
-              Use this free Age Calculator by DOB to calculate your exact age
-              from your date of birth. Enter your birth date and get your age in
-              years, months, days, weeks, hours, minutes and seconds instantly.
-            </p>
+      <section className={styles.contentBlock}>
+        <h2>What is an Age by DOB Calculator?</h2>
+        <p>
+          An Age by DOB Calculator is an online tool that helps you find your
+          exact age from your date of birth. DOB means date of birth, and this
+          page is focused on one clear intent: calculating age directly from the
+          birth date. Many people know their birth year, but exact age is not
+          always just a simple year difference. This tool gives a more precise
+          result by showing completed years, remaining months and remaining
+          days.
+        </p>
 
-            <AgeByDobClient />
+        <p>
+          This type of DOB based age calculator is useful for students, parents,
+          teachers, form filling, admission records and general learning. When
+          you enter your date of birth, the calculator compares it with today’s
+          date. It then checks whether your birthday has already passed this
+          year, how many full months have passed after your last birthday and
+          how many days remain in the current age cycle.
+        </p>
 
-            <section className={styles.content}>
-              <h2>What is an Age Calculator by DOB?</h2>
-              <p>
-                An Age Calculator by DOB is an online tool that helps you
-                calculate your exact age using your date of birth. Instead of
-                manually counting years, months and days, you can enter your
-                birth month, birth day and birth year to get an accurate age
-                result instantly. This tool is useful for students, job
-                applicants, exam candidates, parents, employees and anyone who
-                needs to know their exact age for official or personal use.
-              </p>
+        <h2>How to Calculate Age from Date of Birth</h2>
+        <p>
+          To calculate age from DOB manually, you need to compare the date of
+          birth with the current date. First, subtract the birth year from the
+          current year. Then check the month and day. If the birthday has not
+          arrived yet in the current year, one year should be reduced from the
+          rough result. This is the reason two people born in the same year may
+          not have the same completed age on a particular day.
+        </p>
 
-              <h2>How to Calculate Age from Date of Birth?</h2>
-              <p>
-                To calculate age from date of birth, enter your birth date in
-                the Date of Birth section. The calculator automatically uses
-                today’s date as the default age calculation date, but you can
-                also change the age at date if you want to calculate age on a
-                specific day. After clicking the Calculate Age button, the tool
-                shows your completed age in years, months and days along with
-                total months, total weeks, total days, hours, minutes and
-                seconds.
-              </p>
+        <p>
+          For example, if the current year is 2026 and a person was born in
+          2008, we may quickly think the person is 18 years old. But if the
+          person’s birthday in 2026 has not arrived yet, the completed age is
+          still 17 years. DOB based calculation prevents this common mistake.
+          The GyaanBucks calculator handles this automatically and gives the
+          result in a clean format.
+        </p>
 
-              <h2>Why This DOB Age Calculator is Useful</h2>
-              <p>
-                Many application forms, government exams, job portals, school
-                admissions, insurance forms and official documents require exact
-                age. In such cases, an approximate age is not enough. You may
-                need to know whether you are eligible based on a specific date.
-                This date of birth age calculator helps you avoid manual
-                mistakes and gives a clear breakdown of your age.
-              </p>
+        <h2>Why DOB Based Age Calculation is Important</h2>
+        <p>
+          DOB based age calculation is important because many official and
+          educational activities depend on exact age. School admission age,
+          student registration, sports participation, scholarship forms,
+          training applications and some exam forms may require accurate age. A
+          small age calculation error can create confusion when filling a form,
+          especially if the form uses a strict cut-off date.
+        </p>
 
-              <h2>Where Can You Use This Age Calculator?</h2>
-              <p>
-                You can use this DOB calculator for school admission age
-                checking, job age eligibility, government exam form filling,
-                birthday countdown planning, document verification, personal
-                records and general age calculation. It is also helpful when you
-                need to compare age on a past or future date, because the Age at
-                Date option allows you to calculate age for any selected date.
-              </p>
+        <p>
+          This calculator is designed to make the calculation easier to
+          understand. It is not only a result tool but also a learning tool. By
+          seeing the result separated into years, months and days, students can
+          understand how calendar-based time calculation works. This supports
+          the GyaanBucks goal of making learning practical and useful.
+        </p>
 
-              <h2>Age Calculation Example</h2>
-              <p>
-                For example, if your date of birth is 10 June 2000 and you want
-                to calculate your age as of today, simply enter 06 as month, 10
-                as day and 2000 as year. The calculator will show your exact
-                completed age in years, months and days. It also displays the
-                same age in total days, weeks, months, hours, minutes and
-                seconds for a detailed view.
-              </p>
+        <h2>Age by DOB vs General Age Calculator</h2>
+        <p>
+          A general age calculator and an Age by DOB Calculator may look
+          similar, but the search intent is slightly different. A general age
+          calculator can be used for many types of age-related calculations.
+          This page is specifically focused on users who want to find age from
+          DOB. That is why the wording, tool flow and explanation are built
+          around date of birth based calculation.
+        </p>
 
-              <h2>Benefits of Using GyaanBucks Age Calculator by DOB</h2>
-              <ul>
-                <li>Instant age calculation from date of birth</li>
-                <li>Accurate result in years, months and days</li>
-                <li>Total months, weeks, days, hours, minutes and seconds</li>
-                <li>Useful for jobs, exams, admissions and forms</li>
-                <li>Free online tool with simple mobile-friendly design</li>
-              </ul>
-            </section>
+        <p>
+          If you want the broader version, you can use the{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>. If you want
+          to know your total age in days, use the{' '}
+          <Link href="/tools/age-calculator/age-in-days">
+            Age in Days Calculator
+          </Link>
+          . You can also explore all tools from the{' '}
+          <Link href="/tools">GyaanBucks Tools page</Link>.
+        </p>
 
-            <section className={styles.content}>
-              <h2>Frequently Asked Questions</h2>
+        <h2>Best Use Cases for this DOB Calculator</h2>
+        <p>
+          This DOB calculator is useful when you want to quickly know your age
+          for a personal profile, school record, online form, student data
+          entry, learning activity or basic eligibility check. Parents can use
+          it to understand a child’s completed age before school admission.
+          Students can use it while filling educational forms. Teachers can use
+          it for classroom records or learning demonstrations.
+        </p>
 
-              <h3>How do I calculate my age by DOB?</h3>
-              <p>
-                Enter your date of birth and click Calculate Age. The tool will
-                show your exact age in years, months and days.
-              </p>
+        <p>
+          The calculator is free and simple, but official eligibility should
+          always be checked from the official source. If an exam or institution
+          uses a special cut-off date, then the age should be calculated as per
+          that rule. This page gives a clear DOB based age result using today’s
+          date.
+        </p>
+      </section>
 
-              <h3>Can I calculate age on a specific date?</h3>
-              <p>
-                Yes. Change the Age at Date fields to any date and the
-                calculator will show your age on that selected date.
-              </p>
+      <section className={styles.faqSection}>
+        <h2>Age by DOB Calculator FAQs</h2>
 
-              <h3>Is this DOB age calculator free?</h3>
-              <p>
-                Yes, this age calculator is completely free to use on
-                GyaanBucks.
-              </p>
-
-              <h3>Does this calculator show total days lived?</h3>
-              <p>
-                Yes. Along with exact age, it also shows total days, weeks,
-                months, hours, minutes and seconds.
-              </p>
-
-              <h3>Is this useful for government exam age eligibility?</h3>
-              <p>
-                Yes. You can use the Age at Date option to calculate age based
-                on the eligibility date mentioned in an exam notification.
-              </p>
-            </section>
-
-            <section className={styles.content}>
-              <h2>People Also Search For</h2>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">exact age calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    age in days calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-difference-calculator">
-                    Age Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    percentage calculator online
-                  </Link>
-                </li>
-              </ul>
-            </section>
-
-            <section className={styles.content}>
-              <h2>Real Life Use Cases of Age Calculator</h2>
-
-              <p>
-                This age calculator by date of birth is widely used in real life
-                situations. Students use it to check school admission
-                eligibility, job seekers use it to verify age limits in job
-                notifications, and candidates use it for government exams where
-                exact age calculation is mandatory.
-              </p>
-
-              <p>
-                It is also helpful for personal purposes such as birthday
-                planning, calculating age difference between two people,
-                checking eligibility for insurance policies, and verifying
-                official documents.
-              </p>
-
-              <p>
-                Since this tool allows you to calculate age on a custom date, it
-                becomes extremely useful for scenarios where eligibility depends
-                on a specific cutoff date.
-              </p>
-            </section>
-
-            <section className={styles.content}>
-              <h2>Keyword Variations You Can Use</h2>
-
-              <p>
-                Users often search for this tool using different keywords like
-                age calculator by dob, calculate age from date of birth, dob age
-                finder, exact age calculator, date of birth calculator, and age
-                calculation tool. This page is optimized to match all these
-                variations and provide accurate results instantly.
-              </p>
-            </section>
-
-            <section className={styles.links}>
-              <h3>Related Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    Age in Days Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    Percentage Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools">All Online Calculators</Link>
-                </li>
-                <li>
-                  <Link href="/quizzes">
-                    Practice Quizzes and Improve Your Knowledge
-                  </Link>
-                </li>
-              </ul>
-            </section>
-          </div>
-
-          <aside className={styles.sidebar}>
-            <div className={styles.sidebarBox}>
-              <h3>Popular Tools</h3>
-              <ul>
-                <li>
-                  <Link prefetch={false} href="/tools/age-calculator">
-                    Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    prefetch={false}
-                    href="/tools/age-calculator/age-in-days"
-                  >
-                    Age in Days
-                  </Link>
-                </li>
-                <li>
-                  <Link prefetch={false} href="/tools/percentage-calculator">
-                    Percentage Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>Age Calculator Pages</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/age-difference-calculator">
-                    Age Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link prefetch={false} href="/tools/age-calculator">
-                    Exact Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    prefetch={false}
-                    href="/tools/age-calculator/age-in-days"
-                  >
-                    Days Lived Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>Explore GyaanBucks</h3>
-              <ul>
-                <li>
-                  <Link prefetch={false} href="/tools">
-                    All Calculators
-                  </Link>
-                </li>
-                <li>
-                  <Link prefetch={false} href="/quizzes">
-                    Play Quizzes
-                  </Link>
-                </li>
-                <li>
-                  <Link prefetch={false} href="/categories">
-                    Quiz Categories
-                  </Link>
-                </li>
-                <li>
-                  <Link prefetch={false} href="/contact">
-                    Contact GyaanBucks
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </aside>
+        <div className={styles.faqItem}>
+          <h3>What does age by DOB mean?</h3>
+          <p>
+            Age by DOB means calculating age directly from your date of birth.
+          </p>
         </div>
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(toolSchema),
-          }}
-        />
-      </main>
+        <div className={styles.faqItem}>
+          <h3>Can I calculate age from DOB online?</h3>
+          <p>
+            Yes, you can enter your date of birth in this tool and instantly get
+            your age.
+          </p>
+        </div>
 
-      <Footer />
-    </>
+        <div className={styles.faqItem}>
+          <h3>Does this tool show years, months and days?</h3>
+          <p>
+            Yes, it shows completed years, remaining months and remaining days.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is this tool useful for students?</h3>
+          <p>
+            Yes, students can use it for forms, records and learning date
+            calculations.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is this DOB calculator free?</h3>
+          <p>Yes, this GyaanBucks DOB age calculator is completely free.</p>
+        </div>
+      </section>
+    </ToolPageLayout>
   );
 }

@@ -4,133 +4,182 @@ import { useState } from 'react';
 import styles from './page.module.css';
 
 type Result = {
-  targetDateText: string;
   totalDays: number;
   totalWeeks: number;
-  approxMonths: number;
-  approxYears: number;
-  status: string;
+  remainingDays: number;
+  targetLabel: string;
+  status: 'future' | 'today' | 'past';
 };
 
+function calculateDaysUntil(
+  targetDateValue: string,
+  eventName: string,
+): Result | null {
+  if (!targetDateValue) return null;
+
+  const today = new Date();
+  const targetDate = new Date(targetDateValue);
+
+  today.setHours(0, 0, 0, 0);
+  targetDate.setHours(0, 0, 0, 0);
+
+  const diffMs = targetDate.getTime() - today.getTime();
+  const totalDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  const absoluteDays = Math.abs(totalDays);
+  const totalWeeks = Math.floor(absoluteDays / 7);
+  const remainingDays = absoluteDays % 7;
+
+  let status: Result['status'] = 'future';
+
+  if (totalDays === 0) {
+    status = 'today';
+  } else if (totalDays < 0) {
+    status = 'past';
+  }
+
+  return {
+    totalDays,
+    totalWeeks,
+    remainingDays,
+    targetLabel: eventName.trim() || 'selected date',
+    status,
+  };
+}
+
 export default function DaysUntilClient() {
+  const [eventName, setEventName] = useState('');
   const [targetDate, setTargetDate] = useState('');
-  const [result, setResult] = useState<Result | null>(null);
-  const [error, setError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
-  };
-
-  const calculateDays = () => {
-    setError('');
-    setResult(null);
-
-    if (!targetDate) {
-      setError('Please select a target date.');
-      return;
-    }
-
-    const today = new Date();
-    const selectedDate = new Date(targetDate);
-
-    today.setHours(0, 0, 0, 0);
-    selectedDate.setHours(0, 0, 0, 0);
-
-    if (Number.isNaN(selectedDate.getTime())) {
-      setError('Please select a valid date.');
-      return;
-    }
-
-    const diffTime = selectedDate.getTime() - today.getTime();
-    const totalDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-    const absoluteDays = Math.abs(totalDays);
-
-    let status = '';
-
-    if (totalDays > 0) {
-      status = `${absoluteDays.toLocaleString()} days are left until ${formatDate(selectedDate)}.`;
-    } else if (totalDays < 0) {
-      status = `${absoluteDays.toLocaleString()} days have passed since ${formatDate(selectedDate)}.`;
-    } else {
-      status = `The selected date is today: ${formatDate(selectedDate)}.`;
-    }
-
-    setResult({
-      targetDateText: formatDate(selectedDate),
-      totalDays,
-      totalWeeks: Math.floor(absoluteDays / 7),
-      approxMonths: Math.floor(absoluteDays / 30.4375),
-      approxYears: Math.floor(absoluteDays / 365.25),
-      status,
-    });
-  };
-
-  const resetCalculator = () => {
-    setTargetDate('');
-    setResult(null);
-    setError('');
-  };
+  const result = calculateDaysUntil(targetDate, eventName);
 
   return (
-    <section className={styles.calculatorBox}>
-      <div className={styles.inputGroup}>
-        <label>Target Date</label>
-        <input
-          className={styles.dateInput}
-          type="date"
-          value={targetDate}
-          onChange={(e) => setTargetDate(e.target.value)}
-        />
+    <section className={styles.countdownBox}>
+      <div className={styles.countdownPattern} />
+
+      <div className={styles.countdownHeader}>
+        <div>
+          <span className={styles.countdownBadge}>⏰ Countdown Tool</span>
+          <h2>How Many Days Until Your Date?</h2>
+          <p>
+            Enter an upcoming date or event and calculate the exact number of
+            days left from today.
+          </p>
+        </div>
+
+        <div className={styles.countdownIcon}>🚀</div>
       </div>
 
-      {error && <p className={styles.error}>{error}</p>}
+      <div className={styles.inputPanel}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="eventName">Event Name Optional</label>
+          <input
+            id="eventName"
+            type="text"
+            placeholder="Example: Exam, Birthday, Trip"
+            value={eventName}
+            onChange={(event) => setEventName(event.target.value)}
+          />
+        </div>
 
-      <div className={styles.buttonRow}>
-        <button type="button" onClick={calculateDays}>
-          Calculate Days Until
-        </button>
-        <button type="button" onClick={resetCalculator}>
-          Reset
-        </button>
+        <div className={styles.inputGroup}>
+          <label htmlFor="targetDate">Target Date</label>
+          <input
+            id="targetDate"
+            type="date"
+            value={targetDate}
+            onChange={(event) => setTargetDate(event.target.value)}
+          />
+        </div>
+
+        <div className={styles.actionRow}>
+          <button
+            type="button"
+            className={styles.calculateButton}
+            onClick={() => setSubmitted(true)}
+          >
+            Calculate Days Left
+          </button>
+
+          <button
+            type="button"
+            className={styles.resetButton}
+            onClick={() => {
+              setEventName('');
+              setTargetDate('');
+              setSubmitted(false);
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
-      {result && (
+      {!submitted && (
+        <div className={styles.emptyState}>
+          <strong>Start your countdown</strong>
+          <span>
+            Add a target date to see how many days, weeks and remaining days are
+            left.
+          </span>
+        </div>
+      )}
+
+      {submitted && result && (
         <div className={styles.resultBox}>
-          <h2>Days Until Result</h2>
+          <div className={styles.bigCountdown}>
+            <span>{result.targetLabel}</span>
 
-          <div className={styles.mainResult}>
-            {Math.abs(result.totalDays).toLocaleString()} days
+            {result.status === 'future' && (
+              <>
+                <strong>{result.totalDays.toLocaleString()}</strong>
+                <p>days left from today</p>
+              </>
+            )}
+
+            {result.status === 'today' && (
+              <>
+                <strong>Today</strong>
+                <p>The selected date is today.</p>
+              </>
+            )}
+
+            {result.status === 'past' && (
+              <>
+                <strong>{Math.abs(result.totalDays).toLocaleString()}</strong>
+                <p>days have already passed since this date</p>
+              </>
+            )}
           </div>
 
-          <div className={styles.resultGrid}>
+          <div className={styles.countdownGrid}>
             <div>
-              <span>Target Date</span>
-              <strong>{result.targetDateText}</strong>
-            </div>
-            <div>
-              <span>Total Days</span>
-              <strong>{Math.abs(result.totalDays).toLocaleString()}</strong>
-            </div>
-            <div>
-              <span>Total Weeks</span>
+              <span>Completed Weeks</span>
               <strong>{result.totalWeeks.toLocaleString()}</strong>
             </div>
+
             <div>
-              <span>Approx. Months</span>
-              <strong>{result.approxMonths.toLocaleString()}</strong>
+              <span>Remaining Days</span>
+              <strong>{result.remainingDays}</strong>
             </div>
+
             <div>
-              <span>Approx. Years</span>
-              <strong>{result.approxYears.toLocaleString()}</strong>
+              <span>Status</span>
+              <strong>
+                {result.status === 'future'
+                  ? 'Upcoming'
+                  : result.status === 'today'
+                    ? 'Today'
+                    : 'Past Date'}
+              </strong>
             </div>
           </div>
-
-          <p className={styles.note}>{result.status}</p>
         </div>
+      )}
+
+      {submitted && !result && (
+        <p className={styles.errorText}>Please select a target date.</p>
       )}
     </section>
   );

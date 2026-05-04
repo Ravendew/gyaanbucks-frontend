@@ -4,241 +4,145 @@ import { useState } from 'react';
 import styles from './page.module.css';
 
 type Result = {
-  olderPerson: string;
-  youngerPerson: string;
   years: number;
   months: number;
   days: number;
   totalDays: number;
-  totalWeeks: number;
-  totalMonths: number;
+  older: string;
 };
 
+function calculateDifference(d1: string, d2: string): Result | null {
+  if (!d1 || !d2) return null;
+
+  let date1 = new Date(d1);
+  let date2 = new Date(d2);
+
+  let older = 'Person 1';
+
+  if (date1 > date2) {
+    [date1, date2] = [date2, date1];
+    older = 'Person 2';
+  }
+
+  let years = date2.getFullYear() - date1.getFullYear();
+  let months = date2.getMonth() - date1.getMonth();
+  let days = date2.getDate() - date1.getDate();
+
+  if (days < 0) {
+    months -= 1;
+    days += new Date(date2.getFullYear(), date2.getMonth(), 0).getDate();
+  }
+
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  const totalDays = Math.floor(
+    (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24),
+  );
+
+  return { years, months, days, totalDays, older };
+}
+
 export default function AgeDifferenceClient() {
-  const [firstMonth, setFirstMonth] = useState('');
-  const [firstDay, setFirstDay] = useState('');
-  const [firstYear, setFirstYear] = useState('');
+  const [dob1, setDob1] = useState('');
+  const [dob2, setDob2] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  const [secondMonth, setSecondMonth] = useState('');
-  const [secondDay, setSecondDay] = useState('');
-  const [secondYear, setSecondYear] = useState('');
-
-  const [result, setResult] = useState<Result | null>(null);
-  const [error, setError] = useState('');
-
-  const calculateDifference = () => {
-    setError('');
-    setResult(null);
-
-    const fMonth = Number(firstMonth);
-    const fDay = Number(firstDay);
-    const fYear = Number(firstYear);
-
-    const sMonth = Number(secondMonth);
-    const sDay = Number(secondDay);
-    const sYear = Number(secondYear);
-
-    if (!fMonth || !fDay || !fYear || !sMonth || !sDay || !sYear) {
-      setError('Please enter both complete dates of birth.');
-      return;
-    }
-
-    const firstDate = new Date(fYear, fMonth - 1, fDay);
-    const secondDate = new Date(sYear, sMonth - 1, sDay);
-
-    if (
-      firstDate.getFullYear() !== fYear ||
-      firstDate.getMonth() !== fMonth - 1 ||
-      firstDate.getDate() !== fDay
-    ) {
-      setError('Please enter a valid first date of birth.');
-      return;
-    }
-
-    if (
-      secondDate.getFullYear() !== sYear ||
-      secondDate.getMonth() !== sMonth - 1 ||
-      secondDate.getDate() !== sDay
-    ) {
-      setError('Please enter a valid second date of birth.');
-      return;
-    }
-
-    if (firstDate.getTime() === secondDate.getTime()) {
-      setResult({
-        olderPerson: 'Both',
-        youngerPerson: 'Both',
-        years: 0,
-        months: 0,
-        days: 0,
-        totalDays: 0,
-        totalWeeks: 0,
-        totalMonths: 0,
-      });
-      return;
-    }
-
-    const olderDate = firstDate < secondDate ? firstDate : secondDate;
-    const youngerDate = firstDate < secondDate ? secondDate : firstDate;
-
-    const olderPerson = firstDate < secondDate ? 'Person 1' : 'Person 2';
-    const youngerPerson = firstDate < secondDate ? 'Person 2' : 'Person 1';
-
-    let years = youngerDate.getFullYear() - olderDate.getFullYear();
-    let months = youngerDate.getMonth() - olderDate.getMonth();
-    let days = youngerDate.getDate() - olderDate.getDate();
-
-    if (days < 0) {
-      months -= 1;
-      const previousMonthDays = new Date(
-        youngerDate.getFullYear(),
-        youngerDate.getMonth(),
-        0,
-      ).getDate();
-      days += previousMonthDays;
-    }
-
-    if (months < 0) {
-      years -= 1;
-      months += 12;
-    }
-
-    const diffTime = youngerDate.getTime() - olderDate.getTime();
-    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const totalWeeks = Math.floor(totalDays / 7);
-    const totalMonths = years * 12 + months;
-
-    setResult({
-      olderPerson,
-      youngerPerson,
-      years,
-      months,
-      days,
-      totalDays,
-      totalWeeks,
-      totalMonths,
-    });
-  };
-
-  const resetCalculator = () => {
-    setFirstMonth('');
-    setFirstDay('');
-    setFirstYear('');
-    setSecondMonth('');
-    setSecondDay('');
-    setSecondYear('');
-    setResult(null);
-    setError('');
-  };
+  const result = calculateDifference(dob1, dob2);
 
   return (
-    <section className={styles.calculatorBox}>
-      <div className={styles.inputGroup}>
-        <label>Person 1 Date of Birth</label>
+    <section className={styles.diffBox}>
+      <div className={styles.diffHeader}>
+        <h2>Compare Two Ages</h2>
+        <p>
+          Enter two dates of birth to calculate the exact age difference between
+          them.
+        </p>
+      </div>
 
-        <div className={styles.dateGrid}>
+      <div className={styles.diffInputs}>
+        <div className={styles.inputGroup}>
+          <label>Person 1 DOB</label>
           <input
-            type="number"
-            placeholder="Month"
-            value={firstMonth}
-            onChange={(e) => setFirstMonth(e.target.value)}
+            type="date"
+            value={dob1}
+            onChange={(e) => setDob1(e.target.value)}
           />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label>Person 2 DOB</label>
           <input
-            type="number"
-            placeholder="Day"
-            value={firstDay}
-            onChange={(e) => setFirstDay(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Year"
-            value={firstYear}
-            onChange={(e) => setFirstYear(e.target.value)}
+            type="date"
+            value={dob2}
+            onChange={(e) => setDob2(e.target.value)}
           />
         </div>
       </div>
 
-      <div className={styles.inputGroup}>
-        <label>Person 2 Date of Birth</label>
-
-        <div className={styles.dateGrid}>
-          <input
-            type="number"
-            placeholder="Month"
-            value={secondMonth}
-            onChange={(e) => setSecondMonth(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Day"
-            value={secondDay}
-            onChange={(e) => setSecondDay(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Year"
-            value={secondYear}
-            onChange={(e) => setSecondYear(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {error && <p className={styles.error}>{error}</p>}
-
-      <div className={styles.buttonRow}>
-        <button type="button" onClick={calculateDifference}>
-          Calculate Age Difference
+      <div className={styles.actionRow}>
+        <button
+          className={styles.calculateButton}
+          onClick={() => setSubmitted(true)}
+        >
+          Compare Ages
         </button>
-        <button type="button" onClick={resetCalculator}>
+
+        <button
+          className={styles.resetButton}
+          onClick={() => {
+            setDob1('');
+            setDob2('');
+            setSubmitted(false);
+          }}
+        >
           Reset
         </button>
       </div>
 
-      {result && (
-        <div className={styles.resultBox}>
-          <h2>Age Difference Result</h2>
+      {!submitted && (
+        <div className={styles.emptyState}>
+          <strong>Enter both dates to compare</strong>
+          <span>Age difference will be shown clearly.</span>
+        </div>
+      )}
 
-          <div className={styles.mainResult}>
-            {result.years} years, {result.months} months, {result.days} days
-          </div>
+      {submitted && result && (
+        <div className={styles.resultBox}>
+          <h3>
+            Age Difference: {result.years}Y {result.months}M {result.days}D
+          </h3>
 
           <div className={styles.resultGrid}>
             <div>
-              <span>Older Person</span>
-              <strong>{result.olderPerson}</strong>
+              <span>Years</span>
+              <strong>{result.years}</strong>
             </div>
+
             <div>
-              <span>Younger Person</span>
-              <strong>{result.youngerPerson}</strong>
+              <span>Months</span>
+              <strong>{result.months}</strong>
             </div>
+
             <div>
-              <span>Total Months</span>
-              <strong>{result.totalMonths.toLocaleString()}</strong>
-            </div>
-            <div>
-              <span>Total Weeks</span>
-              <strong>{result.totalWeeks.toLocaleString()}</strong>
-            </div>
-            <div>
-              <span>Total Days</span>
-              <strong>{result.totalDays.toLocaleString()}</strong>
-            </div>
-            <div>
-              <span>Age Gap</span>
-              <strong>
-                {result.years === 0 && result.months === 0 && result.days === 0
-                  ? 'Same age'
-                  : 'Different age'}
-              </strong>
+              <span>Days</span>
+              <strong>{result.days}</strong>
             </div>
           </div>
 
-          <p className={styles.note}>
-            {result.years === 0 && result.months === 0 && result.days === 0
-              ? 'Both dates are the same, so there is no age difference.'
-              : `${result.olderPerson} is older than ${result.youngerPerson} by ${result.years} years, ${result.months} months and ${result.days} days.`}
-          </p>
+          <div className={styles.summary}>
+            <p>Total Difference: {result.totalDays.toLocaleString()} days</p>
+            <p>{result.older} is older</p>
+          </div>
         </div>
+      )}
+
+      {submitted && !result && (
+        <p className={styles.errorText}>
+          Please select valid dates to compare.
+        </p>
       )}
     </section>
   );

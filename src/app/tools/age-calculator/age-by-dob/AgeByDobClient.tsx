@@ -3,220 +3,162 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 
-type AgeResult = {
+type Result = {
   years: number;
   months: number;
   days: number;
-  totalMonths: number;
-  totalWeeks: number;
-  totalDays: number;
-  totalHours: number;
-  totalMinutes: number;
-  totalSeconds: number;
 };
 
+function calculateAge(dob: string, asOn: string): Result | null {
+  if (!dob || !asOn) return null;
+
+  const birthDate = new Date(dob);
+  const targetDate = new Date(asOn);
+
+  if (birthDate > targetDate) return null;
+
+  let years = targetDate.getFullYear() - birthDate.getFullYear();
+  let months = targetDate.getMonth() - birthDate.getMonth();
+  let days = targetDate.getDate() - birthDate.getDate();
+
+  if (days < 0) {
+    months -= 1;
+    const prevMonth = new Date(
+      targetDate.getFullYear(),
+      targetDate.getMonth(),
+      0,
+    );
+    days += prevMonth.getDate();
+  }
+
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  return { years, months, days };
+}
+
 export default function AgeByDobClient() {
-  const today = new Date();
+  const [dob, setDob] = useState('');
+  const [asOn, setAsOn] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  const [birthMonth, setBirthMonth] = useState('');
-  const [birthDay, setBirthDay] = useState('');
-  const [birthYear, setBirthYear] = useState('');
-
-  const [ageAtMonth, setAgeAtMonth] = useState(String(today.getMonth() + 1));
-  const [ageAtDay, setAgeAtDay] = useState(String(today.getDate()));
-  const [ageAtYear, setAgeAtYear] = useState(String(today.getFullYear()));
-
-  const [result, setResult] = useState<AgeResult | null>(null);
-  const [error, setError] = useState('');
-
-  const calculateAge = () => {
-    setError('');
-    setResult(null);
-
-    const bMonth = Number(birthMonth);
-    const bDay = Number(birthDay);
-    const bYear = Number(birthYear);
-
-    const aMonth = Number(ageAtMonth);
-    const aDay = Number(ageAtDay);
-    const aYear = Number(ageAtYear);
-
-    if (!bMonth || !bDay || !bYear || !aMonth || !aDay || !aYear) {
-      setError('Please enter your complete date of birth and age at date.');
-      return;
-    }
-
-    const birthDate = new Date(bYear, bMonth - 1, bDay);
-    const ageAtDate = new Date(aYear, aMonth - 1, aDay);
-
-    if (
-      birthDate.getFullYear() !== bYear ||
-      birthDate.getMonth() !== bMonth - 1 ||
-      birthDate.getDate() !== bDay
-    ) {
-      setError('Please enter a valid date of birth.');
-      return;
-    }
-
-    if (
-      ageAtDate.getFullYear() !== aYear ||
-      ageAtDate.getMonth() !== aMonth - 1 ||
-      ageAtDate.getDate() !== aDay
-    ) {
-      setError('Please enter a valid age at date.');
-      return;
-    }
-
-    if (birthDate > ageAtDate) {
-      setError('Date of birth cannot be after the age at date.');
-      return;
-    }
-
-    let years = aYear - bYear;
-    let months = aMonth - bMonth;
-    let days = aDay - bDay;
-
-    if (days < 0) {
-      months -= 1;
-      const previousMonthDays = new Date(aYear, aMonth - 1, 0).getDate();
-      days += previousMonthDays;
-    }
-
-    if (months < 0) {
-      years -= 1;
-      months += 12;
-    }
-
-    const diffTime = ageAtDate.getTime() - birthDate.getTime();
-    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const totalWeeks = Math.floor(totalDays / 7);
-    const totalMonths = years * 12 + months;
-    const totalHours = totalDays * 24;
-    const totalMinutes = totalHours * 60;
-    const totalSeconds = totalMinutes * 60;
-
-    setResult({
-      years,
-      months,
-      days,
-      totalMonths,
-      totalWeeks,
-      totalDays,
-      totalHours,
-      totalMinutes,
-      totalSeconds,
-    });
-  };
-
-  const resetCalculator = () => {
-    setBirthMonth('');
-    setBirthDay('');
-    setBirthYear('');
-    setAgeAtMonth(String(today.getMonth() + 1));
-    setAgeAtDay(String(today.getDate()));
-    setAgeAtYear(String(today.getFullYear()));
-    setResult(null);
-    setError('');
-  };
+  const result = calculateAge(dob, asOn);
 
   return (
     <section className={styles.calculatorBox}>
-      <div className={styles.inputGroup}>
-        <label>Date of Birth</label>
+      <div className={styles.calculatorGlow} />
 
-        <div className={styles.dateGrid}>
+      <div className={styles.calculatorHeader}>
+        <div>
+          <span className={styles.toolBadge}>📅 As On Date Tool</span>
+          <h2>Calculate Age as on a Specific Date</h2>
+          <p>
+            Enter your date of birth and choose a target date to calculate your
+            exact age as on that date.
+          </p>
+        </div>
+
+        <div className={styles.iconCircle}>📆</div>
+      </div>
+
+      <div className={styles.inputCard}>
+        <div className={styles.inputGroup}>
+          <label>Date of Birth</label>
           <input
-            type="number"
-            placeholder="Month"
-            value={birthMonth}
-            onChange={(e) => setBirthMonth(e.target.value)}
+            type="date"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
           />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label>Calculate Age As On</label>
           <input
-            type="number"
-            placeholder="Day"
-            value={birthDay}
-            onChange={(e) => setBirthDay(e.target.value)}
+            type="date"
+            value={asOn}
+            onChange={(e) => setAsOn(e.target.value)}
           />
-          <input
-            type="number"
-            placeholder="Year"
-            value={birthYear}
-            onChange={(e) => setBirthYear(e.target.value)}
-          />
+        </div>
+
+        <div className={styles.actionRow}>
+          <button
+            className={styles.calculateButton}
+            onClick={() => setSubmitted(true)}
+          >
+            Calculate Age
+          </button>
+
+          <button
+            className={styles.resetButton}
+            onClick={() => {
+              setDob('');
+              setAsOn('');
+              setSubmitted(false);
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
 
-      <div className={styles.inputGroup}>
-        <label>Age at Date</label>
-
-        <div className={styles.dateGrid}>
-          <input
-            type="number"
-            placeholder="Month"
-            value={ageAtMonth}
-            onChange={(e) => setAgeAtMonth(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Day"
-            value={ageAtDay}
-            onChange={(e) => setAgeAtDay(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Year"
-            value={ageAtYear}
-            onChange={(e) => setAgeAtYear(e.target.value)}
-          />
+      {!submitted && (
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>✨</div>
+          <strong>Select dates to begin</strong>
+          <span>Choose DOB and target date to calculate age.</span>
         </div>
-      </div>
+      )}
 
-      {error && <p className={styles.error}>{error}</p>}
-
-      <div className={styles.buttonRow}>
-        <button type="button" onClick={calculateAge}>
-          Calculate Age
-        </button>
-        <button type="button" onClick={resetCalculator}>
-          Reset
-        </button>
-      </div>
-
-      {result && (
+      {submitted && result && (
         <div className={styles.resultBox}>
-          <h2>Your Exact Age</h2>
+          <div className={styles.resultTop}>
+            <div>
+              <span className={styles.resultLabel}>Age Result</span>
+              <h3>
+                {result.years} Years, {result.months} Months, {result.days} Days
+              </h3>
+            </div>
 
-          <div className={styles.mainResult}>
-            {result.years} years, {result.months} months, {result.days} days
+            <span className={styles.successPill}>✓ Calculated</span>
           </div>
 
           <div className={styles.resultGrid}>
-            <div>
-              <span>Total Months</span>
-              <strong>{result.totalMonths.toLocaleString()}</strong>
+            <div className={styles.resultCard}>
+              <strong>{result.years}</strong>
+              <span>Years</span>
             </div>
-            <div>
-              <span>Total Weeks</span>
-              <strong>{result.totalWeeks.toLocaleString()}</strong>
+
+            <div className={styles.resultCard}>
+              <strong>{result.months}</strong>
+              <span>Months</span>
             </div>
-            <div>
-              <span>Total Days</span>
-              <strong>{result.totalDays.toLocaleString()}</strong>
+
+            <div className={styles.resultCard}>
+              <strong>{result.days}</strong>
+              <span>Days</span>
             </div>
+          </div>
+
+          <div className={styles.summaryGrid}>
             <div>
-              <span>Total Hours</span>
-              <strong>{result.totalHours.toLocaleString()}</strong>
+              <span>From DOB</span>
+              <strong>{dob}</strong>
             </div>
+
             <div>
-              <span>Total Minutes</span>
-              <strong>{result.totalMinutes.toLocaleString()}</strong>
-            </div>
-            <div>
-              <span>Total Seconds</span>
-              <strong>{result.totalSeconds.toLocaleString()}</strong>
+              <span>As on Date</span>
+              <strong>{asOn}</strong>
             </div>
           </div>
         </div>
+      )}
+
+      {submitted && !result && (
+        <p className={styles.errorText}>
+          Please select valid dates. DOB must be before the selected date.
+        </p>
       )}
     </section>
   );

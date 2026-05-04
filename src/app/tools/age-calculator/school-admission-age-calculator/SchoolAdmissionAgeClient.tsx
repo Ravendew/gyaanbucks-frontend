@@ -3,220 +3,202 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 
-type Result = {
+type ClassOption = 'nursery' | 'lkg' | 'ukg' | 'class1';
+
+type AgeResult = {
   years: number;
   months: number;
   days: number;
-  totalDays: number;
   status: string;
+  message: string;
 };
 
+const classRules: Record<
+  ClassOption,
+  {
+    label: string;
+    minYears: number;
+    idealYears: string;
+  }
+> = {
+  nursery: {
+    label: 'Nursery',
+    minYears: 3,
+    idealYears: '3+ years',
+  },
+  lkg: {
+    label: 'LKG',
+    minYears: 4,
+    idealYears: '4+ years',
+  },
+  ukg: {
+    label: 'UKG',
+    minYears: 5,
+    idealYears: '5+ years',
+  },
+  class1: {
+    label: 'Class 1',
+    minYears: 6,
+    idealYears: '6+ years',
+  },
+};
+
+function calculateExactAge(dob: string, admissionDate: string) {
+  const birthDate = new Date(dob);
+  const targetDate = new Date(admissionDate);
+
+  let years = targetDate.getFullYear() - birthDate.getFullYear();
+  let months = targetDate.getMonth() - birthDate.getMonth();
+  let days = targetDate.getDate() - birthDate.getDate();
+
+  if (days < 0) {
+    months -= 1;
+    const previousMonth = new Date(
+      targetDate.getFullYear(),
+      targetDate.getMonth(),
+      0,
+    );
+    days += previousMonth.getDate();
+  }
+
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  return { years, months, days };
+}
+
 export default function SchoolAdmissionAgeClient() {
-  const today = new Date();
-
-  const [birthMonth, setBirthMonth] = useState('');
-  const [birthDay, setBirthDay] = useState('');
-  const [birthYear, setBirthYear] = useState('');
-
-  const [cutoffMonth, setCutoffMonth] = useState(String(today.getMonth() + 1));
-  const [cutoffDay, setCutoffDay] = useState(String(today.getDate()));
-  const [cutoffYear, setCutoffYear] = useState(String(today.getFullYear()));
-
-  const [result, setResult] = useState<Result | null>(null);
+  const [dob, setDob] = useState('');
+  const [admissionDate, setAdmissionDate] = useState('');
+  const [selectedClass, setSelectedClass] = useState<ClassOption>('nursery');
+  const [result, setResult] = useState<AgeResult | null>(null);
   const [error, setError] = useState('');
 
-  const calculateAge = () => {
+  const handleCalculate = () => {
     setError('');
     setResult(null);
 
-    const bMonth = Number(birthMonth);
-    const bDay = Number(birthDay);
-    const bYear = Number(birthYear);
-
-    const cMonth = Number(cutoffMonth);
-    const cDay = Number(cutoffDay);
-    const cYear = Number(cutoffYear);
-
-    if (!bMonth || !bDay || !bYear || !cMonth || !cDay || !cYear) {
-      setError(
-        'Please enter complete date of birth and admission cutoff date.',
-      );
+    if (!dob || !admissionDate) {
+      setError('Please select both date of birth and admission cut-off date.');
       return;
     }
 
-    const birthDate = new Date(bYear, bMonth - 1, bDay);
-    const cutoffDate = new Date(cYear, cMonth - 1, cDay);
+    const birthDate = new Date(dob);
+    const targetDate = new Date(admissionDate);
 
-    if (
-      birthDate.getFullYear() !== bYear ||
-      birthDate.getMonth() !== bMonth - 1 ||
-      birthDate.getDate() !== bDay
-    ) {
-      setError('Please enter a valid date of birth.');
+    if (birthDate > targetDate) {
+      setError('Date of birth cannot be after the admission date.');
       return;
     }
 
-    if (
-      cutoffDate.getFullYear() !== cYear ||
-      cutoffDate.getMonth() !== cMonth - 1 ||
-      cutoffDate.getDate() !== cDay
-    ) {
-      setError('Please enter a valid admission cutoff date.');
-      return;
-    }
+    const age = calculateExactAge(dob, admissionDate);
+    const rule = classRules[selectedClass];
 
-    if (birthDate > cutoffDate) {
-      setError('Date of birth cannot be after the cutoff date.');
-      return;
-    }
+    let status = '';
+    let message = '';
 
-    let years = cYear - bYear;
-    let months = cMonth - bMonth;
-    let days = cDay - bDay;
-
-    if (days < 0) {
-      months -= 1;
-      const previousMonthDays = new Date(cYear, cMonth - 1, 0).getDate();
-      days += previousMonthDays;
-    }
-
-    if (months < 0) {
-      years -= 1;
-      months += 12;
-    }
-
-    const diffTime = cutoffDate.getTime() - birthDate.getTime();
-    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    let status =
-      'Please compare this exact age with the school official admission rule.';
-
-    if (years < 3) {
-      status =
-        'Usually this age may be early for regular school admission. Please verify nursery or pre-primary rules.';
-    } else if (years >= 3 && years < 4) {
-      status =
-        'This age is commonly checked for nursery or pre-primary admission, depending on school rules.';
-    } else if (years >= 4 && years < 5) {
-      status =
-        'This age is commonly checked for LKG admission, depending on school rules.';
-    } else if (years >= 5 && years < 6) {
-      status =
-        'This age is commonly checked for UKG admission, depending on school rules.';
-    } else if (years >= 6) {
-      status =
-        'This age is commonly checked for Class 1 or higher admission, depending on school rules.';
+    if (age.years < rule.minYears) {
+      status = 'Below usual age range';
+      message = `For ${rule.label}, the child is usually expected to be at least ${rule.idealYears}. Please verify the school rule or consider the next academic year.`;
+    } else if (age.years === rule.minYears) {
+      status = 'Likely within minimum age range';
+      message = `The child appears to meet the common minimum age reference for ${rule.label}. Final eligibility depends on the school cut-off rule.`;
+    } else {
+      status = 'Above minimum age range';
+      message = `The child is above the common minimum age reference for ${rule.label}. Please confirm whether the school has an upper age rule.`;
     }
 
     setResult({
-      years,
-      months,
-      days,
-      totalDays,
+      ...age,
       status,
+      message,
     });
   };
 
-  const resetCalculator = () => {
-    setBirthMonth('');
-    setBirthDay('');
-    setBirthYear('');
-    setCutoffMonth(String(today.getMonth() + 1));
-    setCutoffDay(String(today.getDate()));
-    setCutoffYear(String(today.getFullYear()));
-    setResult(null);
-    setError('');
-  };
+  const selectedRule = classRules[selectedClass];
 
   return (
-    <section className={styles.calculatorBox}>
-      <div className={styles.inputGroup}>
-        <label>Child Date of Birth</label>
-
-        <div className={styles.dateGrid}>
-          <input
-            type="number"
-            placeholder="Month"
-            value={birthMonth}
-            onChange={(e) => setBirthMonth(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Day"
-            value={birthDay}
-            onChange={(e) => setBirthDay(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Year"
-            value={birthYear}
-            onChange={(e) => setBirthYear(e.target.value)}
-          />
-        </div>
+    <section className={styles.toolCard}>
+      <div className={styles.toolHeader}>
+        <p className={styles.toolLabel}>Admission Age Checker</p>
+        <h2>Check Child Age for School Admission</h2>
+        <p>
+          Select date of birth, class and school cut-off date to calculate exact
+          age and get a basic eligibility suggestion.
+        </p>
       </div>
 
-      <div className={styles.inputGroup}>
-        <label>Admission Cutoff Date</label>
+      <div className={styles.formGrid}>
+        <label className={styles.field}>
+          <span>Child Date of Birth</span>
+          <input
+            type="date"
+            value={dob}
+            onChange={(event) => setDob(event.target.value)}
+          />
+        </label>
 
-        <div className={styles.dateGrid}>
+        <label className={styles.field}>
+          <span>Admission / Cut-off Date</span>
           <input
-            type="number"
-            placeholder="Month"
-            value={cutoffMonth}
-            onChange={(e) => setCutoffMonth(e.target.value)}
+            type="date"
+            value={admissionDate}
+            onChange={(event) => setAdmissionDate(event.target.value)}
           />
-          <input
-            type="number"
-            placeholder="Day"
-            value={cutoffDay}
-            onChange={(e) => setCutoffDay(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Year"
-            value={cutoffYear}
-            onChange={(e) => setCutoffYear(e.target.value)}
-          />
-        </div>
+        </label>
+
+        <label className={styles.field}>
+          <span>Select Class</span>
+          <select
+            value={selectedClass}
+            onChange={(event) =>
+              setSelectedClass(event.target.value as ClassOption)
+            }
+          >
+            <option value="nursery">Nursery</option>
+            <option value="lkg">LKG</option>
+            <option value="ukg">UKG</option>
+            <option value="class1">Class 1</option>
+          </select>
+        </label>
+      </div>
+
+      <div className={styles.ruleBox}>
+        <strong>{selectedRule.label} reference:</strong>{' '}
+        {selectedRule.idealYears} on the selected admission date.
       </div>
 
       {error && <p className={styles.error}>{error}</p>}
 
-      <div className={styles.buttonRow}>
-        <button type="button" onClick={calculateAge}>
-          Calculate Admission Age
-        </button>
-        <button type="button" onClick={resetCalculator}>
-          Reset
-        </button>
-      </div>
+      <button className={styles.calculateBtn} onClick={handleCalculate}>
+        Calculate Admission Age
+      </button>
 
       {result && (
         <div className={styles.resultBox}>
-          <h2>Child Age for School Admission</h2>
-
-          <div className={styles.mainResult}>
-            {result.years} years, {result.months} months, {result.days} days
-          </div>
+          <p className={styles.resultLabel}>Child age on admission date</p>
 
           <div className={styles.resultGrid}>
             <div>
-              <span>Total Days</span>
-              <strong>{result.totalDays.toLocaleString()}</strong>
+              <strong>{result.years}</strong>
+              <span>Years</span>
             </div>
             <div>
-              <span>Approx. Months</span>
-              <strong>
-                {(result.years * 12 + result.months).toLocaleString()}
-              </strong>
+              <strong>{result.months}</strong>
+              <span>Months</span>
             </div>
             <div>
-              <span>Admission Note</span>
-              <strong>Check Rules</strong>
+              <strong>{result.days}</strong>
+              <span>Days</span>
             </div>
           </div>
 
-          <p className={styles.note}>{result.status}</p>
+          <div className={styles.statusBox}>
+            <h3>{result.status}</h3>
+            <p>{result.message}</p>
+          </div>
         </div>
       )}
     </section>

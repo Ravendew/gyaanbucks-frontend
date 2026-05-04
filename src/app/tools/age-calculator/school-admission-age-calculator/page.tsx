@@ -1,323 +1,323 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import styles from './page.module.css';
+import Script from 'next/script';
+import ToolPageLayout from '@/components/ToolPageLayout/ToolPageLayout';
 import SchoolAdmissionAgeClient from './SchoolAdmissionAgeClient';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Telangana School Admission Age Calculator (2026-27)',
+  title: 'School Admission Age Calculator - Check Class Eligibility',
   description:
-    'Check school admission age eligibility in Telangana for LKG, UKG and Class 1 based on date of birth. Calculate age as per Telangana education rules instantly.',
-
+    'Use the School Admission Age Calculator to check a child’s age for Nursery, LKG, UKG and Class 1 admission based on date of birth and admission date.',
   keywords: [
-    'telangana school age calculator',
-    'school admission age telangana',
-    'lkg ukg age calculator telangana',
-    'class 1 age eligibility telangana',
-    'ts school admission age rule',
-    'dob school age calculator telangana',
+    'school admission age calculator',
+    'nursery admission age calculator',
+    'lkg age calculator',
+    'ukg age calculator',
+    'class 1 admission age calculator',
+    'child age calculator for school admission',
   ],
-
   alternates: {
     canonical:
-      'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator/telangana',
+      'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator',
   },
-
   openGraph: {
-    title: 'Telangana School Admission Age Calculator',
+    title: 'School Admission Age Calculator - Check Class Eligibility',
     description:
-      'Check eligibility age for LKG, UKG and Class 1 admissions in Telangana schools.',
-    url: 'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator/telangana',
+      'Calculate child age for Nursery, LKG, UKG and Class 1 admission using date of birth and admission date.',
+    url: 'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator',
     siteName: 'GyaanBucks',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Telangana School Age Calculator',
-      },
-    ],
     type: 'website',
   },
-
   twitter: {
     card: 'summary_large_image',
-    title: 'Telangana School Admission Age Calculator',
+    title: 'School Admission Age Calculator',
     description:
-      'Calculate school admission age eligibility in Telangana instantly.',
-    images: ['/og-image.png'],
+      'Free school admission age checker for Nursery, LKG, UKG and Class 1.',
   },
 };
 
-export default function SchoolAdmissionAgeCalculatorPage() {
-  const toolSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'Age Difference Calculator',
-    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
-    applicationCategory: 'UtilityApplication',
-    operatingSystem: 'Any',
-    description:
-      'Free online age difference calculator to compare two ages or dates in years, months and days.',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'INR',
-    },
-  };
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'School Admission Age Calculator',
+  url: 'https://gyaanbucks.com/tools/age-calculator/school-admission-age-calculator',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'All',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
+  },
+};
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'How do I calculate age for school admission?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Enter the child date of birth and admission cutoff date. The calculator will show the child exact age in years, months and days.',
-        },
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a school admission age calculator?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A school admission age calculator checks a child’s completed age on a selected admission date and gives a basic class eligibility suggestion.',
       },
-      {
-        '@type': 'Question',
-        name: 'Can I use this calculator for LKG admission?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, this calculator can be used to check child age for LKG, UKG, Class 1 and other school admission levels.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I use this calculator for Nursery admission?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, you can select Nursery and enter the child’s date of birth and admission date to check the age status.',
       },
-      {
-        '@type': 'Question',
-        name: 'Is school admission age same in every state?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'No, school admission age rules may vary by state, board and school. Always verify the final eligibility rule from the official school or education department.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does this calculator follow one fixed rule for all schools?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Admission age rules may differ by state, board and school. This calculator gives a helpful estimate and parents should verify the final rule with the school.',
       },
-      {
-        '@type': 'Question',
-        name: 'Does this tool decide admission eligibility automatically?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'This tool calculates exact age. Admission eligibility depends on the school, board, state rules and cutoff date.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Which classes are supported?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'This calculator supports Nursery, LKG, UKG and Class 1 age checking.',
       },
-    ],
-  };
+    },
+    {
+      '@type': 'Question',
+      name: 'Is this tool free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, the GyaanBucks School Admission Age Calculator is free to use.',
+      },
+    },
+  ],
+};
+
+export default function SchoolAdmissionAgeCalculatorPage() {
+  const hero = (
+    <div className={styles.hero}>
+      <div className={styles.heroInner}>
+        <p className={styles.eyebrow}>Parent & Student Tool</p>
+        <h1>School Admission Age Calculator</h1>
+        <p>
+          Check a child’s age for Nursery, LKG, UKG and Class 1 admission using
+          date of birth and admission cut-off date. Useful for parents planning
+          school admissions.
+        </p>
+      </div>
+    </div>
+  );
 
   return (
-    <>
-      <Header />
+    <ToolPageLayout hero={hero}>
+      <Script
+        id="school-admission-age-webapplication-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }}
+      />
 
-      <main className={styles.container}>
-        <div className={styles.layout}>
-          <div className={styles.mainContent}>
-            <nav className={styles.breadcrumb}>
-              <Link href="/">Home</Link>
-              <span>/</span>
-              <Link href="/tools">Tools</Link>
-              <span>/</span>
-              <Link href="/tools/age-calculator">Age Calculator</Link>
-              <span>/</span>
-              <strong>School Admission Age Calculator</strong>
-            </nav>
+      <Script
+        id="school-admission-age-faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
-            <h1 className={styles.title}>School Admission Age Calculator</h1>
+      <SchoolAdmissionAgeClient />
 
-            <p className={styles.description}>
-              Use this free School Admission Age Calculator to check your
-              child’s exact age for LKG, UKG, Class 1 and other school admission
-              levels. Enter the date of birth and admission cutoff date to get
-              the age in years, months and days.
-            </p>
+      <section className={styles.contentBlock}>
+        <h2>What is a School Admission Age Calculator?</h2>
+        <p>
+          A school admission age calculator is an educational tool that helps
+          parents check whether a child’s age is suitable for a selected school
+          class. Many parents face confusion during admission season because
+          schools usually ask for age as of a specific cut-off date. Instead of
+          only looking at the birth year, this calculator checks the child’s
+          exact completed age on the selected admission date.
+        </p>
 
-            <SchoolAdmissionAgeClient />
+        <p>
+          This GyaanBucks calculator supports common early school levels such as
+          Nursery, LKG, UKG and Class 1. You can enter the child’s date of
+          birth, choose the class and select the admission date. The calculator
+          then shows the child’s age in years, months and days and gives a
+          simple eligibility-style result based on commonly used age ranges.
+        </p>
 
-            <section className={styles.content}>
-              <h2>What is a School Admission Age Calculator?</h2>
-              <p>
-                A School Admission Age Calculator is an online tool that helps
-                parents calculate their child’s exact age for school admission.
-                Many schools ask for the child’s age as of a specific cutoff
-                date. Instead of manually calculating the age, you can enter the
-                date of birth and the admission cutoff date to get the exact age
-                instantly.
-              </p>
+        <h2>Why School Admission Age Checking is Important</h2>
+        <p>
+          School admission age matters because early education depends on both
+          academic readiness and child development. A child who is too young may
+          struggle with classroom routine, communication, writing practice,
+          attention span and social adjustment. A child who is much older than
+          the usual age group may also feel mismatch with classmates. That is
+          why many schools and education boards define minimum age rules for
+          each entry class.
+        </p>
 
-              <h2>Why Age Calculation is Important for School Admission</h2>
-              <p>
-                School admission age rules are important because schools and
-                education boards usually define minimum age criteria for
-                nursery, LKG, UKG, Class 1 and higher classes. Even a small
-                difference of a few days can affect eligibility in some cases.
-                That is why parents should calculate the exact completed age
-                before filling admission forms.
-              </p>
+        <p>
+          Parents often calculate age by simply subtracting birth year from the
+          admission year. This can create mistakes. For example, if a child was
+          born in 2021 and admission is being checked for 2026, the child may
+          look five years old by year difference. But if the birthday has not
+          arrived before the school’s cut-off date, the child may still be four
+          years old. Exact age calculation avoids this confusion.
+        </p>
 
-              <h2>How to Use This School Admission Age Calculator</h2>
-              <p>
-                To use this calculator, enter your child’s date of birth in the
-                first section. Then enter the admission cutoff date mentioned by
-                the school or education department. The tool will calculate the
-                child’s exact age on that selected date. You can use this result
-                while checking school admission eligibility, comparing admission
-                rules, or preparing documents.
-              </p>
+        <h2>How to Use this Calculator</h2>
+        <p>
+          First, select your child’s date of birth. Then choose the class for
+          which you want to check admission age. After that, select the
+          admission or cut-off date. Many schools use a date such as 31 March, 1
+          June or a state-specific academic year cut-off. If your school has
+          given a specific date, use that date for better checking.
+        </p>
 
-              <h2>Common School Admission Cutoff Dates</h2>
-              <p>
-                Different schools and states may follow different cutoff dates.
-                Some schools calculate age as of March 31, some use June 1, and
-                some may use the start date of the academic year. Private
-                schools, CBSE schools, state board schools and international
-                schools may also have different admission policies. This
-                calculator gives the exact age, but final eligibility should
-                always be confirmed with the school.
-              </p>
+        <p>
+          Once you click the calculate button, the tool shows the child’s exact
+          age on that selected date. It also compares the age with a general
+          school admission range. The result may say the child appears eligible,
+          slightly young or above the usual range. This helps parents understand
+          the situation before contacting the school.
+        </p>
 
-              <h2>Where This Calculator Can Help</h2>
-              <p>
-                Parents can use this tool before applying for nursery admission,
-                LKG admission, UKG admission, Class 1 admission and school
-                transfer cases. It is also useful when comparing admission age
-                rules across schools. If the school asks for age as of a
-                particular date, simply enter that date as the cutoff date and
-                calculate the exact age.
-              </p>
+        <h2>Supported Classes and General Age Ranges</h2>
+        <p>
+          The calculator uses general practical age ranges for early school
+          admission. Nursery is usually around 3 years and above, LKG is around
+          4 years and above, UKG is around 5 years and above, and Class 1 is
+          often around 6 years and above. These are broad reference ranges and
+          not a replacement for official school rules.
+        </p>
 
-              <h2>Important Note for Parents</h2>
-              <p>
-                This calculator is created for easy age calculation only. It
-                does not replace official school admission rules. Minimum and
-                maximum age limits may change based on state government
-                notifications, school board rules and individual school
-                policies. Use this tool to calculate the age accurately, then
-                verify eligibility from the official admission notice.
-              </p>
+        <p>
+          Different schools may follow different rules depending on state
+          government guidelines, board policy, city, academic calendar and
+          internal admission process. Some schools may allow a small relaxation,
+          while others may strictly follow the cut-off date. Therefore, this
+          calculator should be used as a planning helper, not as final admission
+          approval.
+        </p>
 
-              <h2>Benefits of Using This Tool</h2>
-              <ul>
-                <li>Calculate child age for school admission instantly</li>
-                <li>Useful for LKG, UKG, nursery and Class 1 admission</li>
-                <li>Works with any admission cutoff date</li>
-                <li>Shows exact age in years, months and days</li>
-                <li>Simple, free and mobile-friendly calculator</li>
-              </ul>
-            </section>
+        <h2>Useful for Parents During Admission Planning</h2>
+        <p>
+          Parents can use this tool before applying to multiple schools. If the
+          child is close to the minimum age, the result can help parents prepare
+          questions for the admission office. For example, they can ask whether
+          the school allows age relaxation, whether the cut-off date is fixed,
+          and whether the child will be considered for the current academic year
+          or next academic year.
+        </p>
 
-            <section className={styles.content}>
-              <h2>Frequently Asked Questions</h2>
+        <p>
+          This is especially useful when parents are comparing Nursery, LKG and
+          UKG admission options. Some children may be ready for LKG directly,
+          while others may benefit from Nursery first. Age is only one factor.
+          Readiness, communication, independence, health, previous preschool
+          exposure and emotional comfort are also important.
+        </p>
 
-              <h3>How do I calculate my child age for school admission?</h3>
-              <p>
-                Enter your child’s date of birth and the admission cutoff date.
-                The calculator will show the exact age in years, months and
-                days.
-              </p>
+        <h2>School Admission Age and Exact Date Calculation</h2>
+        <p>
+          Exact date calculation is more reliable than approximate calculation.
+          This tool counts completed years first, then completed months and then
+          remaining days. That gives a better view of the child’s actual age on
+          the selected cut-off date. For admission forms, even a few days can
+          matter if the school follows a strict rule.
+        </p>
 
-              <h3>Can I use this for LKG admission age?</h3>
-              <p>
-                Yes. You can use this calculator for LKG, UKG, nursery, Class 1
-                and other school admission age checks.
-              </p>
+        <p>
+          For example, two children born in the same year may not both be
+          eligible for the same class if the cut-off date falls between their
+          birthdays. This is why a calculator that uses full date of birth is
+          more useful than a simple year-based estimate.
+        </p>
 
-              <h3>What cutoff date should I enter?</h3>
-              <p>
-                Enter the cutoff date mentioned by the school or education
-                department in the admission notification.
-              </p>
+        <h2>Related GyaanBucks Tools</h2>
+        <p>
+          You can also use the{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link> to calculate
+          general age, the{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>{' '}
+          for date-of-birth based age checking, and the{' '}
+          <Link href="/tools/age-calculator/date-difference-calculator">
+            Date Difference Calculator
+          </Link>{' '}
+          to compare any two dates. If you are preparing for exams, you may also
+          find the{' '}
+          <Link href="/tools/age-calculator/upsc-age-calculator">
+            UPSC Age Calculator
+          </Link>{' '}
+          useful.
+        </p>
 
-              <h3>Is school admission age same for all schools?</h3>
-              <p>
-                No. Admission age rules may vary by school, board, state and
-                academic year.
-              </p>
+        <p>
+          GyaanBucks tools are built for students, parents and learners who want
+          simple educational calculators with clean explanations. You can also
+          visit the <Link href="/tools">main tools page</Link> and explore quiz
+          practice from the <Link href="/quizzes">quizzes section</Link>.
+        </p>
 
-              <h3>Does this calculator confirm admission eligibility?</h3>
-              <p>
-                No. This calculator shows exact age. Final eligibility depends
-                on the official school admission rules.
-              </p>
-            </section>
-          </div>
+        <h2>Important Disclaimer</h2>
+        <p>
+          This calculator gives a general age-checking result for school
+          admission planning. It does not guarantee admission eligibility.
+          Always confirm the final admission age rule from the school, education
+          department notification or official admission brochure. School
+          policies can differ from one institution to another.
+        </p>
+      </section>
 
-          <aside className={styles.sidebar}>
-            <div className={styles.sidebarBox}>
-              <h3>Popular Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    Age Calculator by DOB
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    Age in Days Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    Percentage Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
+      <section className={styles.faqSection}>
+        <h2>School Admission Age Calculator FAQs</h2>
 
-            <div className={styles.sidebarBox}>
-              <h3>Admission Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/school-admission-age-calculator">
-                    School Admission Age
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/school-admission-age-calculator/telangana">
-                    Telangana School Age
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator">Exact Age Calculator</Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>Explore GyaanBucks</h3>
-              <ul>
-                <li>
-                  <Link href="/tools">All Calculators</Link>
-                </li>
-                <li>
-                  <Link href="/quizzes">Play Quizzes</Link>
-                </li>
-                <li>
-                  <Link href="/categories">Quiz Categories</Link>
-                </li>
-              </ul>
-            </div>
-          </aside>
+        <div className={styles.faqItem}>
+          <h3>What is the minimum age for Nursery admission?</h3>
+          <p>
+            Many schools use around 3 years as a general Nursery admission age,
+            but the final rule depends on the school and state guidelines.
+          </p>
         </div>
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(toolSchema),
-          }}
-        />
-      </main>
+        <div className={styles.faqItem}>
+          <h3>What age is usually required for LKG admission?</h3>
+          <p>
+            LKG admission is commonly around 4 years and above on the school’s
+            selected cut-off date.
+          </p>
+        </div>
 
-      <Footer />
-    </>
+        <div className={styles.faqItem}>
+          <h3>Can this calculator check Class 1 admission age?</h3>
+          <p>
+            Yes, you can select Class 1 and check whether the child is around
+            the general Class 1 entry age.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is this calculator valid for all schools in India?</h3>
+          <p>
+            It gives a general estimate only. Admission rules may vary by state,
+            board and school, so parents should verify official rules.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Which date should I select as admission date?</h3>
+          <p>
+            Use the cut-off date mentioned by the school. If the school has not
+            mentioned one, ask the admission office before making a final
+            decision.
+          </p>
+        </div>
+      </section>
+    </ToolPageLayout>
   );
 }

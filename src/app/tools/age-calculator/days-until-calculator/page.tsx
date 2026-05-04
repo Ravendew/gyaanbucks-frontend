@@ -1,377 +1,284 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import styles from './page.module.css';
+import Script from 'next/script';
+import ToolPageLayout from '@/components/ToolPageLayout/ToolPageLayout';
 import DaysUntilClient from './DaysUntilClient';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Days Until Calculator - Count Days Until Any Date',
+  title: 'Days Until Calculator - How Many Days Left?',
   description:
-    'Use the Days Until Calculator to count how many days are left until an exam, birthday, event, deadline or future date. Free online countdown date calculator.',
-
+    'Use the free Days Until Calculator to find how many days are left until a future date, event, exam, birthday or deadline.',
   keywords: [
     'days until calculator',
-    'count days until date',
+    'how many days left',
     'days left calculator',
     'countdown calculator',
-    'days until birthday',
-    'days until exam calculator',
+    'days until date',
   ],
-
   alternates: {
     canonical:
       'https://gyaanbucks.com/tools/age-calculator/days-until-calculator',
   },
-
   openGraph: {
-    title: 'Days Until Calculator - Count Days Until Any Date',
+    title: 'Days Until Calculator - How Many Days Left?',
     description:
-      'Count days remaining until any future date, event, birthday, exam or deadline.',
+      'Calculate how many days are left until an event, exam, birthday or selected date.',
     url: 'https://gyaanbucks.com/tools/age-calculator/days-until-calculator',
     siteName: 'GyaanBucks',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Days Until Calculator',
-      },
-    ],
     type: 'website',
   },
-
   twitter: {
     card: 'summary_large_image',
-    title: 'Days Until Calculator - Count Days Until Any Date',
-    description: 'Find how many days are left until any date instantly.',
-    images: ['/og-image.png'],
+    title: 'Days Until Calculator - How Many Days Left?',
+    description:
+      'Free countdown calculator to find days left until any selected date.',
   },
 };
 
-export default function DaysUntilCalculatorPage() {
-  const toolSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'Age Difference Calculator',
-    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
-    applicationCategory: 'UtilityApplication',
-    operatingSystem: 'Any',
-    description:
-      'Free online age difference calculator to compare two ages or dates in years, months and days.',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'INR',
-    },
-  };
+const webApplicationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Days Until Calculator',
+  url: 'https://gyaanbucks.com/tools/age-calculator/days-until-calculator',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'All',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
+  },
+};
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'How do I calculate days until a date?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Select the target date and click calculate. The tool shows how many days are left until that date.',
-        },
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a days until calculator?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A days until calculator shows how many days are left from today until a selected future date or event.',
       },
-      {
-        '@type': 'Question',
-        name: 'Can I use this as a countdown calculator?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, this Days Until Calculator works as a countdown calculator for events, birthdays, exams, trips and deadlines.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I calculate days left until an exam?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, enter your exam date and the calculator will show how many days are left.',
       },
-      {
-        '@type': 'Question',
-        name: 'Does this calculator show weeks and months too?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, it shows total days, weeks, approximate months and approximate years left.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does this calculator work for birthdays?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, you can use it as a birthday countdown calculator by entering the birthday date.',
       },
-      {
-        '@type': 'Question',
-        name: 'Is this Days Until Calculator free?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, the Days Until Calculator on GyaanBucks is completely free to use.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'What if I select today?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'If you select today, the tool will show that the selected date is today.',
       },
-    ],
-  };
+    },
+    {
+      '@type': 'Question',
+      name: 'Is this days until calculator free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, this GyaanBucks countdown calculator is free to use.',
+      },
+    },
+  ],
+};
+
+export default function DaysUntilPage() {
+  const hero = (
+    <div className={styles.hero}>
+      <div className={styles.heroInner}>
+        <p className={styles.eyebrow}>Countdown Learning Tool</p>
+        <h1>Days Until Calculator</h1>
+        <p>
+          Find how many days are left until an event, birthday, exam, deadline,
+          trip or any selected date. A simple countdown calculator for planning
+          and learning.
+        </p>
+      </div>
+    </div>
+  );
 
   return (
-    <>
-      <Header />
+    <ToolPageLayout hero={hero}>
+      <Script
+        id="days-until-webapplication-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webApplicationSchema),
+        }}
+      />
 
-      <main className={styles.container}>
-        <div className={styles.layout}>
-          <div className={styles.mainContent}>
-            <nav className={styles.breadcrumb}>
-              <Link href="/">Home</Link>
-              <span>/</span>
-              <Link href="/tools">Tools</Link>
-              <span>/</span>
-              <Link href="/tools/age-calculator">Age Calculator</Link>
-              <span>/</span>
-              <strong>Days Until Calculator</strong>
-            </nav>
+      <Script
+        id="days-until-faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
 
-            <h1 className={styles.title}>Days Until Calculator</h1>
+      <DaysUntilClient />
 
-            <p className={styles.description}>
-              Use this free Days Until Calculator to find how many days are left
-              until any date, event, birthday, exam, trip, festival or deadline.
-              Select your target date and get an instant countdown result.
-            </p>
+      <section className={styles.contentBlock}>
+        <h2>What is a Days Until Calculator?</h2>
+        <p>
+          A Days Until Calculator is a countdown tool that tells you how many
+          days are left from today until a selected date. It is useful when you
+          want to track an upcoming exam, birthday, trip, event, deadline,
+          festival, project submission or personal milestone. Instead of
+          counting calendar days manually, you can enter the target date and get
+          the result instantly.
+        </p>
 
-            <DaysUntilClient />
+        <p>
+          This tool is different from a general date difference calculator. A
+          date difference calculator compares any two dates, while this page is
+          focused on one clear question: how many days are left from today until
+          a future date? That makes it more useful for countdown-style planning.
+        </p>
 
-            <section className={styles.content}>
-              <h2>What is a Days Until Calculator?</h2>
-              <p>
-                A Days Until Calculator is an online tool that helps you
-                calculate how many days are left until a selected date. It works
-                like a simple countdown calculator where you choose a future
-                date and instantly see the remaining time. This tool is useful
-                for events, birthdays, exams, trips, festivals, deadlines,
-                launches and personal goals.
-              </p>
+        <h2>How to Use the Days Until Calculator</h2>
+        <p>
+          Using this calculator is simple. You can enter an event name such as
+          exam, birthday, trip or deadline. The event name is optional, but it
+          makes the result easier to understand. Then select the target date and
+          click the calculate button. The tool will show the total days left,
+          completed weeks, remaining days and whether the date is upcoming,
+          today or already passed.
+        </p>
 
-              <p>
-                Many people manually count calendar days when they want to know
-                how much time is left for an important date. Manual counting can
-                be confusing, especially when the date is months away or when
-                leap years and different month lengths are involved. This
-                calculator avoids those mistakes and gives a quick result.
-              </p>
+        <p>
+          For example, if your exam is 45 days away, the calculator will show 45
+          days left. It will also break that result into completed weeks and
+          remaining days. This helps students and planners quickly understand
+          how much time is available.
+        </p>
 
-              <h2>How to Calculate Days Until a Date</h2>
-              <p>
-                To calculate days until a date, select the target date in the
-                calculator and click the calculate button. The tool compares
-                today’s date with your selected date and shows the total number
-                of days remaining. It also shows weeks, approximate months and
-                approximate years for better understanding.
-              </p>
+        <h2>Where This Countdown Tool is Useful</h2>
+        <p>
+          A days left calculator is useful for students, parents, teachers,
+          professionals and general users. Students can use it to track exam
+          preparation time. Teachers can use it for assignment timelines.
+          Families can use it for birthdays and events. Professionals can use it
+          for deadlines and project planning.
+        </p>
 
-              <p>
-                For example, if you want to know how many days are left until
-                your exam, select the exam date. If you want to plan a trip,
-                select the travel date. If you are waiting for a birthday,
-                anniversary, festival or result day, simply choose that date and
-                the calculator will show the countdown instantly.
-              </p>
+        <p>
+          Since GyaanBucks is an educational platform, this calculator is also
+          useful for learning time management. When learners see how many days
+          are left for a goal, they can divide their preparation into smaller
+          plans. This makes the countdown more practical than just seeing a date
+          on a calendar.
+        </p>
 
-              <h2>Why Use an Online Days Left Calculator?</h2>
-              <p>
-                An online days left calculator is faster and more accurate than
-                checking dates manually. It saves time and gives a clear answer
-                in seconds. Instead of counting each day on a calendar, this
-                tool automatically calculates the difference between today and
-                your selected date.
-              </p>
+        <h2>Days Until vs Date Difference Calculator</h2>
+        <p>
+          The{' '}
+          <Link href="/tools/age-calculator/date-difference-calculator">
+            Date Difference Calculator
+          </Link>{' '}
+          compares two selected dates. This Days Until Calculator starts from
+          today and calculates the gap to your target date. If you are comparing
+          two past or custom dates, use the date difference tool. If you are
+          counting down to an upcoming event, this is the better page.
+        </p>
 
-              <p>
-                This is helpful when you are planning something important and
-                want to track how much time is available. Students can track
-                exam days, professionals can track project deadlines, families
-                can track events, and individuals can track personal goals.
-              </p>
+        <p>
+          You can also explore related tools such as the{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>,{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>
+          ,{' '}
+          <Link href="/tools/age-calculator/age-in-days">
+            Age in Days Calculator
+          </Link>{' '}
+          and{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          . Each page has a different calculation purpose.
+        </p>
 
-              <h2>Common Uses of Days Until Calculator</h2>
-              <p>
-                The Days Until Calculator can be used in many daily life
-                situations. Students often use it to count days left for exams,
-                admit cards, result dates and application deadlines. Working
-                professionals use it for project timelines, meeting deadlines
-                and notice periods.
-              </p>
+        <h2>Why Counting Days Left Helps</h2>
+        <p>
+          Counting days left helps with planning because it turns a future date
+          into a clear number. A deadline may feel far away when it is written
+          as a calendar date, but when you see that only 12 days are left, the
+          urgency becomes clearer. For students, this can support better study
+          planning and revision schedules.
+        </p>
 
-              <p>
-                Families use it for birthdays, weddings, anniversaries,
-                vacations and festivals. Business owners can use it for product
-                launches, campaign deadlines, subscription renewals and
-                financial planning. The tool is simple but useful for almost
-                every date-based plan.
-              </p>
+        <p>
+          This calculator is built to be simple, fast and learner-friendly. It
+          does not replace detailed planning, but it gives a clear starting
+          point. Once you know the number of days left, you can divide your
+          study, practice, travel preparation or project work accordingly.
+        </p>
 
-              <h2>Countdown Calculator for Events and Deadlines</h2>
-              <p>
-                This page also works as an event countdown calculator. If you
-                have a future event, you can use this tool to know exactly how
-                many days are left. It gives a clear countdown so you can plan
-                tasks, bookings, reminders and preparation without confusion.
-              </p>
+        <h2>Important Note</h2>
+        <p>
+          This tool uses today’s date from your device/browser environment and
+          compares it with the selected target date. For official deadlines,
+          exam dates or legal submissions, always verify the exact date and time
+          from the official source. Some deadlines may close at a specific time,
+          not just on a date.
+        </p>
+      </section>
 
-              <p>
-                Deadlines become easier to manage when you know how much time is
-                remaining. Whether it is an exam deadline, job application, bill
-                payment, trip booking or project delivery, this calculator helps
-                you stay organized.
-              </p>
+      <section className={styles.faqSection}>
+        <h2>Days Until Calculator FAQs</h2>
 
-              <h2>Days Until vs Date Difference Calculator</h2>
-              <p>
-                A Days Until Calculator is mainly used to calculate days
-                remaining from today to a future date. A Date Difference
-                Calculator is used to calculate the gap between any two selected
-                dates. Both tools are useful, but their purpose is slightly
-                different.
-              </p>
-
-              <p>
-                If you want a simple countdown from today, use this Days Until
-                Calculator. If you want to compare two custom dates, use the
-                Date Difference Calculator on GyaanBucks.
-              </p>
-
-              <h2>Benefits of Using This Tool</h2>
-              <ul>
-                <li>Calculate days left until any date instantly</li>
-                <li>Useful for exams, birthdays, events and deadlines</li>
-                <li>Shows days, weeks, approximate months and years</li>
-                <li>Works as a simple countdown calculator</li>
-                <li>Free, fast and mobile-friendly online tool</li>
-              </ul>
-            </section>
-
-            <section className={styles.content}>
-              <h2>Frequently Asked Questions</h2>
-
-              <h3>How many days are left until a date?</h3>
-              <p>
-                Select your target date and click calculate. The calculator will
-                show how many days are left from today until that date.
-              </p>
-
-              <h3>Can I use this for birthdays and events?</h3>
-              <p>
-                Yes. You can use this calculator for birthdays, weddings,
-                anniversaries, festivals, trips, exams, deadlines and other
-                events.
-              </p>
-
-              <h3>Can this calculator show weeks and months?</h3>
-              <p>
-                Yes. Along with total days, it also shows total weeks,
-                approximate months and approximate years left.
-              </p>
-
-              <h3>What happens if I select a past date?</h3>
-              <p>
-                If you select a past date, the tool will tell you how many days
-                have passed since that date.
-              </p>
-
-              <h3>Is this calculator accurate?</h3>
-              <p>
-                Yes. It calculates the difference between today and the selected
-                date using actual date values.
-              </p>
-            </section>
-          </div>
-
-          <aside className={styles.sidebar}>
-            <div className={styles.sidebarBox}>
-              <h3>🔥 Popular Calculators</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    Age Calculator by DOB
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    Age in Days Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-difference-calculator">
-                    Age Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    Percentage Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>📅 Date Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/days-until-calculator">
-                    Days Until Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/date-difference-calculator">
-                    Date Difference Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>🎯 Exam Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/upsc-age-calculator">
-                    UPSC Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/ssc-age-calculator">
-                    SSC Age Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>🚀 Explore GyaanBucks</h3>
-              <ul>
-                <li>
-                  <Link href="/tools">All Online Calculators</Link>
-                </li>
-                <li>
-                  <Link href="/quizzes">Play Quizzes</Link>
-                </li>
-                <li>
-                  <Link href="/categories">Quiz Categories</Link>
-                </li>
-                <li>
-                  <Link href="/blog">Latest Articles</Link>
-                </li>
-              </ul>
-            </div>
-          </aside>
+        <div className={styles.faqItem}>
+          <h3>How do I calculate how many days are left?</h3>
+          <p>
+            Select your target date and press calculate. The tool will show how
+            many days are left from today.
+          </p>
         </div>
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(toolSchema),
-          }}
-        />
-      </main>
+        <div className={styles.faqItem}>
+          <h3>Can I use it for exam countdown?</h3>
+          <p>
+            Yes, you can enter your exam date and use it as an exam countdown
+            calculator.
+          </p>
+        </div>
 
-      <Footer />
-    </>
+        <div className={styles.faqItem}>
+          <h3>Can I add an event name?</h3>
+          <p>
+            Yes, the event name is optional. It helps make your countdown result
+            easier to read.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>What if the selected date is already passed?</h3>
+          <p>
+            The calculator will show how many days have already passed since
+            that date.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is this calculator free?</h3>
+          <p>Yes, the Days Until Calculator is free on GyaanBucks.</p>
+        </div>
+      </section>
+    </ToolPageLayout>
   );
 }

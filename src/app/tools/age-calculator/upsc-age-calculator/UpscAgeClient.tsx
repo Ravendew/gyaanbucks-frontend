@@ -1,268 +1,285 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styles from './page.module.css';
 
-type Category = 'general' | 'obc' | 'scst' | 'pwd';
+type Category =
+  | 'general'
+  | 'obc'
+  | 'scst'
+  | 'pwbd-general'
+  | 'pwbd-obc'
+  | 'pwbd-scst';
 
-type UpscResult = {
+type Result = {
   years: number;
   months: number;
   days: number;
-  totalDays: number;
-  categoryLabel: string;
+  minAge: number;
   maxAge: number;
-  status: string;
+  eligible: boolean;
+  message: string;
+  cutoffDateText: string;
 };
 
-const categoryLimits: Record<
+const categoryRules: Record<
   Category,
-  {
-    label: string;
-    maxAge: number;
-  }
+  { label: string; minAge: number; maxAge: number }
 > = {
   general: {
-    label: 'General',
+    label: 'General / EWS',
+    minAge: 21,
     maxAge: 32,
   },
   obc: {
     label: 'OBC',
+    minAge: 21,
     maxAge: 35,
   },
   scst: {
-    label: 'SC/ST',
+    label: 'SC / ST',
+    minAge: 21,
     maxAge: 37,
   },
-  pwd: {
-    label: 'PwBD',
+  'pwbd-general': {
+    label: 'PwBD - General / EWS',
+    minAge: 21,
     maxAge: 42,
+  },
+  'pwbd-obc': {
+    label: 'PwBD - OBC',
+    minAge: 21,
+    maxAge: 45,
+  },
+  'pwbd-scst': {
+    label: 'PwBD - SC / ST',
+    minAge: 21,
+    maxAge: 47,
   },
 };
 
+function calculateAgeOnDate(dob: string, cutoff: Date) {
+  const birthDate = new Date(dob);
+
+  if (!dob || birthDate > cutoff) return null;
+
+  let years = cutoff.getFullYear() - birthDate.getFullYear();
+  let months = cutoff.getMonth() - birthDate.getMonth();
+  let days = cutoff.getDate() - birthDate.getDate();
+
+  if (days < 0) {
+    months -= 1;
+    days += new Date(cutoff.getFullYear(), cutoff.getMonth(), 0).getDate();
+  }
+
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  return { years, months, days };
+}
+
+function calculateUpscEligibility(
+  dob: string,
+  examYear: string,
+  category: Category,
+): Result | null {
+  if (!dob || !examYear) return null;
+
+  const year = Number(examYear);
+
+  if (!Number.isFinite(year) || year < 1900) return null;
+
+  const cutoffDate = new Date(year, 7, 1);
+  const age = calculateAgeOnDate(dob, cutoffDate);
+
+  if (!age) return null;
+
+  const rule = categoryRules[category];
+
+  const isMinimumAgeOk = age.years >= rule.minAge;
+  const isMaximumAgeOk = age.years < rule.maxAge || age.years === rule.maxAge;
+
+  const eligible = isMinimumAgeOk && isMaximumAgeOk;
+
+  let message = '';
+
+  if (!isMinimumAgeOk) {
+    message = `Not eligible because age is below ${rule.minAge} years as on cutoff date.`;
+  } else if (!isMaximumAgeOk) {
+    message = `Not eligible because age is above ${rule.maxAge} years for ${rule.label}.`;
+  } else {
+    message = `Eligible by age for ${rule.label}, based on the selected cutoff date.`;
+  }
+
+  return {
+    ...age,
+    minAge: rule.minAge,
+    maxAge: rule.maxAge,
+    eligible,
+    message,
+    cutoffDateText: `1 August ${year}`,
+  };
+}
+
 export default function UpscAgeClient() {
-  const today = new Date();
+  const currentYear = new Date().getFullYear();
 
-  const [birthMonth, setBirthMonth] = useState('');
-  const [birthDay, setBirthDay] = useState('');
-  const [birthYear, setBirthYear] = useState('');
-
-  const [cutoffMonth, setCutoffMonth] = useState('8');
-  const [cutoffDay, setCutoffDay] = useState('1');
-  const [cutoffYear, setCutoffYear] = useState(String(today.getFullYear()));
-
+  const [dob, setDob] = useState('');
+  const [examYear, setExamYear] = useState(String(currentYear));
   const [category, setCategory] = useState<Category>('general');
+  const [submitted, setSubmitted] = useState(false);
 
-  const [result, setResult] = useState<UpscResult | null>(null);
-  const [error, setError] = useState('');
+  const result = useMemo(() => {
+    if (!submitted) return null;
+    return calculateUpscEligibility(dob, examYear, category);
+  }, [dob, examYear, category, submitted]);
 
-  const calculateAge = () => {
-    setError('');
-    setResult(null);
-
-    const bMonth = Number(birthMonth);
-    const bDay = Number(birthDay);
-    const bYear = Number(birthYear);
-
-    const cMonth = Number(cutoffMonth);
-    const cDay = Number(cutoffDay);
-    const cYear = Number(cutoffYear);
-
-    if (!bMonth || !bDay || !bYear || !cMonth || !cDay || !cYear) {
-      setError(
-        'Please enter your complete date of birth and UPSC cutoff date.',
-      );
-      return;
-    }
-
-    const birthDate = new Date(bYear, bMonth - 1, bDay);
-    const cutoffDate = new Date(cYear, cMonth - 1, cDay);
-
-    if (
-      birthDate.getFullYear() !== bYear ||
-      birthDate.getMonth() !== bMonth - 1 ||
-      birthDate.getDate() !== bDay
-    ) {
-      setError('Please enter a valid date of birth.');
-      return;
-    }
-
-    if (
-      cutoffDate.getFullYear() !== cYear ||
-      cutoffDate.getMonth() !== cMonth - 1 ||
-      cutoffDate.getDate() !== cDay
-    ) {
-      setError('Please enter a valid UPSC cutoff date.');
-      return;
-    }
-
-    if (birthDate > cutoffDate) {
-      setError('Date of birth cannot be after the UPSC cutoff date.');
-      return;
-    }
-
-    let years = cYear - bYear;
-    let months = cMonth - bMonth;
-    let days = cDay - bDay;
-
-    if (days < 0) {
-      months -= 1;
-      const previousMonthDays = new Date(cYear, cMonth - 1, 0).getDate();
-      days += previousMonthDays;
-    }
-
-    if (months < 0) {
-      years -= 1;
-      months += 12;
-    }
-
-    const diffTime = cutoffDate.getTime() - birthDate.getTime();
-    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    const selectedCategory = categoryLimits[category];
-
-    let status = '';
-
-    if (years < 21) {
-      status =
-        'Not eligible by age yet. UPSC minimum age is usually 21 years, but please verify the official notification.';
-    } else if (years > selectedCategory.maxAge) {
-      status = `Age may be above the usual ${selectedCategory.label} upper age limit of ${selectedCategory.maxAge} years. Please check official UPSC notification and relaxation rules.`;
-    } else {
-      status = `Age appears within the usual ${selectedCategory.label} age range. Final eligibility must be verified from the official UPSC notification.`;
-    }
-
-    setResult({
-      years,
-      months,
-      days,
-      totalDays,
-      categoryLabel: selectedCategory.label,
-      maxAge: selectedCategory.maxAge,
-      status,
-    });
-  };
-
-  const resetCalculator = () => {
-    setBirthMonth('');
-    setBirthDay('');
-    setBirthYear('');
-    setCutoffMonth('8');
-    setCutoffDay('1');
-    setCutoffYear(String(today.getFullYear()));
-    setCategory('general');
-    setResult(null);
-    setError('');
-  };
+  const selectedRule = categoryRules[category];
 
   return (
-    <section className={styles.calculatorBox}>
-      <div className={styles.inputGroup}>
-        <label>Date of Birth</label>
+    <section className={styles.upscBox}>
+      <div className={styles.upscPattern} />
 
-        <div className={styles.dateGrid}>
-          <input
-            type="number"
-            placeholder="Month"
-            value={birthMonth}
-            onChange={(e) => setBirthMonth(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Day"
-            value={birthDay}
-            onChange={(e) => setBirthDay(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Year"
-            value={birthYear}
-            onChange={(e) => setBirthYear(e.target.value)}
-          />
+      <div className={styles.upscHeader}>
+        <div>
+          <span className={styles.upscBadge}>🏛️ UPSC Eligibility Tool</span>
+          <h2>Check UPSC Age Eligibility</h2>
+          <p>
+            Enter your date of birth, exam year and category to check your age
+            as on the UPSC cutoff date with category relaxation.
+          </p>
+        </div>
+
+        <div className={styles.upscIcon}>📘</div>
+      </div>
+
+      <div className={styles.inputPanel}>
+        <div className={styles.inputGrid}>
+          <div className={styles.inputGroup}>
+            <label htmlFor="dob">Date of Birth</label>
+            <input
+              id="dob"
+              type="date"
+              value={dob}
+              onChange={(event) => setDob(event.target.value)}
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="examYear">Exam Year</label>
+            <input
+              id="examYear"
+              type="number"
+              value={examYear}
+              onChange={(event) => setExamYear(event.target.value)}
+              min="1900"
+              max="2100"
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              value={category}
+              onChange={(event) => setCategory(event.target.value as Category)}
+            >
+              <option value="general">General / EWS</option>
+              <option value="obc">OBC</option>
+              <option value="scst">SC / ST</option>
+              <option value="pwbd-general">PwBD - General / EWS</option>
+              <option value="pwbd-obc">PwBD - OBC</option>
+              <option value="pwbd-scst">PwBD - SC / ST</option>
+            </select>
+          </div>
+        </div>
+
+        <div className={styles.ruleNote}>
+          <span>Selected rule</span>
+          <strong>
+            Minimum {selectedRule.minAge} years, maximum {selectedRule.maxAge}{' '}
+            years
+          </strong>
+        </div>
+
+        <div className={styles.actionRow}>
+          <button
+            type="button"
+            className={styles.calculateButton}
+            onClick={() => setSubmitted(true)}
+          >
+            Check Eligibility
+          </button>
+
+          <button
+            type="button"
+            className={styles.resetButton}
+            onClick={() => {
+              setDob('');
+              setExamYear(String(currentYear));
+              setCategory('general');
+              setSubmitted(false);
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
 
-      <div className={styles.inputGroup}>
-        <label>
-          UPSC Cutoff Date
-          <span className={styles.helperText}>
-            Usually 1st August of exam year (example: 01-08-2025)
+      {!submitted && (
+        <div className={styles.emptyState}>
+          <strong>Check age as on UPSC cutoff date</strong>
+          <span>
+            This tool calculates age as on 1 August of the selected exam year.
           </span>
-        </label>
-
-        <div className={styles.dateGrid}>
-          <input
-            type="number"
-            placeholder="Month"
-            value={cutoffMonth}
-            onChange={(e) => setCutoffMonth(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Day"
-            value={cutoffDay}
-            onChange={(e) => setCutoffDay(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Year"
-            value={cutoffYear}
-            onChange={(e) => setCutoffYear(e.target.value)}
-          />
         </div>
-      </div>
+      )}
 
-      <div className={styles.inputGroup}>
-        <label>Category</label>
-
-        <select
-          className={styles.select}
-          value={category}
-          onChange={(e) => setCategory(e.target.value as Category)}
+      {submitted && result && (
+        <div
+          className={`${styles.resultBox} ${
+            result.eligible ? styles.eligibleBox : styles.notEligibleBox
+          }`}
         >
-          <option value="general">General</option>
-          <option value="obc">OBC</option>
-          <option value="scst">SC/ST</option>
-          <option value="pwd">PwBD</option>
-        </select>
-      </div>
-
-      {error && <p className={styles.error}>{error}</p>}
-
-      <div className={styles.buttonRow}>
-        <button type="button" onClick={calculateAge}>
-          Check UPSC Age
-        </button>
-        <button type="button" onClick={resetCalculator}>
-          Reset
-        </button>
-      </div>
-
-      {result && (
-        <div className={styles.resultBox}>
-          <h2>UPSC Age Result</h2>
-
-          <div className={styles.mainResult}>
-            {result.years} years, {result.months} months, {result.days} days
+          <div className={styles.resultTop}>
+            <span>
+              {result.eligible ? 'Eligible by age' : 'Not eligible by age'}
+            </span>
+            <strong>
+              {result.years}Y {result.months}M {result.days}D
+            </strong>
+            <p>Age as on {result.cutoffDateText}</p>
           </div>
 
           <div className={styles.resultGrid}>
             <div>
               <span>Category</span>
-              <strong>{result.categoryLabel}</strong>
+              <strong>{selectedRule.label}</strong>
             </div>
+
             <div>
-              <span>Usual Upper Age</span>
-              <strong>{result.maxAge} years</strong>
+              <span>Allowed age range</span>
+              <strong>
+                {result.minAge} - {result.maxAge}
+              </strong>
             </div>
+
             <div>
-              <span>Total Days</span>
-              <strong>{result.totalDays.toLocaleString()}</strong>
+              <span>Status</span>
+              <strong>{result.eligible ? 'Eligible' : 'Not Eligible'}</strong>
             </div>
           </div>
 
-          <p className={styles.note}>{result.status}</p>
+          <div className={styles.messageBox}>{result.message}</div>
         </div>
+      )}
+
+      {submitted && !result && (
+        <p className={styles.errorText}>
+          Please enter valid date of birth and exam year.
+        </p>
       )}
     </section>
   );

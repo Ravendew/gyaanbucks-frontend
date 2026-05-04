@@ -1,395 +1,275 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import styles from './page.module.css';
+import Script from 'next/script';
+import ToolPageLayout from '@/components/ToolPageLayout/ToolPageLayout';
 import DateDifferenceClient from './DateDifferenceClient';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
   title: 'Date Difference Calculator - Days Between Two Dates',
   description:
-    'Use the Date Difference Calculator to find the exact number of days, months and years between two dates. Free online date calculator tool.',
-
+    'Use the free Date Difference Calculator to calculate the difference between two dates in years, months, days, total days and weeks.',
   keywords: [
     'date difference calculator',
     'days between two dates',
     'calculate date difference',
-    'date duration calculator',
+    'date gap calculator',
     'difference between dates',
-    'days calculator online',
   ],
-
   alternates: {
     canonical:
       'https://gyaanbucks.com/tools/age-calculator/date-difference-calculator',
   },
-
   openGraph: {
     title: 'Date Difference Calculator - Days Between Two Dates',
     description:
-      'Calculate the exact difference between two dates in days, months and years instantly.',
+      'Calculate the exact difference between two dates using the free GyaanBucks Date Difference Calculator.',
     url: 'https://gyaanbucks.com/tools/age-calculator/date-difference-calculator',
     siteName: 'GyaanBucks',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Date Difference Calculator',
-      },
-    ],
     type: 'website',
   },
-
   twitter: {
     card: 'summary_large_image',
     title: 'Date Difference Calculator - Days Between Two Dates',
-    description: 'Find number of days between any two dates instantly.',
-    images: ['/og-image.png'],
+    description:
+      'Find the date gap in years, months, days, total days and completed weeks.',
   },
 };
 
-export default function DateDifferencePage() {
-  const toolSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'Age Difference Calculator',
-    url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
-    applicationCategory: 'UtilityApplication',
-    operatingSystem: 'Any',
-    description:
-      'Free online age difference calculator to compare two ages or dates in years, months and days.',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'INR',
-    },
-  };
+const webApplicationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Date Difference Calculator',
+  url: 'https://gyaanbucks.com/tools/age-calculator/date-difference-calculator',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'All',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'INR',
+  },
+};
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'How do I calculate days between two dates?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Enter the start date and end date, then click calculate. The tool shows the total number of days between both dates.',
-        },
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a date difference calculator?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A date difference calculator finds the exact gap between two calendar dates in years, months, days and total days.',
       },
-      {
-        '@type': 'Question',
-        name: 'Does this calculator include leap years?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, the date difference calculator automatically considers leap years while calculating the difference.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I calculate days between two dates?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, enter a start date and end date to calculate total days between them.',
       },
-      {
-        '@type': 'Question',
-        name: 'Can I calculate weeks, months and years between dates?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, this tool shows total days, total weeks, approximate months and approximate years between two dates.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is this different from age difference calculator?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, date difference can compare any two calendar dates, while age difference usually compares two dates of birth.',
       },
-      {
-        '@type': 'Question',
-        name: 'Is this date difference calculator free?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, this online date difference calculator is completely free to use.',
-        },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does this calculator show completed weeks?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, it shows total days, completed weeks and remaining days after weeks.',
       },
-    ],
-  };
+    },
+    {
+      '@type': 'Question',
+      name: 'Is this date difference calculator free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, this GyaanBucks educational date calculator is free to use.',
+      },
+    },
+  ],
+};
+
+export default function DateDifferencePage() {
+  const hero = (
+    <div className={styles.hero}>
+      <div className={styles.heroInner}>
+        <p className={styles.eyebrow}>Date Gap Learning Tool</p>
+        <h1>Date Difference Calculator</h1>
+        <p>
+          Calculate the difference between two calendar dates in years, months,
+          days, total days and completed weeks. Useful for events, deadlines,
+          study plans and project timelines.
+        </p>
+      </div>
+    </div>
+  );
 
   return (
-    <>
-      <Header />
+    <ToolPageLayout hero={hero}>
+      <Script
+        id="date-difference-webapplication-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webApplicationSchema),
+        }}
+      />
 
-      <main className={styles.container}>
-        <div className={styles.layout}>
-          <div className={styles.mainContent}>
-            <nav className={styles.breadcrumb}>
-              <Link href="/">Home</Link>
-              <span>/</span>
-              <Link href="/tools">Tools</Link>
-              <span>/</span>
-              <Link href="/tools/age-calculator">Age Calculator</Link>
-              <span>/</span>
-              <strong>Date Difference Calculator</strong>
-            </nav>
+      <Script
+        id="date-difference-faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
 
-            <h1 className={styles.title}>Date Difference Calculator</h1>
+      <DateDifferenceClient />
 
-            <p className={styles.description}>
-              Use this free Date Difference Calculator to calculate the exact
-              difference between two dates. Find total days, weeks, months and
-              years between any start date and end date instantly.
-            </p>
+      <section className={styles.contentBlock}>
+        <h2>What is a Date Difference Calculator?</h2>
+        <p>
+          A Date Difference Calculator is an online tool that calculates the gap
+          between two calendar dates. It helps you find how much time exists
+          between a start date and an end date. The result can be shown in
+          years, months, days, total days and completed weeks. This page is made
+          for users who want to compare any two dates, not only dates of birth.
+        </p>
 
-            <DateDifferenceClient />
+        <p>
+          Date difference calculation is useful in daily life, education,
+          planning and record keeping. You may want to know how many days are
+          between two events, how long a project took, how many days are left
+          between two study milestones or how much time passed between two
+          important dates. Instead of manually counting on a calendar, this tool
+          gives a clean result instantly.
+        </p>
 
-            <section className={styles.content}>
-              <h2>What is a Date Difference Calculator?</h2>
-              <p>
-                A Date Difference Calculator is an online tool that helps you
-                find the exact time gap between two dates. You can enter a start
-                date and an end date, and the calculator will instantly show the
-                total number of days between them. It also gives a useful
-                breakdown in weeks, approximate months and approximate years.
-              </p>
+        <h2>How to Calculate the Difference Between Two Dates</h2>
+        <p>
+          To calculate the difference between two dates, enter the start date
+          and the end date. The calculator compares both dates and calculates
+          the completed years first. After that, it calculates the remaining
+          months and days. It also calculates total days, completed weeks and
+          remaining days after weeks. This gives both a human-friendly result
+          and a numeric result.
+        </p>
 
-              <p>
-                This tool is helpful when you need to calculate the duration
-                between two important dates without manually counting calendar
-                days. Manual date calculation can be confusing because different
-                months have different numbers of days, and leap years can also
-                affect the result. This calculator handles those differences
-                automatically.
-              </p>
+        <p>
+          For example, if you compare two dates that are several months apart,
+          the total days result may be more useful for deadlines. But if you are
+          comparing two dates that are years apart, the years-months-days result
+          may be easier to understand. That is why this tool shows both formats.
+        </p>
 
-              <h2>How to Calculate Days Between Two Dates</h2>
-              <p>
-                To calculate days between two dates, select the start date first
-                and then select the end date. After that, click the calculate
-                button. The tool will show the total number of days between the
-                selected dates. You can use it for past dates, future dates or
-                any custom date range.
-              </p>
+        <h2>Date Difference vs Age Difference</h2>
+        <p>
+          Date difference and age difference are related, but the intent is
+          different. The{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>{' '}
+          compares two dates of birth and shows the age gap between two people.
+          This Date Difference Calculator compares any two calendar dates. You
+          can use it for events, deadlines, exam preparation plans, project
+          durations, travel dates or personal milestones.
+        </p>
 
-              <p>
-                For example, if you want to know how many days are left until an
-                exam, event, birthday, project deadline or trip, you can enter
-                today’s date as the start date and the target date as the end
-                date. The calculator will instantly display the date duration.
-              </p>
+        <p>
+          If you want to know your age from date of birth, use the{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>. If you want
+          to calculate age as on a selected date, use the{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>
+          . If your main question is “how many days old am I?”, use the{' '}
+          <Link href="/tools/age-calculator/age-in-days">
+            Age in Days Calculator
+          </Link>
+          .
+        </p>
 
-              <h2>Common Uses of Date Difference Calculator</h2>
-              <p>
-                Date difference calculation is useful in many real-life
-                situations. Students use it to calculate exam countdowns.
-                Employees and business owners use it to track project timelines.
-                Families use it for birthdays, anniversaries and travel
-                planning. It is also useful for calculating subscription
-                periods, warranty duration, work experience, document validity
-                and other date-based records.
-              </p>
+        <h2>Where This Tool is Useful</h2>
+        <p>
+          This calculator can be used for study planning, assignment timelines,
+          project schedules, event planning, travel date checks, countdown
+          comparisons and general learning. Students can use it to understand
+          how time intervals work. Teachers can use it as a classroom example
+          for calendar arithmetic. General users can use it whenever they need a
+          quick gap between two dates.
+        </p>
 
-              <p>
-                Many people also use this tool as a day counter between dates.
-                It saves time and gives a clear result without requiring manual
-                calendar checking.
-              </p>
+        <p>
+          The tool also helps users avoid confusion between total days and
+          calendar months. A month is not always 30 days. Some months have 31
+          days, February has 28 days in common years and 29 days in leap years.
+          Date calculations become more accurate when handled by a proper date
+          difference tool.
+        </p>
 
-              <h2>Why Use This Online Date Duration Calculator?</h2>
-              <p>
-                An online date duration calculator is faster and more accurate
-                than manual calculation. It reduces errors and gives results in
-                multiple formats. Instead of only showing total days, this tool
-                also displays weeks, approximate months and approximate years,
-                making it easier to understand the full time gap.
-              </p>
+        <h2>Learning Value of Date Difference</h2>
+        <p>
+          GyaanBucks focuses on quizzes, learning tools, knowledge improvement
+          and practical calculation utilities. This date calculator supports
+          that goal by turning calendar logic into an easy learning experience.
+          By seeing the result in different formats, users can understand how
+          time can be measured in multiple ways.
+        </p>
 
-              <p>
-                Whether you are calculating days for personal planning,
-                education, work, travel, finance or official documentation, this
-                free tool gives a simple and reliable result.
-              </p>
+        <p>
+          For official or legal use, always verify final date rules from the
+          relevant authority. This calculator is designed for educational and
+          general planning use. It gives a helpful date interval result, but
+          institutions may use special inclusion rules for start and end dates.
+        </p>
+      </section>
 
-              <h2>Benefits of Using This Tool</h2>
-              <ul>
-                <li>Calculate total days between two dates instantly</li>
-                <li>
-                  Shows total weeks, approximate months and approximate years
-                </li>
-                <li>
-                  Useful for events, deadlines, exams and project timelines
-                </li>
-                <li>
-                  Works for past dates, future dates and custom date ranges
-                </li>
-                <li>Free, fast and mobile-friendly online calculator</li>
-              </ul>
-            </section>
-            <section className={styles.content}>
-              <h2>Different Ways to Calculate Date Difference</h2>
+      <section className={styles.faqSection}>
+        <h2>Date Difference Calculator FAQs</h2>
 
-              <p>
-                There are multiple ways to calculate the difference between two
-                dates. Some people manually count calendar days, while others
-                use spreadsheet formulas or online tools. However, manual
-                methods can be time-consuming and prone to errors.
-              </p>
-
-              <p>
-                Using an online date difference calculator is the easiest and
-                most accurate method. It instantly calculates the exact number
-                of days, weeks, months, and years between two dates without
-                requiring any manual effort.
-              </p>
-
-              <h3>Date Difference in Days, Months and Years</h3>
-
-              <p>
-                The difference between two dates can be represented in different
-                formats. For example, you can calculate the total number of days
-                between two dates or break it down into years, months, and days.
-              </p>
-
-              <p>
-                This tool provides both simple and detailed results so that
-                users can understand the complete duration easily. Whether you
-                need a quick answer or a detailed breakdown, this calculator
-                gives both.
-              </p>
-            </section>
-
-            <section className={styles.content}>
-              <h2>When Should You Use a Date Difference Calculator?</h2>
-
-              <p>
-                A date difference calculator is useful whenever you need to
-                measure the time gap between two important dates. This includes
-                tracking deadlines, counting days remaining for an event,
-                calculating work experience, or planning trips and schedules.
-              </p>
-
-              <p>
-                Instead of manually counting calendar days, this tool gives you
-                an instant and accurate result. It is especially helpful when
-                dealing with long durations where manual calculation can be
-                confusing.
-              </p>
-            </section>
-
-            <section className={styles.content}>
-              <h2>Frequently Asked Questions</h2>
-
-              <h3>How do I calculate the difference between two dates?</h3>
-              <p>
-                Select the start date and end date, then click calculate. The
-                calculator will show the total days and other useful breakdowns.
-              </p>
-
-              <h3>Can I calculate future date duration?</h3>
-              <p>
-                Yes. You can select today as the start date and a future date as
-                the end date to calculate remaining days.
-              </p>
-
-              <h3>Does this calculator count leap years?</h3>
-              <p>
-                Yes. The date calculation automatically works with leap years
-                and different month lengths.
-              </p>
-
-              <h3>Can I use this as a day counter?</h3>
-              <p>
-                Yes. This tool works as a day counter between two selected
-                dates.
-              </p>
-
-              <h3>Is this calculator free?</h3>
-              <p>
-                Yes, the Date Difference Calculator on GyaanBucks is free to
-                use.
-              </p>
-            </section>
-          </div>
-
-          <aside className={styles.sidebar}>
-            <div className={styles.sidebarBox}>
-              <h3>🔥 Popular Calculators</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    Age in Days Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-difference-calculator">
-                    Age Difference Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    Percentage Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>🎯 Exam Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/upsc-age-calculator">
-                    UPSC Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/ssc-age-calculator">
-                    SSC Age Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>🏫 Admission Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/school-admission-age-calculator">
-                    School Admission Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/school-admission-age-calculator/telangana">
-                    Telangana School Admission Age
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>🚀 Explore GyaanBucks</h3>
-              <ul>
-                <li>
-                  <Link href="/tools">All Online Calculators</Link>
-                </li>
-                <li>
-                  <Link href="/quizzes">Play Quizzes</Link>
-                </li>
-                <li>
-                  <Link href="/categories">Quiz Categories</Link>
-                </li>
-                <li>
-                  <Link href="/blog">Latest Articles</Link>
-                </li>
-              </ul>
-            </div>
-          </aside>
+        <div className={styles.faqItem}>
+          <h3>Can I calculate days between two dates?</h3>
+          <p>
+            Yes, enter any two dates and the calculator shows total days between
+            them.
+          </p>
         </div>
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(toolSchema),
-          }}
-        />
-      </main>
+        <div className={styles.faqItem}>
+          <h3>Does it work if I enter dates in reverse order?</h3>
+          <p>
+            Yes, the calculator reverses dates internally and shows the
+            difference clearly.
+          </p>
+        </div>
 
-      <Footer />
-    </>
+        <div className={styles.faqItem}>
+          <h3>Does this show years, months and days?</h3>
+          <p>
+            Yes, it shows the date gap in years, months, days, total days and
+            weeks.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is this the same as age difference?</h3>
+          <p>
+            No. Age difference compares two birth dates. Date difference can
+            compare any two calendar dates.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is this tool free?</h3>
+          <p>Yes, this Date Difference Calculator is free on GyaanBucks.</p>
+        </div>
+      </section>
+    </ToolPageLayout>
   );
 }

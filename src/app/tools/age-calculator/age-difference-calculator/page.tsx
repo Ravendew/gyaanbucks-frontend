@@ -1,64 +1,48 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import styles from './page.module.css';
+import Script from 'next/script';
+import ToolPageLayout from '@/components/ToolPageLayout/ToolPageLayout';
 import AgeDifferenceClient from './AgeDifferenceClient';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
   title: 'Age Difference Calculator - Compare Two Ages Online',
   description:
-    'Use the Age Difference Calculator to compare two ages or dates and find the exact difference in years, months and days. Free online age comparison tool.',
-
+    'Use the free Age Difference Calculator to compare two dates of birth and find the exact age gap in years, months, days and total days.',
   keywords: [
     'age difference calculator',
     'compare two ages',
     'age gap calculator',
+    'age difference between two dates of birth',
     'calculate age difference',
-    'difference between two ages',
-    'date age difference calculator',
   ],
-
   alternates: {
     canonical:
       'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
   },
-
   openGraph: {
     title: 'Age Difference Calculator - Compare Two Ages Online',
     description:
-      'Compare two ages or dates and find the exact age difference instantly.',
+      'Compare two dates of birth and calculate the exact age difference using GyaanBucks.',
     url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
     siteName: 'GyaanBucks',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Age Difference Calculator',
-      },
-    ],
     type: 'website',
   },
-
   twitter: {
     card: 'summary_large_image',
     title: 'Age Difference Calculator - Compare Two Ages Online',
     description:
-      'Find the exact age gap between two people or dates instantly.',
-    images: ['/og-image.png'],
+      'Find the age gap between two people in years, months, days and total days.',
   },
 };
 
-const toolSchema = {
+const webApplicationSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: 'Age Difference Calculator',
   url: 'https://gyaanbucks.com/tools/age-calculator/age-difference-calculator',
-  applicationCategory: 'UtilityApplication',
-  operatingSystem: 'Any',
-  description:
-    'Free online age difference calculator to compare two ages or dates in years, months and days.',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'All',
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -72,18 +56,34 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'How to calculate age difference between two people?',
+      name: 'What is an age difference calculator?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Enter both dates of birth and click calculate. The tool will show the exact age difference in years, months and days.',
+        text: 'An age difference calculator compares two dates of birth and shows the exact age gap in years, months and days.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Can I compare two dates using this calculator?',
+      name: 'How do I compare two ages?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes, you can enter any two dates to find the difference between them instantly.',
+        text: 'Enter both dates of birth and the calculator will show who is older and the exact age difference.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does this calculator show total days difference?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, it shows the total difference in days along with years, months and days.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I use it for siblings or friends?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, you can compare the age gap between siblings, friends, classmates or any two people.',
       },
     },
     {
@@ -91,334 +91,179 @@ const faqSchema = {
       name: 'Is this age difference calculator free?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes, this tool is completely free to use on GyaanBucks.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Does it show difference in months and days?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, the calculator shows detailed results including years, months and days.',
+        text: 'Yes, this GyaanBucks educational tool is free to use.',
       },
     },
   ],
 };
 
 export default function AgeDifferencePage() {
+  const hero = (
+    <div className={styles.hero}>
+      <div className={styles.heroInner}>
+        <p className={styles.eyebrow}>Age Gap Comparison Tool</p>
+        <h1>Age Difference Calculator</h1>
+        <p>
+          Compare two dates of birth and find the exact age difference in years,
+          months, days and total days. Useful for siblings, friends, classmates
+          and general date comparison.
+        </p>
+      </div>
+    </div>
+  );
+
   return (
-    <>
-      <Header />
+    <ToolPageLayout hero={hero}>
+      <Script
+        id="age-difference-webapplication-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webApplicationSchema),
+        }}
+      />
 
-      <main className={styles.container}>
-        <div className={styles.layout}>
-          <div className={styles.mainContent}>
-            <h1 className={styles.title}>Age Difference Calculator</h1>
-
-            <p className={styles.description}>
-              Use this Age Difference Calculator to calculate the exact age gap
-              between two people. Enter both dates of birth and get difference
-              in years, months and days instantly.
-            </p>
-
-            <AgeDifferenceClient />
-
-            {/* SEO CONTENT */}
-            <section className={styles.content}>
-              <h2>What is Age Difference Calculator?</h2>
-              <p>
-                Age Difference Calculator is an online tool used to calculate
-                the exact age gap between two people using their dates of birth.
-                Instead of manually calculating years, months, and days, this
-                calculator gives an accurate result instantly.
-              </p>
-
-              <p>
-                This tool is useful for anyone who wants to compare ages,
-                whether for personal, educational, or professional purposes. It
-                eliminates confusion and provides precise results within
-                seconds.
-              </p>
-
-              <h2>How to Calculate Age Difference Between Two People</h2>
-              <p>
-                To calculate age difference, you need two dates of birth. Enter
-                the first person’s date of birth and then the second person’s
-                date of birth. The calculator will automatically compute the
-                difference in years, months, and days.
-              </p>
-
-              <p>
-                The tool also calculates total days, total weeks, and total
-                months, giving you a complete breakdown of the age gap. This is
-                especially helpful when you need detailed age comparison.
-              </p>
-
-              <h2>Where Age Difference Calculator is Used</h2>
-              <p>
-                Age difference calculation is commonly used in real-life
-                situations such as comparing age between friends, siblings, or
-                partners. Many couples use it to check their age gap, while
-                parents use it to compare their children’s ages.
-              </p>
-
-              <p>
-                It is also useful in official documentation, eligibility checks,
-                and educational purposes where exact age difference is required.
-              </p>
-
-              <h2>Why Use an Online Age Difference Calculator?</h2>
-              <p>
-                Manual age calculation can be confusing due to varying number of
-                days in months and leap years. Even a small mistake can lead to
-                incorrect results. This calculator solves that problem by
-                providing accurate results instantly.
-              </p>
-
-              <p>
-                It saves time, reduces errors, and provides detailed output,
-                making it the best solution for calculating age difference
-                online.
-              </p>
-
-              <h2>Benefits of Using This Tool</h2>
-              <ul>
-                <li>Instant and accurate age difference calculation</li>
-                <li>Shows result in years, months, and days</li>
-                <li>Includes total days, weeks, and months</li>
-                <li>Easy to use on mobile and desktop</li>
-                <li>No manual calculation required</li>
-              </ul>
-            </section>
-
-            <section className={styles.content}>
-              <h2>Frequently Asked Questions</h2>
-
-              <h3>How do I calculate age difference?</h3>
-              <p>
-                Enter both dates of birth and click calculate. The tool will
-                instantly display the exact age difference.
-              </p>
-
-              <h3>Can I calculate age difference in days?</h3>
-              <p>
-                Yes, this calculator provides total days along with years and
-                months.
-              </p>
-
-              <h3>Is this age difference calculator accurate?</h3>
-              <p>
-                Yes, it considers leap years and month variations to give
-                accurate results.
-              </p>
-
-              <h3>Can I use this for relationship or marriage age gap?</h3>
-              <p>
-                Yes, many users use this tool to calculate age gap between
-                couples.
-              </p>
-            </section>
-
-            <section className={styles.content}>
-              <h2>Age Difference Calculator Use Cases</h2>
-
-              <p>
-                Age difference calculation is widely used in different
-                situations. For example, couples often check their age gap for
-                personal reasons, while families use it to compare siblings'
-                ages.
-              </p>
-
-              <p>
-                It is also useful in educational and official scenarios where
-                age comparison is required. Many people use this tool while
-                filling forms, verifying eligibility, or simply out of
-                curiosity.
-              </p>
-
-              <h2>Important Note</h2>
-
-              <p>
-                While this calculator provides accurate results, it should be
-                used as a reference tool. For official purposes, always verify
-                age calculations based on required documentation and guidelines.
-              </p>
-
-              <p>
-                This tool is designed for quick and easy use, helping users
-                avoid manual calculation errors and get precise results
-                instantly.
-              </p>
-            </section>
-            <section className={styles.content}>
-              <h2>Is Age Difference Important?</h2>
-
-              <p>
-                Age difference may or may not be important depending on the
-                situation. In relationships, friendships, or family, age gap is
-                usually just a number, but in certain official or eligibility
-                scenarios, exact age difference becomes important.
-              </p>
-
-              <p>
-                This is why having a reliable age difference calculator is
-                useful. It helps you get precise results instantly without
-                confusion and avoids manual errors.
-              </p>
-
-              <p>
-                Whether you are comparing ages for personal curiosity or
-                official requirements, this tool provides a quick and accurate
-                solution.
-              </p>
-            </section>
-
-            <section className={styles.content}>
-              <h2>Detailed Age Difference Calculation Explained</h2>
-
-              <p>
-                When calculating age difference, the result is not just about
-                subtracting years. A proper calculation considers months, days,
-                and even leap years. This is why manual calculations often lead
-                to incorrect results.
-              </p>
-
-              <p>
-                This Age Difference Calculator automatically adjusts for
-                different month lengths and leap years to give accurate results.
-                It ensures that the age gap is calculated precisely in years,
-                months, and days without any manual effort.
-              </p>
-
-              <h2>Age Difference in Real Life Scenarios</h2>
-
-              <p>
-                Age difference plays a role in many real-life situations. People
-                often compare age gaps between siblings, friends, or partners.
-                In some cases, age difference is also considered for educational
-                admissions, job eligibility, or official documentation.
-              </p>
-
-              <p>
-                Having a reliable calculator helps users quickly determine the
-                exact gap without confusion. Whether the difference is small or
-                large, this tool presents it clearly and accurately.
-              </p>
-
-              <h2>Why Accuracy Matters</h2>
-
-              <p>
-                Even a small difference in calculation can lead to incorrect
-                assumptions, especially when age is used for eligibility or
-                verification. This tool removes that risk by handling all
-                calculations automatically.
-              </p>
-
-              <p>
-                It is designed to be simple, fast, and accurate, making it
-                suitable for everyday use as well as important situations where
-                precise age difference is required.
-              </p>
-            </section>
-
-            <section className={styles.content}>
-              <h2>People Also Search For</h2>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">exact age calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    age calculator by dob
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    age in days calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/upsc-age-calculator">
-                    upsc age calculator
-                  </Link>
-                </li>
-              </ul>
-            </section>
-          </div>
-
-          {/* FULL SIDEBAR */}
-          <aside className={styles.sidebar}>
-            <div className={styles.sidebarBox}>
-              <h3>🔥 Popular Calculators</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator">Age Calculator</Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-by-dob">
-                    Age by DOB
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/age-in-days">
-                    Age in Days
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/percentage-calculator">
-                    Percentage Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>🎯 Exam Tools</h3>
-              <ul>
-                <li>
-                  <Link href="/tools/age-calculator/upsc-age-calculator">
-                    UPSC Age Calculator
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tools/age-calculator/ssc-age-calculator">
-                    SSC Age Calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.sidebarBox}>
-              <h3>🚀 Explore</h3>
-              <ul>
-                <li>
-                  <Link href="/tools">All Tools</Link>
-                </li>
-                <li>
-                  <Link href="/quizzes">Play Quiz</Link>
-                </li>
-              </ul>
-            </div>
-          </aside>
-        </div>
-      </main>
-
-      <Footer />
-
-      <script
+      <Script
+        id="age-difference-faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(faqSchema),
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(toolSchema),
-        }}
-      />
 
-      <Footer />
-    </>
+      <AgeDifferenceClient />
+
+      <section className={styles.contentBlock}>
+        <h2>What is an Age Difference Calculator?</h2>
+        <p>
+          An Age Difference Calculator is a tool that compares two dates of
+          birth and finds the exact age gap between two people. Instead of
+          calculating each person’s age separately and then trying to compare
+          the results, this tool directly calculates the difference between the
+          two birth dates. The result is shown in years, months, days and total
+          days, so it is easier to understand the real gap.
+        </p>
+
+        <p>
+          This page has a different purpose from a normal age calculator. A
+          regular age calculator answers “How old am I today?” while this page
+          answers “What is the age difference between two people?” That makes it
+          useful for comparing siblings, friends, classmates, family members or
+          any two dates of birth.
+        </p>
+
+        <h2>How to Use the Age Difference Calculator</h2>
+        <p>
+          To use this calculator, enter the first person’s date of birth and the
+          second person’s date of birth. After that, press the compare button.
+          The calculator checks which date is earlier, identifies who is older
+          and calculates the difference between the two dates. The result is
+          displayed as completed years, remaining months and remaining days.
+        </p>
+
+        <p>
+          For example, if one person was born in 2000 and another person was
+          born in 2005, the age gap may look like five years at first. But if
+          their birth months and birth days are different, the exact difference
+          may be four years, several months and some days. This calculator
+          handles that exact date logic automatically.
+        </p>
+
+        <h2>Why Age Difference Calculation is Useful</h2>
+        <p>
+          Age difference calculation is useful in many everyday situations.
+          Parents may want to know the exact gap between children. Students may
+          compare age gaps among classmates. Families may use it for records or
+          curiosity. Teachers can also use this type of tool as a practical
+          example for date difference learning.
+        </p>
+
+        <p>
+          The tool also helps users understand that age comparison is not just
+          about subtracting years. Month and day positions matter. If two people
+          are born in different months of the same year, they do not have zero
+          age gap. Their exact difference may be several months and days.
+        </p>
+
+        <h2>Age Difference vs Date Difference</h2>
+        <p>
+          Age difference and date difference are related but not exactly the
+          same user intent. Age difference usually compares two people’s dates
+          of birth. Date difference can compare any two dates, such as the gap
+          between two events, two deadlines or two calendar days. For that
+          purpose, you can use the upcoming Date Difference Calculator.
+        </p>
+
+        <p>
+          If you want to calculate your age from your own birth date, visit the{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>. If you want
+          to calculate age as on a selected date, visit the{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>
+          . If your main focus is total days lived, use the{' '}
+          <Link href="/tools/age-calculator/age-in-days">
+            Age in Days Calculator
+          </Link>
+          .
+        </p>
+
+        <h2>Learning Value of Comparing Two Ages</h2>
+        <p>
+          GyaanBucks focuses on quizzes, learning tools, knowledge improvement
+          and practical progress tracking. This calculator supports learning by
+          showing how date comparison works in real life. Students can observe
+          how years, months and days are borrowed and adjusted while comparing
+          two dates.
+        </p>
+
+        <p>
+          This kind of practical calculation improves calendar understanding and
+          logical thinking. It also helps users avoid rough age gap assumptions.
+          A clean age difference result is easier to understand, share and use
+          for personal reference.
+        </p>
+      </section>
+
+      <section className={styles.faqSection}>
+        <h2>Age Difference Calculator FAQs</h2>
+
+        <div className={styles.faqItem}>
+          <h3>What does this age difference calculator do?</h3>
+          <p>
+            It compares two dates of birth and shows the exact age gap in years,
+            months and days.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Can it tell who is older?</h3>
+          <p>
+            Yes, it identifies which person is older based on the earlier date
+            of birth.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Does it show total days difference?</h3>
+          <p>
+            Yes, it also shows the total number of days between the two dates of
+            birth.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is this different from the date difference calculator?</h3>
+          <p>
+            Yes. This page is specifically for comparing two ages or dates of
+            birth, while date difference can compare any two calendar dates.
+          </p>
+        </div>
+
+        <div className={styles.faqItem}>
+          <h3>Is it free?</h3>
+          <p>Yes, the Age Difference Calculator is free on GyaanBucks.</p>
+        </div>
+      </section>
+    </ToolPageLayout>
   );
 }

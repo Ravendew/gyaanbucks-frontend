@@ -1,83 +1,39 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import styles from './page.module.css';
 
-type DetailedResult = {
+type Result = {
+  totalDays: number;
+  totalWeeks: number;
+  totalMonthsApprox: number;
   years: number;
   months: number;
   days: number;
-  totalMonths: number;
-  remainingDaysAfterMonths: number;
-  totalWeeks: number;
-  remainingDaysAfterWeeks: number;
-  totalDays: number;
-  totalHours: number;
-  totalMinutes: number;
-  totalSeconds: number;
+  nextMilestone: number;
+  daysToMilestone: number;
 };
 
-const monthOptions = [
-  { label: 'January', value: 1 },
-  { label: 'February', value: 2 },
-  { label: 'March', value: 3 },
-  { label: 'April', value: 4 },
-  { label: 'May', value: 5 },
-  { label: 'June', value: 6 },
-  { label: 'July', value: 7 },
-  { label: 'August', value: 8 },
-  { label: 'September', value: 9 },
-  { label: 'October', value: 10 },
-  { label: 'November', value: 11 },
-  { label: 'December', value: 12 },
-];
+function calculateAgeInDays(dob: string): Result | null {
+  if (!dob) return null;
 
-function isValidDate(year: number, month: number, day: number) {
-  const date = new Date(year, month - 1, day);
-  return (
-    date.getFullYear() === year &&
-    date.getMonth() === month - 1 &&
-    date.getDate() === day
-  );
-}
+  const birthDate = new Date(dob);
+  const today = new Date();
 
-function getDaysInMonth(year: number, monthIndex: number) {
-  return new Date(year, monthIndex + 1, 0).getDate();
-}
+  if (birthDate > today) return null;
 
-function calculateDetailedAge(
-  birthYear: number,
-  birthMonth: number,
-  birthDay: number,
-  targetYear: number,
-  targetMonth: number,
-  targetDay: number,
-): DetailedResult | null {
-  if (
-    !isValidDate(birthYear, birthMonth, birthDay) ||
-    !isValidDate(targetYear, targetMonth, targetDay)
-  ) {
-    return null;
-  }
+  const diffMs = today.getTime() - birthDate.getTime();
+  const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const totalWeeks = Math.floor(totalDays / 7);
+  const totalMonthsApprox = Math.floor(totalDays / 30.4375);
 
-  const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
-  const targetDate = new Date(targetYear, targetMonth - 1, targetDay);
-
-  birthDate.setHours(0, 0, 0, 0);
-  targetDate.setHours(0, 0, 0, 0);
-
-  if (birthDate > targetDate) return null;
-
-  let years = targetYear - birthYear;
-  let months = targetMonth - birthMonth;
-  let days = targetDay - birthDay;
+  let years = today.getFullYear() - birthDate.getFullYear();
+  let months = today.getMonth() - birthDate.getMonth();
+  let days = today.getDate() - birthDate.getDate();
 
   if (days < 0) {
     months -= 1;
-    const previousMonthIndex = targetMonth - 2 < 0 ? 11 : targetMonth - 2;
-    const previousMonthYear = targetMonth - 2 < 0 ? targetYear - 1 : targetYear;
-    days += getDaysInMonth(previousMonthYear, previousMonthIndex);
+    days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
   }
 
   if (months < 0) {
@@ -85,238 +41,135 @@ function calculateDetailedAge(
     months += 12;
   }
 
-  const totalDays = Math.floor(
-    (targetDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24),
-  );
-
-  const totalMonths = years * 12 + months;
-  const totalWeeks = Math.floor(totalDays / 7);
-  const remainingDaysAfterWeeks = totalDays % 7;
+  const nextMilestone = Math.ceil(totalDays / 5000) * 5000;
+  const daysToMilestone = nextMilestone - totalDays;
 
   return {
+    totalDays,
+    totalWeeks,
+    totalMonthsApprox,
     years,
     months,
     days,
-    totalMonths,
-    remainingDaysAfterMonths: days,
-    totalWeeks,
-    remainingDaysAfterWeeks,
-    totalDays,
-    totalHours: totalDays * 24,
-    totalMinutes: totalDays * 24 * 60,
-    totalSeconds: totalDays * 24 * 60 * 60,
+    nextMilestone,
+    daysToMilestone,
   };
 }
 
 export default function AgeInDaysClient() {
-  const today = new Date();
+  const [dob, setDob] = useState('');
+  const [submittedDob, setSubmittedDob] = useState('');
 
-  const [birthMonth, setBirthMonth] = useState('2');
-  const [birthDay, setBirthDay] = useState('6');
-  const [birthYear, setBirthYear] = useState('1988');
-
-  const [targetMonth, setTargetMonth] = useState(String(today.getMonth() + 1));
-  const [targetDay, setTargetDay] = useState(String(today.getDate()));
-  const [targetYear, setTargetYear] = useState(String(today.getFullYear()));
-
-  const [result, setResult] = useState<DetailedResult | null>(null);
-  const [error, setError] = useState('');
-
-  const handleCalculate = () => {
-    setError('');
-
-    const calculated = calculateDetailedAge(
-      Number(birthYear),
-      Number(birthMonth),
-      Number(birthDay),
-      Number(targetYear),
-      Number(targetMonth),
-      Number(targetDay),
-    );
-
-    if (!calculated) {
-      setResult(null);
-      setError(
-        'Please enter valid dates. Date of birth must be before age at date.',
-      );
-      return;
-    }
-
-    setResult(calculated);
-  };
-
-  const handleReset = () => {
-    setBirthMonth('2');
-    setBirthDay('6');
-    setBirthYear('1988');
-    setTargetMonth(String(today.getMonth() + 1));
-    setTargetDay(String(today.getDate()));
-    setTargetYear(String(today.getFullYear()));
-    setResult(null);
-    setError('');
-  };
+  const result = calculateAgeInDays(submittedDob);
 
   return (
-    <section className={styles.calculatorSection}>
-      <div className={styles.calculatorCard}>
-        <div className={styles.formBlock}>
-          <span className={styles.formKicker}>Age in Days</span>
+    <section className={styles.daysToolBox}>
+      <div className={styles.daysPattern} />
 
-          <h2 className={styles.formTitle}>Calculate Detailed Age</h2>
-
-          <p className={styles.formText}>
-            Enter date of birth and age at date to see full age details.
+      <div className={styles.daysHeader}>
+        <div>
+          <span className={styles.daysBadge}>⏳ Days Lived Counter</span>
+          <h2>How Many Days Old Are You?</h2>
+          <p>
+            This tool focuses on your lifetime in days. Enter your birth date
+            and see your total days lived, weeks, approximate months and next
+            life-day milestone.
           </p>
-
-          <div className={styles.dateRows}>
-            <div>
-              <div className={styles.dateGroupTitle}>Date of Birth</div>
-
-              <div className={styles.dateFields}>
-                <div className={styles.fieldBox}>
-                  <label className={styles.fieldLabel}>Month</label>
-                  <select
-                    value={birthMonth}
-                    onChange={(event) => setBirthMonth(event.target.value)}
-                    className={styles.selectInput}
-                  >
-                    {monthOptions.map((month) => (
-                      <option key={month.value} value={month.value}>
-                        {month.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className={styles.fieldBox}>
-                  <label className={styles.fieldLabel}>Day</label>
-                  <input
-                    type="number"
-                    value={birthDay}
-                    min="1"
-                    max="31"
-                    onChange={(event) => setBirthDay(event.target.value)}
-                    className={styles.smallInput}
-                  />
-                </div>
-
-                <div className={styles.fieldBox}>
-                  <label className={styles.fieldLabel}>Year</label>
-                  <input
-                    type="number"
-                    value={birthYear}
-                    min="1900"
-                    max="2100"
-                    onChange={(event) => setBirthYear(event.target.value)}
-                    className={styles.yearInput}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className={styles.dateGroupTitle}>Age at the Date of</div>
-
-              <div className={styles.dateFields}>
-                <div className={styles.fieldBox}>
-                  <label className={styles.fieldLabel}>Month</label>
-                  <select
-                    value={targetMonth}
-                    onChange={(event) => setTargetMonth(event.target.value)}
-                    className={styles.selectInput}
-                  >
-                    {monthOptions.map((month) => (
-                      <option key={month.value} value={month.value}>
-                        {month.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className={styles.fieldBox}>
-                  <label className={styles.fieldLabel}>Day</label>
-                  <input
-                    type="number"
-                    value={targetDay}
-                    min="1"
-                    max="31"
-                    onChange={(event) => setTargetDay(event.target.value)}
-                    className={styles.smallInput}
-                  />
-                </div>
-
-                <div className={styles.fieldBox}>
-                  <label className={styles.fieldLabel}>Year</label>
-                  <input
-                    type="number"
-                    value={targetYear}
-                    min="1900"
-                    max="2100"
-                    onChange={(event) => setTargetYear(event.target.value)}
-                    className={styles.yearInput}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {error ? <p className={styles.error}>{error}</p> : null}
-
-          <div className={styles.buttonRow}>
-            <button
-              type="button"
-              onClick={handleCalculate}
-              className={styles.calculateBtn}
-            >
-              Calculate Age
-            </button>
-
-            <button
-              type="button"
-              onClick={handleReset}
-              className={styles.resetBtn}
-            >
-              Reset
-            </button>
-          </div>
         </div>
 
-        <div className={styles.resultBlock}>
-          <span className={styles.resultKicker}>Your Result</span>
+        <div className={styles.daysIcon}>📆</div>
+      </div>
 
-          {result ? (
-            <div className={styles.resultList}>
-              <h3>Age:</h3>
-              <p>
-                <strong>
-                  {result.years} years {result.months} months {result.days} days
-                </strong>
-              </p>
-              <p>
-                or {result.totalMonths.toLocaleString()} months{' '}
-                {result.remainingDaysAfterMonths} days
-              </p>
-              <p>
-                or {result.totalWeeks.toLocaleString()} weeks{' '}
-                {result.remainingDaysAfterWeeks} days
-              </p>
-              <p>or {result.totalDays.toLocaleString()} days</p>
-              <p>or {result.totalHours.toLocaleString()} hours</p>
-              <p>or {result.totalMinutes.toLocaleString()} minutes</p>
-              <p>or {result.totalSeconds.toLocaleString()} seconds</p>
-            </div>
-          ) : (
-            <div className={styles.emptyResult}>
-              <strong>Result will appear here</strong>
-              <span>Enter date details and click calculate.</span>
-            </div>
-          )}
+      <div className={styles.daysInputPanel}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="dob">Date of Birth</label>
+          <input
+            id="dob"
+            type="date"
+            value={dob}
+            onChange={(event) => setDob(event.target.value)}
+          />
+        </div>
 
-          <Link href="/quizzes" className={styles.quizCta}>
-            Play Quiz & Earn Money
-          </Link>
+        <div className={styles.actionRow}>
+          <button
+            type="button"
+            className={styles.calculateButton}
+            onClick={() => setSubmittedDob(dob)}
+          >
+            Count My Days
+          </button>
+
+          <button
+            type="button"
+            className={styles.resetButton}
+            onClick={() => {
+              setDob('');
+              setSubmittedDob('');
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
+
+      {!submittedDob && (
+        <div className={styles.daysEmpty}>
+          <span>✨</span>
+          <strong>Your lifetime day count will appear here</strong>
+          <p>
+            Unlike the main age calculator, this page highlights total days
+            lived first.
+          </p>
+        </div>
+      )}
+
+      {submittedDob && result && (
+        <div className={styles.daysResultBox}>
+          <div className={styles.bigDaysCard}>
+            <span>Total Days Lived</span>
+            <strong>{result.totalDays.toLocaleString()}</strong>
+            <p>
+              Your age is also {result.years} years, {result.months} months and{' '}
+              {result.days} days.
+            </p>
+          </div>
+
+          <div className={styles.daysStatsGrid}>
+            <div>
+              <span>Approx. Weeks</span>
+              <strong>{result.totalWeeks.toLocaleString()}</strong>
+            </div>
+
+            <div>
+              <span>Approx. Months</span>
+              <strong>{result.totalMonthsApprox.toLocaleString()}</strong>
+            </div>
+
+            <div>
+              <span>Next Milestone</span>
+              <strong>{result.nextMilestone.toLocaleString()}</strong>
+            </div>
+          </div>
+
+          <div className={styles.milestoneStrip}>
+            <div>
+              <span>Days left for next milestone</span>
+              <strong>{result.daysToMilestone.toLocaleString()} days</strong>
+            </div>
+            <p>
+              Milestones are calculated in 5,000-day intervals to make lifetime
+              tracking more interesting.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {submittedDob && !result && (
+        <p className={styles.errorText}>
+          Please select a valid date of birth. Future dates are not allowed.
+        </p>
+      )}
     </section>
   );
 }

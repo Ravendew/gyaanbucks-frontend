@@ -1,0 +1,58 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #101827;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  margin-bottom: 10px;
+}
+
+.list a {
+  text-decoration: none;
+  color: #065f46;
+  font-weight: 500;
+}
+
+.list a:hover {
+  color: #16a34a;
+}
+
+.card {
+  background: #ecfdf5;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.card h4 {
+  margin-bottom: 8px;
+  color: #065f46;
+}
+
+.card p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.cta {
+  display: inline-block;
+  background: #16a34a;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+}

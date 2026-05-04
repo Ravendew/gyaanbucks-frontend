@@ -4,92 +4,142 @@ import { useState } from 'react';
 import styles from './page.module.css';
 
 type Result = {
+  years: number;
+  months: number;
+  days: number;
   totalDays: number;
   totalWeeks: number;
-  approxMonths: number;
-  approxYears: number;
+  direction: string;
 };
+
+function calculateDateDifference(start: string, end: string): Result | null {
+  if (!start || !end) return null;
+
+  let startDate = new Date(start);
+  let endDate = new Date(end);
+  let direction = 'Start date to end date';
+
+  if (startDate > endDate) {
+    [startDate, endDate] = [endDate, startDate];
+    direction = 'Dates were reversed for calculation';
+  }
+
+  let years = endDate.getFullYear() - startDate.getFullYear();
+  let months = endDate.getMonth() - startDate.getMonth();
+  let days = endDate.getDate() - startDate.getDate();
+
+  if (days < 0) {
+    months -= 1;
+    days += new Date(endDate.getFullYear(), endDate.getMonth(), 0).getDate();
+  }
+
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  const totalDays = Math.floor(
+    (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
+
+  const totalWeeks = Math.floor(totalDays / 7);
+
+  return {
+    years,
+    months,
+    days,
+    totalDays,
+    totalWeeks,
+    direction,
+  };
+}
 
 export default function DateDifferenceClient() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [result, setResult] = useState<Result | null>(null);
-  const [error, setError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  const calculateDifference = () => {
-    setError('');
-    setResult(null);
-
-    if (!startDate || !endDate) {
-      setError('Please select both start date and end date.');
-      return;
-    }
-
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      setError('Please select valid dates.');
-      return;
-    }
-
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    setResult({
-      totalDays,
-      totalWeeks: Math.floor(totalDays / 7),
-      approxMonths: Math.floor(totalDays / 30.4375),
-      approxYears: Math.floor(totalDays / 365.25),
-    });
-  };
-
-  const resetCalculator = () => {
-    setStartDate('');
-    setEndDate('');
-    setResult(null);
-    setError('');
-  };
+  const result = calculateDateDifference(startDate, endDate);
 
   return (
-    <section className={styles.calculatorBox}>
-      <div className={styles.inputGroup}>
-        <label>Start Date</label>
-        <input
-          className={styles.dateInput}
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
+    <section className={styles.dateToolBox}>
+      <div className={styles.datePattern} />
+
+      <div className={styles.dateHeader}>
+        <div>
+          <span className={styles.dateBadge}>📌 Event Date Gap Tool</span>
+          <h2>Calculate Difference Between Two Dates</h2>
+          <p>
+            Choose any two calendar dates and find the exact gap in years,
+            months, days, total days and completed weeks.
+          </p>
+        </div>
+
+        <div className={styles.dateIcon}>🗓️</div>
       </div>
 
-      <div className={styles.inputGroup}>
-        <label>End Date</label>
-        <input
-          className={styles.dateInput}
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
+      <div className={styles.dateInputPanel}>
+        <div className={styles.inputGrid}>
+          <div className={styles.inputGroup}>
+            <label>Start Date</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(event) => setStartDate(event.target.value)}
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label>End Date</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(event) => setEndDate(event.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className={styles.actionRow}>
+          <button
+            type="button"
+            className={styles.calculateButton}
+            onClick={() => setSubmitted(true)}
+          >
+            Calculate Date Difference
+          </button>
+
+          <button
+            type="button"
+            className={styles.resetButton}
+            onClick={() => {
+              setStartDate('');
+              setEndDate('');
+              setSubmitted(false);
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
-      {error && <p className={styles.error}>{error}</p>}
+      {!submitted && (
+        <div className={styles.emptyState}>
+          <strong>Compare any two dates</strong>
+          <span>
+            Useful for events, deadlines, project timelines and learning date
+            intervals.
+          </span>
+        </div>
+      )}
 
-      <div className={styles.buttonRow}>
-        <button type="button" onClick={calculateDifference}>
-          Calculate Date Difference
-        </button>
-        <button type="button" onClick={resetCalculator}>
-          Reset
-        </button>
-      </div>
-
-      {result && (
+      {submitted && result && (
         <div className={styles.resultBox}>
-          <h2>Date Difference Result</h2>
-
           <div className={styles.mainResult}>
-            {result.totalDays.toLocaleString()} days
+            <span>Exact Date Difference</span>
+            <strong>
+              {result.years}Y {result.months}M {result.days}D
+            </strong>
+            <p>{result.direction}</p>
           </div>
 
           <div className={styles.resultGrid}>
@@ -97,20 +147,24 @@ export default function DateDifferenceClient() {
               <span>Total Days</span>
               <strong>{result.totalDays.toLocaleString()}</strong>
             </div>
+
             <div>
-              <span>Total Weeks</span>
+              <span>Completed Weeks</span>
               <strong>{result.totalWeeks.toLocaleString()}</strong>
             </div>
+
             <div>
-              <span>Approx. Months</span>
-              <strong>{result.approxMonths.toLocaleString()}</strong>
-            </div>
-            <div>
-              <span>Approx. Years</span>
-              <strong>{result.approxYears.toLocaleString()}</strong>
+              <span>Remaining Days After Weeks</span>
+              <strong>{result.totalDays % 7}</strong>
             </div>
           </div>
         </div>
+      )}
+
+      {submitted && !result && (
+        <p className={styles.errorText}>
+          Please select both dates to calculate the difference.
+        </p>
       )}
     </section>
   );

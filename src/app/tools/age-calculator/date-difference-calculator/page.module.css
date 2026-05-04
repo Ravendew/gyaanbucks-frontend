@@ -1,138 +1,256 @@
-.container {
+.hero {
   width: 100%;
-  max-width: 1180px;
+  background: linear-gradient(135deg, #e8f8f0, #fff7d6);
+  border-top: 1px solid rgba(22, 163, 74, 0.14);
+  border-bottom: 1px solid rgba(22, 163, 74, 0.14);
+  padding: 48px 20px;
+}
+
+.heroInner {
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 40px 16px;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 24px;
-  align-items: start;
+.eyebrow {
+  color: #065f46;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
-.mainContent {
-  width: 100%;
-  min-width: 0;
-}
-
-.title {
-  font-size: 36px;
-  font-weight: 800;
+.hero h1 {
   color: #101827;
-  text-align: center;
-  margin-bottom: 12px;
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1.08;
+  margin-bottom: 14px;
 }
 
-.description {
-  max-width: 760px;
-  margin: 0 auto 28px;
-  text-align: center;
+.hero p {
   color: #6b7280;
   font-size: 17px;
   line-height: 1.7;
+  max-width: 850px;
 }
 
-.calculatorBox {
-  background: #ffffff;
-  border: 1px solid #d9f3e4;
-  border-radius: 22px;
-  padding: 28px;
-  box-shadow: 0 16px 45px rgba(6, 95, 70, 0.08);
-  margin-bottom: 34px;
+.dateToolBox {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #f8fffb);
+  border: 1px solid rgba(6, 95, 70, 0.14);
+  border-radius: 30px;
+  padding: 30px;
+  margin-bottom: 26px;
+  box-shadow: 0 24px 60px rgba(16, 24, 39, 0.1);
 }
 
-.inputGroup {
-  margin-bottom: 22px;
+.datePattern {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(248, 197, 44, 0.2),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(22, 163, 74, 0.14),
+      transparent 28%
+    );
+  pointer-events: none;
 }
 
-.inputGroup label {
-  display: block;
-  font-size: 15px;
-  font-weight: 700;
+.dateHeader {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.dateBadge {
+  display: inline-flex;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.dateHeader h2 {
   color: #101827;
+  font-size: clamp(27px, 3vw, 40px);
+  line-height: 1.12;
   margin-bottom: 10px;
 }
 
-.dateGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+.dateHeader p {
+  color: #6b7280;
+  line-height: 1.75;
+  max-width: 680px;
 }
 
-.dateGrid input {
+.dateIcon {
+  min-width: 78px;
+  height: 78px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  font-size: 36px;
+  background: linear-gradient(135deg, #16a34a, #f8c52c);
+  box-shadow: 0 18px 38px rgba(22, 163, 74, 0.22);
+}
+
+.dateInputPanel {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(6, 95, 70, 0.1);
+  border-radius: 26px;
+  padding: 22px;
+  box-shadow: 0 12px 28px rgba(16, 24, 39, 0.05);
+}
+
+.inputGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputGroup label {
+  color: #101827;
+  font-weight: 800;
+}
+
+.inputGroup input {
   width: 100%;
-  border: 1px solid #cfeedd;
-  border-radius: 14px;
-  padding: 14px 15px;
-  font-size: 15px;
+  border: 1px solid rgba(6, 95, 70, 0.2);
+  border-radius: 16px;
+  padding: 15px 16px;
+  font-size: 16px;
   color: #101827;
   outline: none;
-  background: #f7f9fc;
+  background: #fbfffd;
 }
 
-.dateGrid input:focus {
+.inputGroup input:focus {
   border-color: #16a34a;
-  background: #ffffff;
   box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
 }
 
-.error {
-  background: #fff1f2;
-  color: #ef4444;
-  border: 1px solid #fecdd3;
-  padding: 12px 14px;
-  border-radius: 14px;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 18px;
-}
-
-.buttonRow {
+.actionRow {
   display: flex;
-  gap: 14px;
+  gap: 12px;
+  margin-top: 18px;
   flex-wrap: wrap;
 }
 
-.buttonRow button {
-  border: none;
-  border-radius: 999px;
-  padding: 13px 24px;
+.calculateButton,
+.resetButton {
+  border: 0;
+  cursor: pointer;
+  border-radius: 14px;
+  padding: 13px 20px;
   font-size: 15px;
   font-weight: 800;
-  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.buttonRow button:first-child {
-  background: #16a34a;
+.calculateButton {
   color: #ffffff;
+  background: linear-gradient(135deg, #16a34a, #065f46);
+  box-shadow: 0 12px 26px rgba(22, 163, 74, 0.28);
 }
 
-.buttonRow button:last-child {
-  background: #f8c52c;
+.resetButton {
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid rgba(6, 95, 70, 0.16);
+}
+
+.calculateButton:hover,
+.resetButton:hover {
+  transform: translateY(-2px);
+}
+
+.emptyState {
+  position: relative;
+  margin-top: 22px;
+  background: #ecfdf5;
+  border: 1px dashed rgba(6, 95, 70, 0.22);
+  border-radius: 22px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.emptyState strong {
   color: #101827;
+  font-size: 18px;
+}
+
+.emptyState span {
+  color: #6b7280;
+  line-height: 1.6;
 }
 
 .resultBox {
-  margin-top: 28px;
-  background: linear-gradient(135deg, #e8f8f0, #fff7d6);
-  border: 1px solid #d9f3e4;
-  border-radius: 20px;
-  padding: 24px;
+  position: relative;
+  margin-top: 24px;
+  animation: resultPop 0.35s ease both;
 }
 
-.resultBox h2 {
-  margin: 0 0 12px;
-  color: #065f46;
-  font-size: 24px;
+@keyframes resultPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .mainResult {
-  font-size: 26px;
+  background: linear-gradient(135deg, #065f46, #16a34a);
+  color: #ffffff;
+  border-radius: 26px;
+  padding: 26px;
+  margin-bottom: 16px;
+}
+
+.mainResult span {
+  display: block;
+  color: #fff7d6;
   font-weight: 900;
-  color: #101827;
-  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.mainResult strong {
+  display: block;
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.mainResult p {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
 }
 
 .resultGrid {
@@ -143,251 +261,134 @@
 
 .resultGrid div {
   background: #ffffff;
-  border: 1px solid #d9f3e4;
-  border-radius: 16px;
-  padding: 16px;
+  border: 1px solid rgba(6, 95, 70, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 12px 26px rgba(16, 24, 39, 0.06);
 }
 
 .resultGrid span {
   display: block;
   color: #6b7280;
-  font-size: 13px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .resultGrid strong {
-  color: #101827;
-  font-size: 18px;
-}
-
-.note {
-  margin-top: 14px;
-  font-size: 15px;
-  font-weight: 600;
   color: #065f46;
-  background: #ecfdf5;
-  border: 1px solid #cfeedd;
-  padding: 12px 14px;
-  border-radius: 14px;
+  font-size: 30px;
 }
 
-.content {
-  background: #ffffff;
-  border: 1px solid #d9f3e4;
-  border-radius: 22px;
-  padding: 28px;
-  margin-bottom: 28px;
-}
-
-.content h2 {
-  color: #101827;
-  font-size: 24px;
-  margin: 0 0 12px;
-}
-
-.content h3 {
-  color: #065f46;
-  font-size: 19px;
-  margin: 20px 0 8px;
-}
-
-.content p {
-  color: #6b7280;
-  font-size: 16px;
-  line-height: 1.8;
-  margin-bottom: 22px;
-}
-
-.content ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.content li {
-  color: #101827;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.content a {
-  color: #16a34a;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.content a:hover {
-  text-decoration: underline;
-}
-
-.links {
-  background: #ecfdf5;
-  border: 1px solid #cfeedd;
-  border-radius: 22px;
-  padding: 24px;
-}
-
-.links h3 {
-  margin: 0 0 14px;
-  color: #065f46;
-  font-size: 22px;
-}
-
-.links ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.links li {
-  margin-bottom: 10px;
-}
-
-.links a {
-  color: #16a34a;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.links a:hover {
-  text-decoration: underline;
-}
-
-/* PREMIUM SIDEBAR */
-.sidebar {
-  position: sticky;
-  top: 100px;
-  height: fit-content;
-}
-
-.sidebarBox {
+.errorText {
   position: relative;
-  overflow: hidden;
-  background: linear-gradient(180deg, #ffffff 0%, #f7fff9 100%);
-  border: 1px solid #cfeedd;
-  border-radius: 22px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 18px 45px rgba(6, 95, 70, 0.1);
+  margin-top: 14px;
+  color: #ef4444;
+  font-weight: 700;
 }
 
-.sidebarBox::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 5px;
-  width: 100%;
-  background: linear-gradient(90deg, #16a34a, #f8c52c);
-}
-
-.sidebarBox h3 {
-  margin: 0 0 16px;
-  font-size: 18px;
-  font-weight: 900;
-  color: #065f46;
-}
-
-.sidebarBox ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.sidebarBox li {
-  margin-bottom: 10px;
-}
-
-.sidebarBox a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.contentBlock {
   background: #ffffff;
-  border: 1px solid #d9f3e4;
-  border-radius: 14px;
-  padding: 12px 14px;
+  border: 1px solid rgba(6, 95, 70, 0.1);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 14px 36px rgba(16, 24, 39, 0.05);
+}
+
+.contentBlock h2 {
   color: #101827;
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 26px;
+  margin: 28px 0 12px;
+}
+
+.contentBlock h2:first-child {
+  margin-top: 0;
+}
+
+.contentBlock p {
+  color: #374151;
+  font-size: 16px;
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+
+.contentBlock a {
+  color: #065f46;
+  font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 8px 20px rgba(6, 95, 70, 0.05);
-  transition: all 0.2s ease;
 }
 
-.sidebarBox a::after {
-  content: '›';
-  font-size: 20px;
+.contentBlock a:hover {
   color: #16a34a;
-  font-weight: 900;
 }
 
-.sidebarBox a:hover {
-  transform: translateX(4px);
-  border-color: #16a34a;
-  box-shadow: 0 12px 26px rgba(22, 163, 74, 0.12);
+.faqSection {
+  margin-top: 26px;
+  background: #ffffff;
+  border: 1px solid rgba(6, 95, 70, 0.1);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 14px 36px rgba(16, 24, 39, 0.05);
 }
 
-/* MOBILE */
-@media (max-width: 900px) {
-  .container {
-    padding: 28px 14px;
+.faqSection h2 {
+  color: #101827;
+  margin-bottom: 18px;
+}
+
+.faqItem {
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(6, 95, 70, 0.1);
+}
+
+.faqItem:last-child {
+  border-bottom: 0;
+}
+
+.faqItem h3 {
+  color: #065f46;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.faqItem p {
+  color: #6b7280;
+  line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 34px 16px;
   }
 
-  .layout {
-    grid-template-columns: 1fr;
+  .dateToolBox,
+  .contentBlock,
+  .faqSection {
+    padding: 22px;
+    border-radius: 22px;
   }
 
-  .sidebar {
-    position: static;
-  }
-
-  .title {
-    font-size: 28px;
-  }
-
-  .description {
-    font-size: 15px;
-  }
-
-  .calculatorBox,
-  .content,
-  .links {
-    padding: 20px;
-    border-radius: 18px;
-  }
-
-  .dateGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .buttonRow {
+  .dateHeader {
     flex-direction: column;
   }
 
-  .buttonRow button {
-    width: 100%;
+  .dateIcon {
+    min-width: 64px;
+    height: 64px;
+    font-size: 28px;
+    border-radius: 20px;
   }
 
-  .mainResult {
-    font-size: 22px;
-  }
-
+  .inputGrid,
   .resultGrid {
     grid-template-columns: 1fr;
   }
-}
 
-.dateInput {
-  width: 100%;
-  border: 1px solid #cfeedd;
-  border-radius: 14px;
-  padding: 14px 15px;
-  font-size: 15px;
-  color: #101827;
-  outline: none;
-  background: #f7f9fc;
-}
+  .actionRow {
+    flex-direction: column;
+  }
 
-.dateInput:focus {
-  border-color: #16a34a;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
+  .calculateButton,
+  .resetButton {
+    width: 100%;
+  }
 }
