@@ -8,6 +8,9 @@ export default function ToolSidebar() {
 
       <ul className={styles.list}>
         <li>
+          <Link href="/tools/love-calculator">Love Calculator</Link>
+        </li>
+        <li>
           <Link href="/tools/age-calculator">Age Calculator</Link>
         </li>
         <li>

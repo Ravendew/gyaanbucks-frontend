@@ -50,6 +50,11 @@ const tools = [
     href: '/tools/age-calculator/school-admission-age-calculator',
     desc: 'Check child age for Nursery, LKG, UKG and Class 1 admission.',
   },
+  {
+    title: 'Love Calculator',
+    href: '/tools/love-calculator',
+    desc: 'Check love compatibility between two names with fun animated results.',
+  },
 ];
 
 export default function ToolsPage() {
