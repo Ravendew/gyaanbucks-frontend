@@ -72,6 +72,7 @@
   padding: 28px;
   margin-bottom: 34px;
 }
+
 .rainLayer {
   position: absolute;
   inset: 0;
@@ -141,6 +142,13 @@
   padding: 26px;
 }
 
+.resultPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 560px;
+}
+
 .toolLabel {
   color: #ec4899;
   font-size: 0.82rem;
@@ -170,6 +178,13 @@
   margin: 22px 0 16px;
 }
 
+.formRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(190px, 0.85fr);
+  gap: 14px;
+  align-items: end;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -182,26 +197,50 @@
   font-weight: 900;
 }
 
-.field input {
+.field input,
+.field select {
   width: 100%;
   min-height: 52px;
   border: 1px solid rgba(190, 18, 60, 0.16);
   border-radius: 18px;
-  background: #fff7fb;
   color: #101827;
   font-size: 1rem;
   outline: none;
-  padding: 0 16px;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     background 0.2s ease;
 }
 
-.field input:focus {
+.field input {
+  background: #fff7fb;
+  padding: 0 16px;
+}
+
+.field input:focus,
+.field select:focus {
   background: #ffffff;
   border-color: #ec4899;
   box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.12);
+}
+
+.field select {
+  appearance: none;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 247, 251, 0.96),
+      rgba(255, 255, 255, 0.9)
+    ),
+    url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23BE123C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position:
+    center,
+    right 16px center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0 46px 0 16px;
+  box-shadow: 0 12px 26px rgba(190, 18, 60, 0.06);
 }
 
 .error {
@@ -234,19 +273,6 @@
   font-size: 0.9rem;
   font-weight: 800;
   margin-top: 14px !important;
-}
-
-.formPanel,
-.resultPanel {
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  border-radius: 30px;
-  box-shadow:
-    0 18px 55px rgba(190, 18, 60, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  padding: 26px;
 }
 
 .emptyResult {
@@ -282,6 +308,85 @@
 .resultCard {
   width: 100%;
   text-align: center;
+}
+
+.avatarStage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px minmax(0, 1fr);
+  align-items: center;
+  min-height: 172px;
+  margin-bottom: 14px;
+  overflow: visible;
+}
+
+.avatarRunner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.leftRunner,
+.rightRunner {
+  width: 132px;
+  height: 132px;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  background: transparent;
+  border-radius: 999px;
+  transform-origin: center;
+}
+
+.leftMaleRunner {
+  transform: scaleX(-1);
+}
+
+.rightMaleRunner {
+  transform: scaleX(1);
+}
+
+.leftFemaleRunner {
+  transform: scaleX(1) scale(1.18);
+}
+
+.rightFemaleRunner {
+  transform: scaleX(-1) scale(1.18);
+}
+
+.lottieRunner {
+  width: 132px;
+  height: 132px;
+  display: block;
+  background: transparent !important;
+  mix-blend-mode: multiply;
+}
+
+.lottieRunner svg {
+  background: transparent !important;
+}
+
+.centerLove {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 20%, #ffffff, transparent 34%),
+    linear-gradient(135deg, #fff1f7, #ffe4ef);
+  border: 1px solid rgba(236, 72, 153, 0.24);
+  box-shadow:
+    0 14px 35px rgba(190, 18, 60, 0.16),
+    0 0 0 8px rgba(236, 72, 153, 0.08);
+  font-size: 1.85rem;
+  z-index: 2;
+}
+
+.avatarFallback {
+  font-size: 3rem;
 }
 
 .scoreCircle {
@@ -448,13 +553,20 @@
   margin: 0;
 }
 
+.genderGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin: 0 0 16px;
+}
+
 @media (max-width: 980px) {
   .loveToolInner {
     grid-template-columns: 1fr;
   }
 
   .resultPanel {
-    min-height: 360px;
+    min-height: 430px;
   }
 }
 
@@ -472,8 +584,59 @@
     padding: 18px;
   }
 
+  .formRow {
+    grid-template-columns: minmax(0, 1fr) minmax(118px, 0.68fr);
+    gap: 10px;
+  }
+
+  .field span {
+    font-size: 0.8rem;
+  }
+
+  .field input,
+  .field select {
+    min-height: 48px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    padding-left: 12px;
+  }
+
+  .field select {
+    padding-right: 32px;
+    background-position:
+      center,
+      right 11px center;
+  }
+
   .vibeGrid {
     grid-template-columns: 1fr;
+  }
+
+  .avatarStage {
+    grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr);
+    min-height: 140px;
+    overflow: visible;
+  }
+
+  .leftRunner,
+  .rightRunner,
+  .lottieRunner {
+    width: 104px;
+    height: 104px;
+  }
+
+  .leftFemaleRunner {
+    transform: scaleX(1) scale(1.2);
+  }
+
+  .rightFemaleRunner {
+    transform: scaleX(-1) scale(1.2);
+  }
+
+  .centerLove {
+    width: 48px;
+    height: 48px;
+    font-size: 1.55rem;
   }
 
   .scoreCircle {
@@ -483,5 +646,9 @@
 
   .scoreCircle strong {
     font-size: 2.55rem;
+  }
+
+  .genderGrid {
+    grid-template-columns: 1fr;
   }
 }

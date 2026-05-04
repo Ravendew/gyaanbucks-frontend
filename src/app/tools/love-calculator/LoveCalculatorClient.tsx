@@ -7,8 +7,11 @@ import {
   useMotionValue,
   useTransform,
 } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import Lottie from 'lottie-react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import styles from './page.module.css';
+
+type Gender = 'male' | 'female';
 
 type LoveResult = {
   score: number;
@@ -38,6 +41,11 @@ function clampScore(value: number) {
   return Math.max(35, Math.min(99, value));
 }
 
+function getNearbyMetricScore(score: number, base: number, salt: number) {
+  const variation = ((base + salt) % 15) - 7;
+  return clampScore(score + variation);
+}
+
 function getLoveResult(yourName: string, partnerName: string): LoveResult {
   const first = cleanName(yourName);
   const second = cleanName(partnerName);
@@ -48,9 +56,10 @@ function getLoveResult(yourName: string, partnerName: string): LoveResult {
     (combined.match(/[aeiou]/g)?.length || 0) * 3 + combined.length;
 
   const score = clampScore(35 + ((base + vowelBoost) % 65));
-  const communication = clampScore(35 + ((base * 3 + 11) % 65));
-  const trust = clampScore(35 + ((base * 5 + 17) % 65));
-  const funVibe = clampScore(35 + ((base * 7 + 23) % 65));
+
+  const communication = getNearbyMetricScore(score, base, 11);
+  const trust = getNearbyMetricScore(score, base, 23);
+  const funVibe = getNearbyMetricScore(score, base, 37);
 
   let title = '';
   let message = '';
@@ -88,25 +97,57 @@ function getLoveResult(yourName: string, partnerName: string): LoveResult {
   };
 }
 
-function AnimatedScore({ score }: { score: number }) {
+function getAvatarOffset(score: number) {
+  if (score >= 90) return 44;
+  if (score >= 75) return 34;
+  if (score >= 60) return 24;
+  if (score >= 45) return 14;
+  return 4;
+}
+
+function AnimatedScoreCircle({ score }: { score: number }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
+  const scoreDegrees = useTransform(count, (latest) => `${latest * 3.6}deg`);
 
   useEffect(() => {
+    count.set(0);
+
     const controls = animate(count, score, {
-      duration: 2.8,
-      ease: 'easeOut',
+      duration: 3.4,
+      ease: [0.16, 1, 0.3, 1],
     });
 
     return controls.stop;
   }, [count, score]);
 
-  return <motion.span>{rounded}</motion.span>;
+  return (
+    <motion.div
+      className={styles.scoreCircle}
+      style={
+        {
+          '--score': scoreDegrees,
+        } as CSSProperties
+      }
+      initial={{ scale: 0.82 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.75, ease: 'easeOut' }}
+    >
+      <strong>
+        <motion.span>{rounded}</motion.span>%
+      </strong>
+      <small>Love Score</small>
+    </motion.div>
+  );
 }
 
 export default function LoveCalculatorClient() {
   const [yourName, setYourName] = useState('');
   const [partnerName, setPartnerName] = useState('');
+  const [yourGender, setYourGender] = useState<Gender>('male');
+  const [partnerGender, setPartnerGender] = useState<Gender>('female');
+  const [maleRun, setMaleRun] = useState<unknown>(null);
+  const [femaleRun, setFemaleRun] = useState<unknown>(null);
   const [result, setResult] = useState<LoveResult | null>(null);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
@@ -114,7 +155,22 @@ export default function LoveCalculatorClient() {
   const [musicOn, setMusicOn] = useState(false);
 
   useEffect(() => {
-    const hasPlayed = localStorage.getItem('loveMusicPlayed');
+    Promise.all([
+      fetch('/lottie/male-run.json').then((res) => res.json()),
+      fetch('/lottie/female-run.json').then((res) => res.json()),
+    ])
+      .then(([maleData, femaleData]) => {
+        setMaleRun(maleData);
+        setFemaleRun(femaleData);
+      })
+      .catch(() => {
+        setMaleRun(null);
+        setFemaleRun(null);
+      });
+  }, []);
+
+  useEffect(() => {
+    const hasPlayed = localStorage.getItem('loveMusicPlayed') === 'true';
 
     if (hasPlayed) {
       const audioId = 'love-calculator-audio';
@@ -131,12 +187,8 @@ export default function LoveCalculatorClient() {
 
       audio
         .play()
-        .then(() => {
-          setMusicOn(true);
-        })
-        .catch(() => {
-          setMusicOn(false);
-        });
+        .then(() => setMusicOn(true))
+        .catch(() => setMusicOn(false));
     }
   }, []);
 
@@ -187,6 +239,7 @@ export default function LoveCalculatorClient() {
       localStorage.setItem('loveMusicPlayed', 'true');
     }
   };
+
   const handleCalculate = () => {
     setError('');
     setCopied(false);
@@ -226,6 +279,20 @@ export default function LoveCalculatorClient() {
       setCopied(true);
     }
   };
+
+  const avatarOffset = result ? getAvatarOffset(result.score) : 0;
+  const leftAnimation = yourGender === 'male' ? maleRun : femaleRun;
+  const rightAnimation = partnerGender === 'male' ? maleRun : femaleRun;
+
+  const leftRunnerClass =
+    yourGender === 'male'
+      ? `${styles.leftRunner} ${styles.leftMaleRunner}`
+      : `${styles.leftRunner} ${styles.leftFemaleRunner}`;
+
+  const rightRunnerClass =
+    partnerGender === 'male'
+      ? `${styles.rightRunner} ${styles.rightMaleRunner}`
+      : `${styles.rightRunner} ${styles.rightFemaleRunner}`;
 
   return (
     <section
@@ -300,7 +367,10 @@ export default function LoveCalculatorClient() {
           <motion.button
             type="button"
             className={styles.musicBtn}
-            onClick={toggleMusic}
+            onClick={(event) => {
+              event.stopPropagation();
+              toggleMusic();
+            }}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.96 }}
           >
@@ -308,32 +378,65 @@ export default function LoveCalculatorClient() {
           </motion.button>
 
           <div className={styles.inputGrid}>
-            <label className={styles.field}>
-              <span>Your Name</span>
-              <input
-                type="text"
-                value={yourName}
-                onChange={(event) => setYourName(event.target.value)}
-                placeholder="Example: Rahul"
-              />
-            </label>
+            <div className={styles.formRow}>
+              <label className={styles.field}>
+                <span>Your Name</span>
+                <input
+                  type="text"
+                  value={yourName}
+                  onChange={(event) => setYourName(event.target.value)}
+                  placeholder="Example: Rahul"
+                />
+              </label>
 
-            <label className={styles.field}>
-              <span>Partner / Crush Name</span>
-              <input
-                type="text"
-                value={partnerName}
-                onChange={(event) => setPartnerName(event.target.value)}
-                placeholder="Example: Priya"
-              />
-            </label>
+              <label className={styles.field}>
+                <span>Select Your Gender</span>
+                <select
+                  value={yourGender}
+                  onChange={(event) =>
+                    setYourGender(event.target.value as Gender)
+                  }
+                >
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </label>
+            </div>
+
+            <div className={styles.formRow}>
+              <label className={styles.field}>
+                <span>Partner / Crush Name</span>
+                <input
+                  type="text"
+                  value={partnerName}
+                  onChange={(event) => setPartnerName(event.target.value)}
+                  placeholder="Example: Priya"
+                />
+              </label>
+
+              <label className={styles.field}>
+                <span>Select Partner Gender</span>
+                <select
+                  value={partnerGender}
+                  onChange={(event) =>
+                    setPartnerGender(event.target.value as Gender)
+                  }
+                >
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                </select>
+              </label>
+            </div>
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
 
           <motion.button
             className={styles.calculateBtn}
-            onClick={handleCalculate}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleCalculate();
+            }}
             whileHover={{ y: -2, scale: 1.01 }}
             whileTap={{ scale: 0.96 }}
           >
@@ -375,24 +478,57 @@ export default function LoveCalculatorClient() {
                 initial={{ opacity: 0, y: 30, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 20, scale: 0.92 }}
-                transition={{ type: 'spring', stiffness: 130, damping: 14 }}
+                transition={{ type: 'spring', stiffness: 120, damping: 16 }}
               >
-                <motion.div
-                  className={styles.scoreCircle}
-                  style={
-                    {
-                      '--score': `${result.score * 3.6}deg`,
-                    } as React.CSSProperties
-                  }
-                  initial={{ rotate: -90, scale: 0.8 }}
-                  animate={{ rotate: 0, scale: 1 }}
-                  transition={{ duration: 0.75, ease: 'easeOut' }}
-                >
-                  <strong>
-                    <AnimatedScore score={result.score} />%
-                  </strong>
-                  <small>Love Score</small>
-                </motion.div>
+                <div className={styles.avatarStage}>
+                  <motion.div
+                    className={styles.avatarRunner}
+                    initial={{ x: -180, opacity: 0 }}
+                    animate={{ x: avatarOffset, opacity: 1 }}
+                    transition={{ duration: 3.2, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div className={leftRunnerClass}>
+                      {leftAnimation ? (
+                        <Lottie
+                          animationData={leftAnimation}
+                          loop
+                          className={styles.lottieRunner}
+                        />
+                      ) : (
+                        <span className={styles.avatarFallback}>🏃‍♂️</span>
+                      )}
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className={styles.centerLove}
+                    animate={{ scale: [1, 1.15, 1] }}
+                    transition={{ duration: 1.4, repeat: Infinity }}
+                  >
+                    ❤️
+                  </motion.div>
+
+                  <motion.div
+                    className={styles.avatarRunner}
+                    initial={{ x: 180, opacity: 0 }}
+                    animate={{ x: -avatarOffset, opacity: 1 }}
+                    transition={{ duration: 3.2, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div className={rightRunnerClass}>
+                      {rightAnimation ? (
+                        <Lottie
+                          animationData={rightAnimation}
+                          loop
+                          className={styles.lottieRunner}
+                        />
+                      ) : (
+                        <span className={styles.avatarFallback}>🏃‍♀️</span>
+                      )}
+                    </div>
+                  </motion.div>
+                </div>
+
+                <AnimatedScoreCircle score={result.score} />
 
                 <motion.h3
                   initial={{ opacity: 0, y: 12 }}
@@ -430,13 +566,16 @@ export default function LoveCalculatorClient() {
 
                 <motion.button
                   className={styles.shareBtn}
-                  onClick={handleShare}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleShare();
+                  }}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.96 }}
                 >
                   {copied
                     ? 'Copied Result ✅'
-                    : 'Share result to your loved once 💌'}
+                    : 'Share result to your loved ones 💌'}
                 </motion.button>
               </motion.div>
             )}
