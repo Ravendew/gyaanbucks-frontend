@@ -50,11 +50,6 @@ const tools = [
     href: '/tools/age-calculator/school-admission-age-calculator',
     desc: 'Check child age for Nursery, LKG, UKG and Class 1 admission.',
   },
-  {
-    title: 'Percentage Calculator',
-    href: '/tools/percentage-calculator',
-    desc: 'Find percentages, percentage of a number and basic percentage values.',
-  },
 ];
 
 export default function ToolsPage() {
