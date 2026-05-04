@@ -136,6 +136,30 @@ export default function LoveCalculatorPage() {
       />
 
       <LoveCalculatorClient />
+      <div className={styles.contentBlock}>
+        <p>
+          You can also try our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link> to know your
+          exact age, or compare two people using{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          Planning for a special day? Use our{' '}
+          <Link href="/tools/age-calculator/days-until-calculator">
+            Days Until Calculator
+          </Link>{' '}
+          to track upcoming events.
+        </p>
+
+        <p>
+          Want to improve your knowledge daily? Explore our{' '}
+          <Link href="/quizzes">Quizzes section</Link>.
+        </p>
+      </div>
 
       <section className={styles.contentBlock}>
         <h2>What is a Love Calculator?</h2>

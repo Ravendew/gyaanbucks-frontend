@@ -128,6 +128,18 @@ export default function AgeCalculatorPage() {
 
       <AgeCalculatorClient />
 
+      <div className={styles.contentBlock}>
+        <p>
+          Try our fun <Link href="/tools/love-calculator">Love Calculator</Link>{' '}
+          to check compatibility between two names.
+        </p>
+
+        <p>
+          You can also calculate specific details using{' '}
+          <Link href="/tools/age-calculator/age-in-days">Age in Days</Link> or{' '}
+          <Link href="/tools/age-calculator/age-by-dob">Age by DOB</Link>.
+        </p>
+      </div>
       <section className={styles.contentBlock}>
         <h2>What is an Age Calculator?</h2>
         <p>

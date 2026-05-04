@@ -132,6 +132,34 @@ export default function DateDifferencePage() {
 
       <DateDifferenceClient />
 
+      <div className={styles.contentBlock}>
+        <p>
+          You can calculate your age using our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>.
+        </p>
+
+        <p>
+          Want to track future events? Try{' '}
+          <Link href="/tools/age-calculator/days-until-calculator">
+            Days Until Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          Need to compare two ages? Use{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          For fun compatibility, check our{' '}
+          <Link href="/tools/love-calculator">Love Calculator</Link>.
+        </p>
+      </div>
+
       <section className={styles.contentBlock}>
         <h2>What is a Date Difference Calculator?</h2>
         <p>

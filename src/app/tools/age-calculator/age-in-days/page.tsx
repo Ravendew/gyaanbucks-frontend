@@ -131,6 +131,34 @@ export default function AgeInDaysPage() {
 
       <AgeInDaysClient />
 
+      <div className={styles.contentBlock}>
+        <p>
+          You can also calculate your full age using our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>.
+        </p>
+
+        <p>
+          Want to know your exact birth-based calculation? Try{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          Compare ages between two people using{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          For a fun compatibility check, use our{' '}
+          <Link href="/tools/love-calculator">Love Calculator</Link>.
+        </p>
+      </div>
+
       <section className={styles.contentBlock}>
         <h2>What is an Age in Days Calculator?</h2>
         <p>

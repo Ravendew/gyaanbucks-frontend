@@ -130,6 +130,35 @@ export default function AgeByDobPage() {
 
       <AgeByDobClient />
 
+      <div className={styles.contentBlock}>
+        <p>
+          Want a full age breakdown? Try our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link> for years,
+          months and days.
+        </p>
+
+        <p>
+          You can also check your total life days using{' '}
+          <Link href="/tools/age-calculator/age-in-days">
+            Age in Days Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          Need to compare two people? Use our{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          For a fun result, try the{' '}
+          <Link href="/tools/love-calculator">Love Calculator</Link>.
+        </p>
+      </div>
+
       <section className={styles.contentBlock}>
         <h2>What is an Age by DOB Calculator?</h2>
         <p>

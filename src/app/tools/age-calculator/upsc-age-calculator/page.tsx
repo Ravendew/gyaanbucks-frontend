@@ -132,6 +132,34 @@ export default function UpscAgePage() {
 
       <UpscAgeClient />
 
+      <div className={styles.contentBlock}>
+        <p>
+          You can calculate your exact age using our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>.
+        </p>
+
+        <p>
+          Want a detailed calculation based on date of birth? Try{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          Need to compare eligibility between two candidates? Use{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          For a fun break, try our{' '}
+          <Link href="/tools/love-calculator">Love Calculator</Link>.
+        </p>
+      </div>
+
       <section className={styles.contentBlock}>
         <h2>What is the UPSC Age Calculator?</h2>
         <p>

@@ -121,7 +121,6 @@ export default function DaysUntilPage() {
           __html: JSON.stringify(webApplicationSchema),
         }}
       />
-
       <Script
         id="days-until-faq-schema"
         type="application/ld+json"
@@ -129,9 +128,35 @@ export default function DaysUntilPage() {
           __html: JSON.stringify(faqSchema),
         }}
       />
-
       <DaysUntilClient />
+      <div className={styles.contentBlock}>
+        <p>
+          You can calculate date differences using our{' '}
+          <Link href="/tools/age-calculator/date-difference-calculator">
+            Date Difference Calculator
+          </Link>
+          .
+        </p>
 
+        <p>
+          Want to know your exact age? Try our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>.
+        </p>
+
+        <p>
+          Need to compare ages? Use{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          For a fun compatibility check, try our{' '}
+          <Link href="/tools/love-calculator">Love Calculator</Link>.
+        </p>
+      </div>
+      ;
       <section className={styles.contentBlock}>
         <h2>What is a Days Until Calculator?</h2>
         <p>
@@ -238,7 +263,6 @@ export default function DaysUntilPage() {
           not just on a date.
         </p>
       </section>
-
       <section className={styles.faqSection}>
         <h2>Days Until Calculator FAQs</h2>
 

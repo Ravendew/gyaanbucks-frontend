@@ -129,6 +129,34 @@ export default function SchoolAdmissionAgeCalculatorPage() {
 
       <SchoolAdmissionAgeClient />
 
+      <div className={styles.contentBlock}>
+        <p>
+          You can calculate your child’s exact age using our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>.
+        </p>
+
+        <p>
+          Want a precise breakdown by date of birth? Try{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          Need to compare ages? Use{' '}
+          <Link href="/tools/age-calculator/age-difference-calculator">
+            Age Difference Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          For fun, you can also try our{' '}
+          <Link href="/tools/love-calculator">Love Calculator</Link>.
+        </p>
+      </div>
+
       <section className={styles.contentBlock}>
         <h2>What is a School Admission Age Calculator?</h2>
         <p>

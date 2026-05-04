@@ -132,6 +132,34 @@ export default function AgeDifferencePage() {
 
       <AgeDifferenceClient />
 
+      <div className={styles.contentBlock}>
+        <p>
+          You can calculate your individual age using our{' '}
+          <Link href="/tools/age-calculator">Age Calculator</Link>.
+        </p>
+
+        <p>
+          Need a more detailed breakdown? Try{' '}
+          <Link href="/tools/age-calculator/age-by-dob">
+            Age by DOB Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          Want to know total days lived? Use{' '}
+          <Link href="/tools/age-calculator/age-in-days">
+            Age in Days Calculator
+          </Link>
+          .
+        </p>
+
+        <p>
+          For a fun result, try our{' '}
+          <Link href="/tools/love-calculator">Love Calculator</Link>.
+        </p>
+      </div>
+
       <section className={styles.contentBlock}>
         <h2>What is an Age Difference Calculator?</h2>
         <p>
