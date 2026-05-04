@@ -43,6 +43,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '',
     '/quizzes',
     '/tools',
+
+    '/tools/love-calculator',
+
     '/tools/age-calculator',
     '/tools/age-calculator/age-by-dob',
     '/tools/age-calculator/age-in-days',
@@ -50,11 +53,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/tools/age-calculator/date-difference-calculator',
     '/tools/age-calculator/days-until-calculator',
     '/tools/age-calculator/upsc-age-calculator',
-    '/tools/age-calculator/ssc-age-calculator',
-    '/tools/age-calculator/retirement-age-calculator',
     '/tools/age-calculator/school-admission-age-calculator',
-    '/tools/age-calculator/school-admission-age-calculator/telangana',
-    '/tools/percentage-calculator',
+
     '/blog',
     '/categories',
     '/contact',
