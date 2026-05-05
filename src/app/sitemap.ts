@@ -104,7 +104,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       categoryUrls = categories
         .filter((category) => Boolean(category.name))
         .map((category) => ({
-          url: `${SITE_URL}/categories/${slugify(category.name)}`,
+          url: `${SITE_URL}/categories/${encodeURIComponent(slugify(category.name))}`,
           lastModified: getSafeDate(category.updatedAt, category.createdAt),
           changeFrequency: 'weekly',
           priority: 0.85,
@@ -128,7 +128,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           const slug = normalizeSlug(quiz.slug);
 
           return {
-            url: `${SITE_URL}/quiz-play/${slug}`,
+            url: `${SITE_URL}/quiz-play/${encodeURIComponent(slug)}`,
             lastModified: getSafeDate(quiz.updatedAt, quiz.createdAt),
             changeFrequency: 'daily',
             priority: 0.9,
