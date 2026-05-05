@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     'Use the UPSC Age Calculator to check age eligibility as on 1 August of the exam year with category relaxation for General, OBC, SC/ST and PwBD.',
   keywords: [
     'upsc age calculator',
+    'age calculator for upsc',
     'upsc age limit calculator',
-    'upsc age relaxation',
     'upsc eligibility age calculator',
     'civil services age calculator',
   ],

@@ -11,11 +11,11 @@ export const metadata: Metadata = {
     'Use the free GyaanBucks Age Calculator to calculate your exact age from date of birth in years, months and days. Simple age calculation tool for students, forms and exams.',
   keywords: [
     'age calculator',
-    'calculate age',
-    'date of birth calculator',
-    'age calculator by date of birth',
-    'exact age calculator',
-    'age in years months days',
+    'calculate age from date of birth',
+    'dob age calculator',
+    'birthday age calculator',
+    'how old am i calculator',
+    'age calculator online',
   ],
   alternates: {
     canonical: 'https://gyaanbucks.com/tools/age-calculator',

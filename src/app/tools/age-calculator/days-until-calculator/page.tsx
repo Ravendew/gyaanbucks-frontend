@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     'days until calculator',
     'how many days left',
     'days left calculator',
-    'countdown calculator',
+    'days till calculator',
     'days until date',
   ],
   alternates: {

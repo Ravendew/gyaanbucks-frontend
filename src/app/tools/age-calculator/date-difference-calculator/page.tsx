@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     'date difference calculator',
     'days between two dates',
     'calculate date difference',
-    'date gap calculator',
+    'calculate days between two dates online',
     'difference between dates',
   ],
   alternates: {

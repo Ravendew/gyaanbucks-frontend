@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-love-calculator.png',
+        url: 'https://gyaanbucks.com/og-love-calculator.png',
         width: 1200,
         height: 630,
         alt: 'Love Calculator by GyaanBucks',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: 'Love Calculator - Calculate Love Compatibility Online',
     description:
       'Free fun love calculator with animated score, cute result message and share option.',
-    images: ['/og-love-calculator.png'],
+    images: ['https://gyaanbucks.com/og-love-calculator.png'],
   },
 };
 
@@ -136,6 +136,7 @@ export default function LoveCalculatorPage() {
       />
 
       <LoveCalculatorClient />
+
       <div className={styles.contentBlock}>
         <p>
           You can also try our{' '}

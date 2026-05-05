@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     'Use the free Age Difference Calculator to compare two dates of birth and find the exact age gap in years, months, days and total days.',
   keywords: [
     'age difference calculator',
-    'compare two ages',
+    'acceptable age gap calculator',
     'age gap calculator',
-    'age difference between two dates of birth',
-    'calculate age difference',
+    'age difference calculator for marriage',
+    'age difference calculator online',
   ],
   alternates: {
     canonical:

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     'dob age calculator',
     'calculate age from dob',
     'find age from date of birth',
+    'dob calculator online',
   ],
   alternates: {
     canonical: 'https://gyaanbucks.com/tools/age-calculator/age-by-dob',
