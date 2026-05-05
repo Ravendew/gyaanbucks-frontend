@@ -1,9 +1,6 @@
-'use client';
-
-import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 type Category = {
@@ -17,25 +14,18 @@ function getApiBaseUrl() {
   return 'https://gyaanbucks-backend-production.up.railway.app';
 }
 
-export default function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>([]);
+export default async function CategoriesPage() {
+  let categories: Category[] = [];
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch(`${getApiBaseUrl()}/category/active`);
-        const data = await res.json();
+  try {
+    const res = await fetch(`${getApiBaseUrl()}/category/active`, {
+      cache: 'no-store',
+    });
 
-        if (Array.isArray(data)) {
-          setCategories(data);
-        }
-      } catch {
-        setCategories([]);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+    categories = await res.json();
+  } catch {
+    categories = [];
+  }
 
   return (
     <>
@@ -59,7 +49,10 @@ export default function CategoriesPage() {
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
-                  href={`/quizzes?category=${encodeURIComponent(cat.name)}`}
+                  href={`/categories/${cat.name
+                    .toLowerCase()
+                    .trim()
+                    .replace(/\s+/g, '-')}`}
                   className={styles.card}
                 >
                   <div className={styles.icon}>{cat.icon || '📚'}</div>

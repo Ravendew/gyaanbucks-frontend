@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   description:
     'Use the free Age in Days Calculator to find how many days old you are from your date of birth. Calculate total days lived, weeks, months and exact age.',
   keywords: [
-    'age in days calculator',
+    'how old am i calculator',
     'how many days old am i',
     'calculate age in days',
     'days old calculator',
-    'birth date to days calculator',
+    'age at date',
   ],
   alternates: {
     canonical: 'https://gyaanbucks.com/tools/age-calculator/age-in-days',

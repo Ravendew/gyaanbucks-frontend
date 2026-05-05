@@ -1,0 +1,33 @@
+.page {
+  padding: 40px 0;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  margin-bottom: 30px;
+  color: #6b7280;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  padding: 20px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #eee;
+  text-decoration: none;
+  color: #000;
+}
+
+.content {
+  margin-top: 50px;
+}
