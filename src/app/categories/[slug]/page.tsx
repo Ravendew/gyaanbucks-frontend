@@ -31,9 +31,7 @@ function titleCaseFromSlug(slug: string) {
 }
 
 type PageProps = {
-  params: Promise<{
-    slug: string;
-  }>;
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata({ params }: PageProps) {
@@ -42,7 +40,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   return {
     title: `${categoryName} Quiz - Free Online Practice | GyaanBucks`,
-    description: `Play ${categoryName} quizzes online on GyaanBucks. Practice questions, improve your knowledge and earn reward points.`,
+    description: `Play ${categoryName} quizzes online on GyaanBucks. Practice questions, improve your knowledge and track your quiz progress.`,
   };
 }
 
@@ -86,6 +84,42 @@ export default async function CategoryDetailPage({ params }: PageProps) {
     <>
       <Header />
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: `Is ${categoryName} quiz free?`,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: `Yes, you can play ${categoryName} quizzes online on GyaanBucks for free.`,
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'How does the quiz system work?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'You can practice quizzes, answer questions, check your score and improve your knowledge through regular attempts on GyaanBucks.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Are questions updated regularly?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Yes, new quizzes and questions can be added regularly through the admin panel, so users can get fresh practice content.',
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
       <main className={styles.page}>
         <section className={styles.hero}>
           <div className="container">
@@ -97,7 +131,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
 
             <p className={styles.subtitle}>
               {currentCategory?.description ||
-                `Play ${categoryName} quizzes online, practice important questions, improve your knowledge and earn reward points on GyaanBucks.`}
+                `Play ${categoryName} quizzes online, practice important questions, improve your knowledge and track your quiz progress on GyaanBucks.`}
             </p>
 
             <div className={styles.actions}>
@@ -119,8 +153,8 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 <div className={styles.sectionHeader}>
                   <h2>{categoryName} Practice Quizzes</h2>
                   <p>
-                    Select a quiz, answer questions within time and collect
-                    reward points.
+                    Select a quiz, answer questions within time and improve your
+                    preparation with regular practice.
                   </p>
                 </div>
 
@@ -159,7 +193,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                     <li>Practice topic-wise quiz questions online.</li>
                     <li>Improve accuracy with regular attempts.</li>
                     <li>Use free quizzes for learning and revision.</li>
-                    <li>Earn reward points while playing valid quizzes.</li>
+                    <li>Track your score and improve your preparation.</li>
                   </ul>
 
                   <h3>{categoryName} Quiz FAQs</h3>
@@ -170,10 +204,10 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                     GyaanBucks for free.
                   </p>
 
-                  <h4>Can I earn rewards by playing quizzes?</h4>
+                  <h4>How does the quiz system work?</h4>
                   <p>
-                    Yes, valid quiz attempts can help you collect reward points
-                    on GyaanBucks.
+                    You can practice quizzes, answer questions, check your score
+                    and improve your knowledge through regular attempts.
                   </p>
 
                   <h4>Are questions updated regularly?</h4>
