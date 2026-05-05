@@ -28,6 +28,12 @@ export const metadata: Metadata = {
   description:
     'Practice free online quizzes, GK questions, current affairs tests and useful calculators on GyaanBucks. Improve your knowledge with simple quiz and tool pages.',
 
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
+
   keywords: [
     'GyaanBucks',
     'free online quizzes',
