@@ -18,6 +18,12 @@ type BlogSitemapItem = {
   isPublished?: boolean;
 };
 
+type CategorySitemapItem = {
+  name: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
 function getSafeDate(updatedAt?: string, createdAt?: string) {
   if (updatedAt) return new Date(updatedAt);
   if (createdAt) return new Date(createdAt);
@@ -26,6 +32,10 @@ function getSafeDate(updatedAt?: string, createdAt?: string) {
 
 function normalizeSlug(slug: string) {
   return slug.trim().replace(/^\/+|\/+$/g, '');
+}
+
+function slugify(value: string) {
+  return value.toLowerCase().trim().replace(/\s+/g, '-');
 }
 
 function uniqueByUrl(items: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
@@ -81,6 +91,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let quizUrls: MetadataRoute.Sitemap = [];
   let blogUrls: MetadataRoute.Sitemap = [];
+  let categoryUrls: MetadataRoute.Sitemap = [];
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/category/active`, {
+      next: { revalidate: 60 },
+    });
+
+    if (res.ok) {
+      const categories: CategorySitemapItem[] = await res.json();
+
+      categoryUrls = categories
+        .filter((category) => Boolean(category.name))
+        .map((category) => ({
+          url: `${SITE_URL}/categories/${slugify(category.name)}`,
+          lastModified: getSafeDate(category.updatedAt, category.createdAt),
+          changeFrequency: 'weekly',
+          priority: 0.85,
+        }));
+    }
+  } catch (err) {
+    console.error('Sitemap category fetch error:', err);
+  }
 
   try {
     const res = await fetch(`${API_BASE_URL}/quiz`, {
@@ -133,5 +165,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Sitemap blog fetch error:', err);
   }
 
-  return uniqueByUrl([...staticUrls, ...quizUrls, ...blogUrls]);
+  return uniqueByUrl([
+    ...staticUrls,
+    ...categoryUrls,
+    ...quizUrls,
+    ...blogUrls,
+  ]);
 }

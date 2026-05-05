@@ -78,6 +78,10 @@ export default async function CategoryDetailPage({ params }: PageProps) {
     (quiz) => slugify(quiz.category) === slug,
   );
 
+  const relatedQuizzes = quizzes
+    .filter((quiz) => slugify(quiz.category) !== slug)
+    .slice(0, 6);
+
   return (
     <>
       <Header />
@@ -93,13 +97,14 @@ export default async function CategoryDetailPage({ params }: PageProps) {
 
             <p className={styles.subtitle}>
               {currentCategory?.description ||
-                `Play ${categoryName} quizzes online, practice questions and earn reward points on GyaanBucks.`}
+                `Play ${categoryName} quizzes online, practice important questions, improve your knowledge and earn reward points on GyaanBucks.`}
             </p>
 
             <div className={styles.actions}>
               <Link href="/categories" className={styles.secondaryBtn}>
                 View All Categories
               </Link>
+
               <Link href="/quizzes" className={styles.primaryBtn}>
                 Browse All Quizzes
               </Link>
@@ -107,52 +112,140 @@ export default async function CategoryDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        <section className={styles.quizSection}>
+        <section className={styles.contentSection}>
           <div className="container">
-            <div className={styles.sectionHeader}>
-              <h2>{categoryName} Practice Quizzes</h2>
-              <p>
-                Select a quiz, answer questions within time and collect reward
-                points.
-              </p>
-            </div>
+            <div className={styles.layout}>
+              <div className={styles.mainContent}>
+                <div className={styles.sectionHeader}>
+                  <h2>{categoryName} Practice Quizzes</h2>
+                  <p>
+                    Select a quiz, answer questions within time and collect
+                    reward points.
+                  </p>
+                </div>
 
-            {categoryQuizzes.length > 0 ? (
-              <div className={styles.grid}>
-                {categoryQuizzes.map((quiz) => (
-                  <Link
-                    key={quiz.id}
-                    href={`/quiz-play/${quiz.slug}`}
-                    className={styles.card}
-                  >
-                    <h3>{quiz.title}</h3>
-                    <p>{quiz.subtitle}</p>
-                    <span>Start Quiz →</span>
-                  </Link>
-                ))}
+                {categoryQuizzes.length > 0 ? (
+                  <div className={styles.grid}>
+                    {categoryQuizzes.map((quiz) => (
+                      <Link
+                        key={quiz.id}
+                        href={`/quiz-play/${quiz.slug}`}
+                        className={styles.card}
+                      >
+                        <h3>{quiz.title}</h3>
+                        <p>{quiz.subtitle}</p>
+                        <span>Start Quiz →</span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className={styles.emptyBox}>
+                    No quizzes found in this category yet.
+                  </div>
+                )}
+
+                <div className={styles.content}>
+                  <h2>About {categoryName} Quizzes</h2>
+                  <p>
+                    {categoryName} quizzes on GyaanBucks help you practice
+                    important questions, improve speed and build better
+                    knowledge through online quiz attempts. These quizzes are
+                    useful for students, exam preparation users and general
+                    knowledge learners.
+                  </p>
+
+                  <h3>Why play {categoryName} quizzes?</h3>
+                  <ul>
+                    <li>Practice topic-wise quiz questions online.</li>
+                    <li>Improve accuracy with regular attempts.</li>
+                    <li>Use free quizzes for learning and revision.</li>
+                    <li>Earn reward points while playing valid quizzes.</li>
+                  </ul>
+
+                  <h3>{categoryName} Quiz FAQs</h3>
+
+                  <h4>Is this {categoryName} quiz free?</h4>
+                  <p>
+                    Yes, you can play {categoryName} quizzes online on
+                    GyaanBucks for free.
+                  </p>
+
+                  <h4>Can I earn rewards by playing quizzes?</h4>
+                  <p>
+                    Yes, valid quiz attempts can help you collect reward points
+                    on GyaanBucks.
+                  </p>
+
+                  <h4>Are questions updated regularly?</h4>
+                  <p>
+                    GyaanBucks can add new quizzes and questions through the
+                    admin panel, so users can get fresh practice content.
+                  </p>
+                </div>
               </div>
-            ) : (
-              <div className={styles.emptyBox}>
-                No quizzes found in this category yet.
-              </div>
-            )}
 
-            <div className={styles.content}>
-              <h2>About {categoryName} Quizzes</h2>
-              <p>
-                {categoryName} quizzes on GyaanBucks help you practice important
-                questions, improve speed and build better knowledge through
-                online quiz attempts. These quizzes are useful for students,
-                exam preparation users and general knowledge learners.
-              </p>
+              <aside className={styles.sidebar}>
+                <div className={styles.sidebarBox}>
+                  <h3>Popular Categories</h3>
 
-              <h3>Why play {categoryName} quizzes?</h3>
-              <ul>
-                <li>Practice topic-wise quiz questions online.</li>
-                <li>Improve accuracy with regular attempts.</li>
-                <li>Use free quizzes for learning and revision.</li>
-                <li>Earn reward points while playing valid quizzes.</li>
-              </ul>
+                  <div className={styles.sidebarLinks}>
+                    {categories.map((category) => (
+                      <Link
+                        key={category.id}
+                        href={`/categories/${slugify(category.name)}`}
+                        className={styles.sidebarItem}
+                      >
+                        <span>{category.icon || '📚'}</span>
+                        <strong>{category.name}</strong>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <div className={styles.sidebarBox}>
+                  <h3>Related Quizzes</h3>
+
+                  <div className={styles.sidebarLinks}>
+                    {relatedQuizzes.length > 0 ? (
+                      relatedQuizzes.map((quiz) => (
+                        <Link
+                          key={quiz.id}
+                          href={`/quiz-play/${quiz.slug}`}
+                          className={styles.sidebarTextLink}
+                        >
+                          {quiz.title}
+                        </Link>
+                      ))
+                    ) : (
+                      <p className={styles.sidebarEmpty}>
+                        More quizzes coming soon.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.sidebarBox}>
+                  <h3>Popular Tools</h3>
+
+                  <div className={styles.sidebarLinks}>
+                    <Link
+                      href="/tools/age-calculator"
+                      className={styles.sidebarTextLink}
+                    >
+                      Age Calculator
+                    </Link>
+                    <Link
+                      href="/tools/love-calculator"
+                      className={styles.sidebarTextLink}
+                    >
+                      Love Calculator
+                    </Link>
+                    <Link href="/tools" className={styles.sidebarTextLink}>
+                      All Online Tools
+                    </Link>
+                  </div>
+                </div>
+              </aside>
             </div>
           </div>
         </section>
