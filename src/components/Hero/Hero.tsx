@@ -10,25 +10,35 @@ export default function Hero() {
 
       <div className={`container ${styles.grid}`}>
         <div className={styles.content}>
-          <div className={styles.badge}>🌍 Free quiz & learning platform</div>
+          <div className={styles.badge}>
+            🛠️ Free educational tools & quizzes
+          </div>
 
           <h1 className={styles.title}>
-            Practice Smart Quizzes. <span>Improve Your Knowledge.</span>
+            Free Educational Tools, Calculators <span>& Online Quizzes.</span>
           </h1>
 
           <p className={styles.subtitle}>
-            Play free online quizzes, practice GK and current affairs, use
-            helpful calculators, and track your learning progress with points
-            and category-wise performance.
+            Use simple online calculators for age, school eligibility,
+            percentages and dates. Then practice GK, current affairs and
+            learning quizzes to improve your knowledge.
           </p>
 
           <div className={styles.actions}>
-            <Link href="/quizzes" className={styles.primaryBtn}>
-              Start Practicing
-            </Link>
-            <Link href="/tools" className={styles.goldBtn}>
+            <Link href="/tools" className={styles.primaryBtn}>
               Explore Tools
             </Link>
+
+            <Link href="/quizzes" className={styles.goldBtn}>
+              Practice Quizzes
+            </Link>
+          </div>
+
+          <div className={styles.trustRow}>
+            <span>🎂 Age Calculators</span>
+            <span>📊 Percentage Tools</span>
+            <span>🧠 GK Practice</span>
+            <span>📚 Learning Guides</span>
           </div>
         </div>
       </div>

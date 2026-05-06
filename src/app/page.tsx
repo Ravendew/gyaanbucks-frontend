@@ -10,6 +10,7 @@ import Footer from '@/components/Footer/Footer';
 import QuickAgeCalculator from './QuickAgeCalculator';
 import styles from './page.module.css';
 import TrendingSearches from '@/components/TrendingSearches/TrendingSearches';
+import LatestBlogs from '@/components/LatestBlogs/LatestBlogs';
 
 export const metadata: Metadata = {
   title: 'GyaanBucks - Free Online Quizzes, GK Tests & Calculators',
@@ -117,6 +118,7 @@ export default function Home() {
 
       <PopularCategories />
       <FeaturedQuizzes />
+      <LatestBlogs />
 
       <HowItWorks />
 
