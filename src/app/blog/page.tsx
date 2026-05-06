@@ -10,6 +10,12 @@ export const metadata = {
     'Read educational articles about GK, quizzes, current affairs, study tips, calculators and useful learning tools on GyaanBucks.',
 };
 
+type BlogPageProps = {
+  searchParams?: Promise<{
+    category?: string | string[];
+  }>;
+};
+
 const popularTools = [
   { title: 'Age Calculator', href: '/tools/age-calculator', icon: '🎂' },
   {
@@ -43,8 +49,50 @@ const trendingQuizzes = [
   },
 ];
 
-export default async function BlogPage() {
+function getCategoryHref(category?: string) {
+  if (!category) {
+    return '/blog';
+  }
+
+  return `/blog?category=${encodeURIComponent(category)}`;
+}
+
+function normalizeCategory(value?: string) {
+  return value?.trim().toLowerCase() || '';
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const categoryParam = resolvedSearchParams?.category;
+  const selectedCategory =
+    typeof categoryParam === 'string' ? categoryParam.trim() : '';
+
   const blogs = await getPublishedBlogs();
+
+  const categorySet = new Set<string>();
+
+  blogs.forEach((blog) => {
+    if (blog.category) {
+      categorySet.add(blog.category);
+    }
+  });
+
+  ['Education', 'Tools & Calculators'].forEach((category) =>
+    categorySet.add(category),
+  );
+
+  const categories = Array.from(categorySet);
+
+  const filteredBlogs = selectedCategory
+    ? blogs.filter(
+        (blog) =>
+          normalizeCategory(blog.category) ===
+          normalizeCategory(selectedCategory),
+      )
+    : blogs;
+
+  const hasBlogs = blogs.length > 0;
+  const hasFilteredBlogs = filteredBlogs.length > 0;
 
   return (
     <>
@@ -66,31 +114,105 @@ export default async function BlogPage() {
 
         <section className={styles.listSection}>
           <div className="container">
+            <div className={styles.topCategories}>
+              <div>
+                <span className={styles.sectionLabel}>Browse Topics</span>
+                <h2>Explore educational blog categories</h2>
+              </div>
+
+              <div className={styles.topCategoryList}>
+                <Link
+                  href="/blog"
+                  className={!selectedCategory ? styles.activeCategory : ''}
+                >
+                  All Blogs
+                </Link>
+
+                {categories.map((category) => (
+                  <Link
+                    href={getCategoryHref(category)}
+                    key={category}
+                    className={
+                      normalizeCategory(selectedCategory) ===
+                      normalizeCategory(category)
+                        ? styles.activeCategory
+                        : ''
+                    }
+                  >
+                    {category}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             <div className={styles.layout}>
               <div className={styles.mainContent}>
-                {blogs.length === 0 ? (
+                <div className={styles.contentHeader}>
+                  <div>
+                    <span className={styles.sectionLabel}>
+                      {selectedCategory
+                        ? 'Selected Category'
+                        : 'Latest Articles'}
+                    </span>
+                    <h2>{selectedCategory || 'Latest Blog Posts'}</h2>
+                  </div>
+
+                  <p>
+                    {hasFilteredBlogs
+                      ? `${filteredBlogs.length} article${
+                          filteredBlogs.length === 1 ? '' : 's'
+                        } available`
+                      : 'No articles found'}
+                  </p>
+                </div>
+
+                {!hasBlogs ? (
                   <div className={styles.emptyState}>
-                    <div className={styles.emptyIcon}>📝</div>
-                    <h2>Educational blogs are coming soon</h2>
-                    <p>
-                      We are preparing useful articles on GK, current affairs,
-                      quiz practice, calculators and learning tips. Until then,
-                      explore our tools and quizzes.
-                    </p>
+                    <div>
+                      <div className={styles.emptyIcon}>📝</div>
+                      <h2>Educational blogs are coming soon</h2>
+                      <p>
+                        We are preparing useful articles on GK, current affairs,
+                        quiz practice, calculators and learning tips. Until
+                        then, explore our tools and quizzes.
+                      </p>
 
-                    <div className={styles.emptyActions}>
-                      <Link href="/tools" className={styles.primaryBtn}>
-                        Explore Tools
-                      </Link>
+                      <div className={styles.emptyActions}>
+                        <Link href="/tools" className={styles.primaryBtn}>
+                          Explore Tools
+                        </Link>
 
-                      <Link href="/quizzes" className={styles.secondaryBtn}>
-                        Practice Quizzes
-                      </Link>
+                        <Link href="/quizzes" className={styles.secondaryBtn}>
+                          Practice Quizzes
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ) : !hasFilteredBlogs ? (
+                  <div className={styles.emptyState}>
+                    <div>
+                      <div className={styles.emptyIcon}>🔎</div>
+                      <h2>No articles found in this category</h2>
+                      <p>
+                        We do not have published articles under{' '}
+                        <strong>{selectedCategory}</strong> yet. You can browse
+                        all blog posts or explore useful learning tools.
+                      </p>
+
+                      <div className={styles.emptyActions}>
+                        <Link href="/blog" className={styles.primaryBtn}>
+                          View All Blogs
+                        </Link>
+
+                        <Link href="/tools" className={styles.secondaryBtn}>
+                          Explore Tools
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ) : (
                   <div className={styles.grid}>
-                    {blogs.map((blog) => (
+                    {filteredBlogs.map((blog) => (
                       <Link
                         href={`/blog/${blog.slug}`}
                         key={blog.id}
@@ -112,7 +234,7 @@ export default async function BlogPage() {
 
                         <div className={styles.cardContent}>
                           <span className={styles.category}>
-                            {blog.category}
+                            {blog.category || 'Education'}
                           </span>
 
                           <h2>{blog.title}</h2>
@@ -135,10 +257,12 @@ export default async function BlogPage() {
 
                   <div className={styles.categoryList}>
                     <Link href="/blog">All Blogs</Link>
-                    <Link href="/blog?category=Education">Education</Link>
-                    <Link href="/blog?category=Tools%20%26%20Calculators">
-                      Tools & Calculators
-                    </Link>
+
+                    {categories.map((category) => (
+                      <Link href={getCategoryHref(category)} key={category}>
+                        {category}
+                      </Link>
+                    ))}
                   </div>
                 </div>
 
