@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
+import AnalyticsBlocker from '@/components/AnalyticsBlocker/AnalyticsBlocker';
 import './globals.css';
 
 const geistSans = Geist({
@@ -102,22 +103,45 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
+        <AnalyticsBlocker />
+
         {children}
 
         {/* Google Analytics */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-BK5J08XMEP"
+          id="google-analytics-loader"
           strategy="afterInteractive"
-        />
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                var isInternalUser = false;
 
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-BK5J08XMEP');
-          `}
-        </Script>
+                try {
+                  isInternalUser = localStorage.getItem('gb_internal_user') === 'true';
+                } catch (error) {
+                  isInternalUser = false;
+                }
+
+                if (isInternalUser) {
+                  window['ga-disable-G-BK5J08XMEP'] = true;
+                  return;
+                }
+
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=G-BK5J08XMEP';
+                document.head.appendChild(script);
+
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+
+                gtag('js', new Date());
+                gtag('config', 'G-BK5J08XMEP');
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );
