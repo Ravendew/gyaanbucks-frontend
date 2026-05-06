@@ -116,32 +116,49 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 },
               },
             ],
-          }),
+          }).replace(/</g, '\\u003c'),
         }}
       />
 
       <main className={styles.page}>
         <section className={styles.hero}>
           <div className="container">
-            <span className={styles.badge}>
-              {currentCategory?.icon || '📚'} Quiz Category
-            </span>
+            <div className={styles.heroGrid}>
+              <div className={styles.heroContent}>
+                <span className={styles.badge}>
+                  {currentCategory?.icon || '📚'} Quiz Category
+                </span>
 
-            <h1 className={styles.title}>{categoryName} Quiz</h1>
+                <h1 className={styles.title}>{categoryName} Quiz</h1>
 
-            <p className={styles.subtitle}>
-              {currentCategory?.description ||
-                `Play ${categoryName} quizzes online, practice important questions, improve your knowledge and track your quiz progress on GyaanBucks.`}
-            </p>
+                <p className={styles.subtitle}>
+                  {currentCategory?.description ||
+                    `Play ${categoryName} quizzes online, practice important questions, improve your knowledge and track your quiz progress on GyaanBucks.`}
+                </p>
 
-            <div className={styles.actions}>
-              <Link href="/categories" className={styles.secondaryBtn}>
-                View All Categories
-              </Link>
+                <div className={styles.actions}>
+                  <Link href="/categories" className={styles.secondaryBtn}>
+                    View All Categories
+                  </Link>
 
-              <Link href="/quizzes" className={styles.primaryBtn}>
-                Browse All Quizzes
-              </Link>
+                  <Link href="/quizzes" className={styles.primaryBtn}>
+                    Browse All Quizzes
+                  </Link>
+                </div>
+              </div>
+
+              <div className={styles.heroPanel}>
+                <div className={styles.heroIcon}>
+                  {currentCategory?.icon || '📚'}
+                </div>
+                <span>Practice Mode</span>
+                <h2>{categoryQuizzes.length}</h2>
+                <p>
+                  {categoryQuizzes.length === 1
+                    ? 'quiz available in this category'
+                    : 'quizzes available in this category'}
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -151,7 +168,12 @@ export default async function CategoryDetailPage({ params }: PageProps) {
             <div className={styles.layout}>
               <div className={styles.mainContent}>
                 <div className={styles.sectionHeader}>
-                  <h2>{categoryName} Practice Quizzes</h2>
+                  <div>
+                    <span className={styles.sectionLabel}>
+                      Practice Library
+                    </span>
+                    <h2>{categoryName} Practice Quizzes</h2>
+                  </div>
                   <p>
                     Select a quiz, answer questions within time and improve your
                     preparation with regular practice.
@@ -160,25 +182,45 @@ export default async function CategoryDetailPage({ params }: PageProps) {
 
                 {categoryQuizzes.length > 0 ? (
                   <div className={styles.grid}>
-                    {categoryQuizzes.map((quiz) => (
+                    {categoryQuizzes.map((quiz, index) => (
                       <Link
                         key={quiz.id}
                         href={`/quiz-play/${quiz.slug}`}
                         className={styles.card}
                       >
+                        <div className={styles.cardTop}>
+                          <div className={styles.cardIcon}>
+                            {currentCategory?.icon || '🧠'}
+                          </div>
+                          <span>Quiz {index + 1}</span>
+                        </div>
+
                         <h3>{quiz.title}</h3>
                         <p>{quiz.subtitle}</p>
-                        <span>Start Quiz →</span>
+
+                        <div className={styles.cardFooter}>
+                          <strong>Start Quiz</strong>
+                          <span>→</span>
+                        </div>
                       </Link>
                     ))}
                   </div>
                 ) : (
                   <div className={styles.emptyBox}>
-                    No quizzes found in this category yet.
+                    <div className={styles.emptyIcon}>🔎</div>
+                    <h3>No quizzes found yet</h3>
+                    <p>
+                      This category does not have published quizzes yet. You can
+                      explore all quizzes or browse other learning categories.
+                    </p>
+                    <Link href="/quizzes" className={styles.primaryBtn}>
+                      Browse All Quizzes
+                    </Link>
                   </div>
                 )}
 
                 <div className={styles.content}>
+                  <span className={styles.sectionLabel}>Learning Guide</span>
                   <h2>About {categoryName} Quizzes</h2>
                   <p>
                     {categoryName} quizzes on GyaanBucks help you practice
@@ -188,33 +230,44 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                     knowledge learners.
                   </p>
 
-                  <h3>Why play {categoryName} quizzes?</h3>
-                  <ul>
-                    <li>Practice topic-wise quiz questions online.</li>
-                    <li>Improve accuracy with regular attempts.</li>
-                    <li>Use free quizzes for learning and revision.</li>
-                    <li>Track your score and improve your preparation.</li>
-                  </ul>
+                  <div className={styles.highlightBox}>
+                    <h3>Why play {categoryName} quizzes?</h3>
+                    <ul>
+                      <li>Practice topic-wise quiz questions online.</li>
+                      <li>Improve accuracy with regular attempts.</li>
+                      <li>Use free quizzes for learning and revision.</li>
+                      <li>Track your score and improve your preparation.</li>
+                    </ul>
+                  </div>
 
                   <h3>{categoryName} Quiz FAQs</h3>
 
-                  <h4>Is this {categoryName} quiz free?</h4>
-                  <p>
-                    Yes, you can play {categoryName} quizzes online on
-                    GyaanBucks for free.
-                  </p>
+                  <div className={styles.faqList}>
+                    <div>
+                      <h4>Is this {categoryName} quiz free?</h4>
+                      <p>
+                        Yes, you can play {categoryName} quizzes online on
+                        GyaanBucks for free.
+                      </p>
+                    </div>
 
-                  <h4>How does the quiz system work?</h4>
-                  <p>
-                    You can practice quizzes, answer questions, check your score
-                    and improve your knowledge through regular attempts.
-                  </p>
+                    <div>
+                      <h4>How does the quiz system work?</h4>
+                      <p>
+                        You can practice quizzes, answer questions, check your
+                        score and improve your knowledge through regular
+                        attempts.
+                      </p>
+                    </div>
 
-                  <h4>Are questions updated regularly?</h4>
-                  <p>
-                    GyaanBucks can add new quizzes and questions through the
-                    admin panel, so users can get fresh practice content.
-                  </p>
+                    <div>
+                      <h4>Are questions updated regularly?</h4>
+                      <p>
+                        GyaanBucks can add new quizzes and questions through the
+                        admin panel, so users can get fresh practice content.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -227,7 +280,11 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                       <Link
                         key={category.id}
                         href={`/categories/${slugify(category.name)}`}
-                        className={styles.sidebarItem}
+                        className={`${styles.sidebarItem} ${
+                          slugify(category.name) === slug
+                            ? styles.activeSidebarItem
+                            : ''
+                        }`}
                       >
                         <span>{category.icon || '📚'}</span>
                         <strong>{category.name}</strong>
