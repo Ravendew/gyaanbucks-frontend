@@ -1,0 +1,264 @@
+.quickCalcSection {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 44px 20px;
+}
+
+.quickCalcCard {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 28px;
+  align-items: center;
+  padding: 34px;
+  border-radius: 32px;
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(248, 197, 44, 0.34),
+      transparent 28%
+    ),
+    linear-gradient(135deg, #f8fffb 0%, #ecfdf5 100%);
+  border: 1px solid rgba(22, 163, 74, 0.14);
+  box-shadow: 0 20px 55px rgba(6, 95, 70, 0.08);
+}
+
+.quickCalcContent h2 {
+  font-size: 46px;
+  line-height: 1.06;
+  letter-spacing: -1.8px;
+  color: #101827;
+  margin: 14px 0;
+  font-weight: 950;
+}
+
+.quickCalcContent p {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #6b7280;
+  max-width: 620px;
+}
+
+.quickCalcBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #dcfce7;
+  color: #065f46;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.quickCalcBox {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 26px;
+  padding: 28px;
+  border: 1px solid rgba(22, 163, 74, 0.1);
+  box-shadow: 0 16px 40px rgba(16, 24, 39, 0.06);
+}
+
+.quickCalcBox label {
+  display: block;
+  margin-bottom: 12px;
+  color: #101827;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.quickCalcForm {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.quickCalcForm input {
+  flex: 1;
+  height: 56px;
+  border-radius: 18px;
+  border: 1px solid #d1d5db;
+  padding: 0 18px;
+  font-size: 15px;
+  font-weight: 700;
+  outline: none;
+  background: #ffffff;
+  color: #101827;
+}
+
+.quickCalcForm input:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
+}
+
+.quickCalcForm button {
+  height: 56px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #22c55e, #065f46);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 14px 30px rgba(22, 163, 74, 0.24);
+}
+
+.quickCalcForm button:hover {
+  transform: translateY(-2px);
+}
+
+.quickCalcResult {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.quickCalcResult div {
+  background: #f8fffb;
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  border-radius: 18px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.quickCalcResult strong {
+  display: block;
+  color: #16a34a;
+  font-size: 28px;
+  font-weight: 950;
+  margin-bottom: 4px;
+}
+
+.quickCalcResult span {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.quickCalcLinks {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.quickCalcLinks a {
+  text-decoration: none;
+  background: #f8fafc;
+  color: #065f46;
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  transition: 0.2s ease;
+}
+
+.quickCalcLinks a:hover {
+  background: #ecfdf5;
+}
+
+.quickCalcError {
+  margin-top: 12px;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .quickCalcSection {
+    padding: 26px 16px;
+  }
+
+  .quickCalcCard {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 22px;
+    border-radius: 26px;
+  }
+
+  .quickCalcContent h2 {
+    font-size: 32px;
+    line-height: 1.12;
+    letter-spacing: -1px;
+  }
+
+  .quickCalcContent p {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .quickCalcBox {
+    padding: 22px;
+  }
+
+  .quickCalcForm {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quickCalcForm input {
+    width: 100%;
+  }
+
+  .quickCalcForm button {
+    width: 100%;
+  }
+
+  .quickCalcResult {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .quickCalcCard {
+    padding: 20px;
+  }
+
+  .quickCalcContent h2 {
+    font-size: 28px;
+  }
+
+  .quickCalcContent p {
+    font-size: 15px;
+  }
+
+  .quickCalcBox {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .quickCalcForm input,
+  .quickCalcForm button {
+    height: 52px;
+    border-radius: 16px;
+  }
+
+  .quickCalcResult {
+    gap: 8px;
+  }
+
+  .quickCalcResult div {
+    padding: 12px 8px;
+  }
+
+  .quickCalcResult strong {
+    font-size: 22px;
+  }
+
+  .quickCalcLinks {
+    gap: 8px;
+  }
+
+  .quickCalcLinks a {
+    width: 100%;
+    text-align: center;
+  }
+}

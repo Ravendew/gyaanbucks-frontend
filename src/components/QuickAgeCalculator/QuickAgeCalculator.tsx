@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import styles from './page.module.css';
+import styles from './QuickAgeCalculator.module.css';
 
 type AgeResult = {
   years: number;
@@ -18,7 +18,7 @@ function calculateAge(dobValue: string): AgeResult | null {
   const dob = new Date(dobValue);
   const today = new Date();
 
-  if (dob > today) return null;
+  if (Number.isNaN(dob.getTime()) || dob > today) return null;
 
   let years = today.getFullYear() - dob.getFullYear();
   let months = today.getMonth() - dob.getMonth();
@@ -79,7 +79,9 @@ export default function QuickAgeCalculator() {
       <div className={styles.quickCalcCard}>
         <div className={styles.quickCalcContent}>
           <span className={styles.quickCalcBadge}>🎂 Quick Age Calculator</span>
+
           <h2>Calculate Your Exact Age Instantly</h2>
+
           <p>
             Enter your date of birth and quickly find your age in years, months
             and days. You can also open the full calculator for detailed age
@@ -91,12 +93,17 @@ export default function QuickAgeCalculator() {
           <label htmlFor="quick-dob">Date of Birth</label>
 
           <div className={styles.quickCalcForm}>
-            <input
-              id="quick-dob"
-              type="date"
-              value={dob}
-              onChange={(event) => setDob(event.target.value)}
-            />
+            <div className={styles.quickCalcInputWrap}>
+              <input
+                id="quick-dob"
+                type="date"
+                value={dob}
+                onChange={(event) => setDob(event.target.value)}
+                className={styles.quickCalcInput}
+              />
+
+              <span className={styles.quickCalcCalendar}>📅</span>
+            </div>
 
             <button type="button" onClick={handleCalculate}>
               Calculate
@@ -114,10 +121,12 @@ export default function QuickAgeCalculator() {
                   <strong>{result.years}</strong>
                   <span>Years</span>
                 </div>
+
                 <div>
                   <strong>{result.months}</strong>
                   <span>Months</span>
                 </div>
+
                 <div>
                   <strong>{result.days}</strong>
                   <span>Days</span>
@@ -129,6 +138,7 @@ export default function QuickAgeCalculator() {
                   <strong>{result.totalDays.toLocaleString()}</strong> total
                   days completed
                 </p>
+
                 <p>
                   <strong>{result.nextBirthdayDays}</strong> days until next
                   birthday
@@ -146,9 +156,11 @@ export default function QuickAgeCalculator() {
 
           <div className={styles.quickCalcLinks}>
             <Link href="/tools/age-calculator">Full Age Calculator</Link>
+
             <Link href="/tools/age-calculator/school-admission-age-calculator">
               School Age Calculator
             </Link>
+
             <Link href="/tools/age-calculator/retirement-age-calculator">
               Retirement Age Calculator
             </Link>

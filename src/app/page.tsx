@@ -7,7 +7,7 @@ import FeaturedQuizzes from '@/components/FeaturedQuizzes/FeaturedQuizzes';
 import HowItWorks from '@/components/HowItWorks/HowItWorks';
 import StatsSection from '@/components/StatsSection/StatsSection';
 import Footer from '@/components/Footer/Footer';
-import QuickAgeCalculator from './QuickAgeCalculator';
+import QuickAgeCalculator from '@/components/QuickAgeCalculator/QuickAgeCalculator';
 import styles from './page.module.css';
 import TrendingSearches from '@/components/TrendingSearches/TrendingSearches';
 import LatestBlogs from '@/components/LatestBlogs/LatestBlogs';
