@@ -46,6 +46,33 @@ export const metadata: Metadata = {
   },
 };
 
+const tools = [
+  {
+    icon: '🎂',
+    title: 'Age Calculator',
+    text: 'Calculate exact age in years, months and days.',
+    href: '/tools/age-calculator',
+  },
+  {
+    icon: '📊',
+    title: 'Percentage Calculator',
+    text: 'Find percentages, marks percentage and quick values.',
+    href: '/tools/percentage-calculator',
+  },
+  {
+    icon: '💘',
+    title: 'Love Calculator',
+    text: 'Check a fun name-based compatibility score.',
+    href: '/tools/love-calculator',
+  },
+  {
+    icon: '📅',
+    title: 'Days Until Calculator',
+    text: 'Count days left for exams, events and important dates.',
+    href: '/tools/age-calculator/days-until-calculator',
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -53,6 +80,35 @@ export default function Home() {
       <Hero />
       <PopularCategories />
       <FeaturedQuizzes />
+
+      <section className={styles.toolsSection}>
+        <div className={styles.toolsHeader}>
+          <span className={styles.toolsBadge}>🛠️ Useful Learning Tools</span>
+          <h2 className={styles.toolsTitle}>Try Simple Online Tools</h2>
+          <p className={styles.toolsText}>
+            Use calculators and quick tools for learning, planning and daily
+            practice. These tools are simple, mobile-friendly and free to use.
+          </p>
+        </div>
+
+        <div className={styles.toolsGrid}>
+          {tools.map((tool) => (
+            <Link key={tool.href} href={tool.href} className={styles.toolCard}>
+              <span className={styles.toolIcon}>{tool.icon}</span>
+              <h3>{tool.title}</h3>
+              <p>{tool.text}</p>
+              <strong>Open Tool →</strong>
+            </Link>
+          ))}
+        </div>
+
+        <div className={styles.toolsAction}>
+          <Link href="/tools" className={styles.primaryBtn}>
+            View All Tools
+          </Link>
+        </div>
+      </section>
+
       <HowItWorks />
 
       <section className={styles.learningSection}>
