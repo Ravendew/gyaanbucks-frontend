@@ -173,12 +173,7 @@
 
 @media (max-width: 900px) {
   .hero {
-    padding: 48px 0 58px;
-  }
-
-  .trustRow span {
-    width: 100%;
-    justify-content: center;
+    padding: 42px 0 46px;
   }
 
   .title {
@@ -202,5 +197,9 @@
     height: 64px;
     right: 16%;
     bottom: 14%;
+  }
+
+  .trustRow {
+    display: none;
   }
 }
