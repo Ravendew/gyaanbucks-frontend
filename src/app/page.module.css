@@ -301,3 +301,252 @@
     min-height: auto;
   }
 }
+
+.quickCalcSection {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 44px 20px 24px;
+}
+
+.quickCalcCard {
+  display: grid;
+  grid-template-columns: 1fr 430px;
+  gap: 28px;
+  align-items: center;
+  padding: 30px;
+  border-radius: 30px;
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(248, 197, 44, 0.3),
+      transparent 32%
+    ),
+    linear-gradient(135deg, #ffffff, #ecfdf5);
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  box-shadow: 0 22px 58px rgba(6, 95, 70, 0.1);
+}
+
+.quickCalcBadge {
+  display: inline-flex;
+  align-items: center;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid rgba(22, 163, 74, 0.22);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.quickCalcContent h2 {
+  color: #101827;
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 950;
+  margin: 0 0 12px;
+  letter-spacing: -0.8px;
+}
+
+.quickCalcContent p {
+  max-width: 620px;
+  color: #4b5563;
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.quickCalcBox {
+  padding: 22px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.14);
+  box-shadow: 0 14px 34px rgba(16, 24, 39, 0.06);
+}
+
+.quickCalcBox label {
+  display: block;
+  color: #101827;
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.quickCalcForm {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.quickCalcForm input {
+  min-height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  padding: 0 14px;
+  color: #101827;
+  font-weight: 700;
+  outline: none;
+}
+
+.quickCalcForm button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 18px;
+  background: linear-gradient(135deg, #22c55e, #065f46);
+  color: #ffffff;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.quickCalcError {
+  margin: 10px 0 0;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.quickCalcResult {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.quickCalcResult div {
+  padding: 13px 10px;
+  border-radius: 16px;
+  text-align: center;
+  background: #ecfdf5;
+  border: 1px solid rgba(22, 163, 74, 0.14);
+}
+
+.quickCalcResult strong {
+  display: block;
+  color: #065f46;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.quickCalcResult span {
+  display: block;
+  margin-top: 5px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.quickCalcLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.quickCalcLinks a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: #f7f9fc;
+  color: #065f46;
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .quickCalcCard {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .quickCalcContent h2 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .quickCalcSection {
+    padding: 32px 16px 18px;
+  }
+
+  .quickCalcCard {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .quickCalcForm {
+    grid-template-columns: 1fr;
+  }
+
+  .quickCalcForm button {
+    width: 100%;
+  }
+
+  .quickCalcResult {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quickCalcAnswer {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(248, 197, 44, 0.22),
+      transparent 34%
+    ),
+    linear-gradient(135deg, #ecfdf5, #ffffff);
+  border: 1px solid rgba(22, 163, 74, 0.14);
+}
+
+.quickCalcAnswerLabel {
+  display: block;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.quickCalcMiniStats {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.quickCalcMiniStats p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 800;
+}
+
+.quickCalcMiniStats strong {
+  color: #065f46;
+  font-weight: 950;
+}
+
+.quickCalcDetailBtn {
+  display: flex;
+  width: 100%;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #065f46);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 950;
+  box-shadow: 0 12px 26px rgba(6, 95, 70, 0.18);
+}

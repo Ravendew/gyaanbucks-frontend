@@ -7,7 +7,9 @@ import FeaturedQuizzes from '@/components/FeaturedQuizzes/FeaturedQuizzes';
 import HowItWorks from '@/components/HowItWorks/HowItWorks';
 import StatsSection from '@/components/StatsSection/StatsSection';
 import Footer from '@/components/Footer/Footer';
+import QuickAgeCalculator from './QuickAgeCalculator';
 import styles from './page.module.css';
+import TrendingSearches from '@/components/TrendingSearches/TrendingSearches';
 
 export const metadata: Metadata = {
   title: 'GyaanBucks - Free Online Quizzes, GK Tests & Calculators',
@@ -78,16 +80,20 @@ export default function Home() {
     <>
       <Header />
       <Hero />
-      <PopularCategories />
-      <FeaturedQuizzes />
+
+      <QuickAgeCalculator />
+      <TrendingSearches />
 
       <section className={styles.toolsSection}>
         <div className={styles.toolsHeader}>
           <span className={styles.toolsBadge}>🛠️ Useful Learning Tools</span>
-          <h2 className={styles.toolsTitle}>Try Simple Online Tools</h2>
+          <h2 className={styles.toolsTitle}>
+            Popular Educational Tools & Calculators
+          </h2>
           <p className={styles.toolsText}>
-            Use calculators and quick tools for learning, planning and daily
-            practice. These tools are simple, mobile-friendly and free to use.
+            Use free online calculators and educational tools for age
+            calculation, percentages, school eligibility, date differences and
+            daily learning tasks.
           </p>
         </div>
 
@@ -108,6 +114,9 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <PopularCategories />
+      <FeaturedQuizzes />
 
       <HowItWorks />
 
