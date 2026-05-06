@@ -8,6 +8,7 @@ import {
 import styles from './page.module.css';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import ShareButtons from './ShareButtons';
 
 type Props = {
   params: Promise<{
@@ -152,6 +153,7 @@ export default async function BlogDetailPage({ params }: Props) {
     .slice(0, 5);
 
   const blogImage = getBlogImageUrl(blog.imageUrl);
+  const blogUrl = `https://gyaanbucks.com/blog/${blog.slug}`;
 
   const jsonLd: BlogJsonLd = {
     '@context': 'https://schema.org',
@@ -171,7 +173,7 @@ export default async function BlogDetailPage({ params }: Props) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://gyaanbucks.com/blog/${blog.slug}`,
+      '@id': blogUrl,
     },
   };
 
@@ -220,6 +222,12 @@ export default async function BlogDetailPage({ params }: Props) {
                 <div
                   className={styles.content}
                   dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
+
+                <ShareButtons
+                  title={blog.title}
+                  text={blog.excerpt}
+                  url={blogUrl}
                 />
 
                 <div className={styles.ctaBox}>

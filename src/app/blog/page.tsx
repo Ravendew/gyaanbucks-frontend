@@ -253,20 +253,6 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
               <aside className={styles.sidebar}>
                 <div className={styles.sideCard}>
-                  <h3>Blog Categories</h3>
-
-                  <div className={styles.categoryList}>
-                    <Link href="/blog">All Blogs</Link>
-
-                    {categories.map((category) => (
-                      <Link href={getCategoryHref(category)} key={category}>
-                        {category}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                <div className={styles.sideCard}>
                   <h3>Popular Tools</h3>
 
                   <div className={styles.linkList}>
