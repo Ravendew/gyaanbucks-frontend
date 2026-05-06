@@ -23,6 +23,9 @@ type LoveResult = {
   shareText: string;
 };
 
+const LOVE_AUDIO_ID = 'love-calculator-audio';
+const LOVE_AUDIO_SRC = '/sounds/love-magic.mp3';
+
 function cleanName(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, '');
 }
@@ -105,6 +108,34 @@ function getAvatarOffset(score: number) {
   return 4;
 }
 
+function getLoveAudio() {
+  let audio = document.getElementById(LOVE_AUDIO_ID) as HTMLAudioElement | null;
+
+  if (!audio) {
+    audio = document.createElement('audio');
+    audio.id = LOVE_AUDIO_ID;
+    audio.src = LOVE_AUDIO_SRC;
+    audio.loop = true;
+    audio.volume = 0.35;
+    document.body.appendChild(audio);
+  }
+
+  return audio;
+}
+
+function stopLoveAudio() {
+  const audio = document.getElementById(
+    LOVE_AUDIO_ID,
+  ) as HTMLAudioElement | null;
+
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+
+  localStorage.setItem('loveMusicPlayed', 'false');
+}
+
 function AnimatedScoreCircle({ score }: { score: number }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
@@ -170,26 +201,30 @@ export default function LoveCalculatorClient() {
   }, []);
 
   useEffect(() => {
-    const hasPlayed = localStorage.getItem('loveMusicPlayed') === 'true';
+    const stopAndResetMusic = () => {
+      stopLoveAudio();
+      setMusicOn(false);
+    };
 
-    if (hasPlayed) {
-      const audioId = 'love-calculator-audio';
-      let audio = document.getElementById(audioId) as HTMLAudioElement | null;
-
-      if (!audio) {
-        audio = document.createElement('audio');
-        audio.id = audioId;
-        audio.src = '/sounds/love-magic.mp3';
-        audio.loop = true;
-        audio.volume = 0.35;
-        document.body.appendChild(audio);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopAndResetMusic();
       }
+    };
 
-      audio
-        .play()
-        .then(() => setMusicOn(true))
-        .catch(() => setMusicOn(false));
-    }
+    window.addEventListener('pagehide', stopAndResetMusic);
+    window.addEventListener('beforeunload', stopAndResetMusic);
+    window.addEventListener('popstate', stopAndResetMusic);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      stopAndResetMusic();
+
+      window.removeEventListener('pagehide', stopAndResetMusic);
+      window.removeEventListener('beforeunload', stopAndResetMusic);
+      window.removeEventListener('popstate', stopAndResetMusic);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const fallingHearts = useMemo(
@@ -217,22 +252,11 @@ export default function LoveCalculatorClient() {
   );
 
   const toggleMusic = async () => {
-    const audioId = 'love-calculator-audio';
-    let audio = document.getElementById(audioId) as HTMLAudioElement | null;
-
-    if (!audio) {
-      audio = document.createElement('audio');
-      audio.id = audioId;
-      audio.src = '/sounds/love-magic.mp3';
-      audio.loop = true;
-      audio.volume = 0.35;
-      document.body.appendChild(audio);
-    }
+    const audio = getLoveAudio();
 
     if (musicOn) {
-      audio.pause();
+      stopLoveAudio();
       setMusicOn(false);
-      localStorage.setItem('loveMusicPlayed', 'false');
     } else {
       await audio.play();
       setMusicOn(true);

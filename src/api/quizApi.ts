@@ -1,25 +1,30 @@
+const API_BASE_URL = 'https://gyaanbucks-backend-production.up.railway.app';
+
 function getApiBaseUrl() {
-  return 'https://gyaanbucks-backend-production.up.railway.app';
+  return API_BASE_URL;
+}
+
+async function safeJsonFetch(url: string) {
+  const res = await fetch(url, {
+    cache: 'no-store',
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Request failed: ${res.status}`);
+  }
+
+  return res.json();
 }
 
 // ✅ ALL QUIZZES
 export async function fetchQuizzes() {
-  const res = await fetch(`${getApiBaseUrl()}/quiz`, {
-    cache: 'no-store',
-  });
-
-  if (!res.ok) throw new Error('Failed to fetch quizzes');
-
-  return res.json();
+  return safeJsonFetch(`${getApiBaseUrl()}/quiz`);
 }
 
-// ✅ SINGLE QUIZ (IMPORTANT)
+// ✅ SINGLE QUIZ
 export async function fetchQuizBySlug(slug: string) {
-  const res = await fetch(`${getApiBaseUrl()}/quiz/${slug}`, {
-    cache: 'no-store',
-  });
-
-  if (!res.ok) throw new Error('Failed to fetch quiz');
-
-  return res.json();
+  return safeJsonFetch(`${getApiBaseUrl()}/quiz/${slug}`);
 }

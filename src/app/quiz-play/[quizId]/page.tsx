@@ -39,7 +39,7 @@ export async function generateMetadata({
     return {
       title: 'Quiz Not Found | GyaanBucks',
       description:
-        'This quiz is not available. Play other quizzes on GyaanBucks.',
+        'This quiz is not available. Practice other quizzes on GyaanBucks.',
       alternates: {
         canonical: `/quiz-play/${quizId}`,
       },
@@ -48,10 +48,10 @@ export async function generateMetadata({
 
   const category = quiz.category || 'General Knowledge';
 
-  const title = `${quiz.title} Quiz - Play Online`;
+  const title = `${quiz.title} Quiz - Practice Online`;
   const description =
     quiz.subtitle ||
-    `Play ${quiz.title} ${category} quiz online. Answer questions, test your knowledge, and earn rewards on GyaanBucks.`;
+    `Practice ${quiz.title} ${category} quiz online. Answer questions, test your knowledge, and track your progress on GyaanBucks.`;
 
   return {
     title,
@@ -67,9 +67,9 @@ export async function generateMetadata({
       'daily GK quiz India',
       'current affairs quiz with answers',
       'general knowledge questions and answers',
-      'quiz competition online India',
-      'play quiz online and earn rewards',
-      'earn coins by playing quiz',
+      'online quiz practice India',
+      'practice quiz online',
+      'knowledge test online',
     ],
     alternates: {
       canonical: `/quiz-play/${quizId}`,

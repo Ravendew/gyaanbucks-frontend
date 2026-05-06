@@ -126,6 +126,8 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   const router = useRouter();
 
   const allowLeaveRef = useRef(false);
+  const shouldBlockExitRef = useRef(false);
+  const quizUrlRef = useRef('');
   const sponsorBreakShownRef = useRef<Set<number>>(new Set());
 
   const [quiz, setQuiz] = useState<BackendQuiz | null>(null);
@@ -254,6 +256,43 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
 
     if (quizSlug) loadQuiz();
   }, [quizSlug]);
+
+  useEffect(() => {
+    shouldBlockExitRef.current =
+      !loading &&
+      Boolean(quiz) &&
+      questions.length > 0 &&
+      !isLocked &&
+      !isFinished;
+  }, [loading, quiz, questions.length, isLocked, isFinished]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    quizUrlRef.current = window.location.href;
+    window.history.pushState(
+      { gyaanbucksQuizGuard: true },
+      '',
+      quizUrlRef.current,
+    );
+
+    const handleBrowserBack = () => {
+      if (allowLeaveRef.current || !shouldBlockExitRef.current) return;
+
+      setShowExitPopup(true);
+      window.history.pushState(
+        { gyaanbucksQuizGuard: true },
+        '',
+        quizUrlRef.current,
+      );
+    };
+
+    window.addEventListener('popstate', handleBrowserBack);
+
+    return () => {
+      window.removeEventListener('popstate', handleBrowserBack);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isFinished || isGuestUser) return;
@@ -388,18 +427,18 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
     setSelected(null);
   };
 
-  const handleLoginToClaimReward = () => {
+  const handleLoginToSavePoints = () => {
     allowLeaveRef.current = true;
     router.push(`/auth?tab=login&redirect=/quiz-play/${quizSlug}`);
   };
 
-  const handleClaimReward = async () => {
+  const handleSavePoints = async () => {
     if (isClaimed || earnedPoints <= 0) return;
 
     const user = getLoggedInUser();
 
     if (!user?.id) {
-      handleLoginToClaimReward();
+      handleLoginToSavePoints();
       return;
     }
 
@@ -432,7 +471,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
 
       setIsClaimed(true);
     } catch (err) {
-      console.error('Claim reward error:', err);
+      console.error('Points save error:', err);
       setIsClaimed(true);
     }
   };
@@ -469,7 +508,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
             <h1>Quiz not found</h1>
             <p>This quiz is not available right now.</p>
             <Link href="/quizzes" className={styles.primaryButton}>
-              Play Other Quizzes
+              Practice Other Quizzes
             </Link>
           </div>
         </section>
@@ -488,7 +527,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
             <h1>Quiz questions not added yet</h1>
             <p>Please add questions from admin panel.</p>
             <Link href="/quizzes" className={styles.primaryButton}>
-              Play Other Quizzes
+              Practice Other Quizzes
             </Link>
           </div>
         </section>
@@ -507,7 +546,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
             <h1>Please come back tomorrow</h1>
             <p>You used all {maxAttempts} attempts for this quiz today.</p>
             <Link href="/quizzes" className={styles.primaryButton}>
-              Play Other Quizzes
+              Practice Other Quizzes
             </Link>
           </div>
         </section>
@@ -525,8 +564,8 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
             <span className={styles.statusBadge}>🎯 Sponsor Break</span>
             <h1>Great progress!</h1>
             <p>
-              You completed {currentIndex + 1} questions. Continue now to play
-              the next set and earn more rewards.
+              You completed {currentIndex + 1} questions. Continue now to
+              practice the next set.
             </p>
 
             <button
@@ -570,39 +609,37 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
 
               <div>
                 <strong>+{earnedPoints}</strong>
-                <span>Earned Points</span>
+                <span>Practice Points</span>
               </div>
 
               <div>
                 <strong>{isGuestUser ? 0 : walletPoints}</strong>
-                <span>Wallet Points</span>
+                <span>Total Points</span>
               </div>
             </div>
 
             {isGuestUser && (
               <p>
-                Login now to claim rewards. Guest users can play quizzes and see
-                results, but rewards are added only after login.
+                Login now to save your points and track your quiz progress.
+                Guest users can play quizzes and view results instantly.
               </p>
             )}
 
             <button
               type="button"
               className={styles.primaryButton}
-              onClick={
-                isGuestUser ? handleLoginToClaimReward : handleClaimReward
-              }
+              onClick={isGuestUser ? handleLoginToSavePoints : handleSavePoints}
               disabled={!isGuestUser && isClaimed}
             >
               {isGuestUser
-                ? 'Login Now to Claim Rewards'
+                ? 'Login Now to Save Points'
                 : isClaimed
-                  ? 'Reward Claimed'
-                  : 'Claim Reward'}
+                  ? 'Points Saved'
+                  : 'Save Points'}
             </button>
 
             <Link href="/quizzes" className={styles.secondaryButton}>
-              Play Other Quizzes
+              Practice Other Quizzes
             </Link>
           </div>
         </section>
@@ -636,7 +673,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
             <span>
               Attempts {isGuestUser ? 0 : attemptsUsed}/{maxAttempts}
             </span>
-            <span>Wallet {isGuestUser ? 0 : walletPoints}</span>
+            <span>Points {isGuestUser ? 0 : walletPoints}</span>
           </div>
 
           <div className={styles.progressTrack}>
