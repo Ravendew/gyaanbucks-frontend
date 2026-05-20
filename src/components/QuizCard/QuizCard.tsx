@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { openDirectAdOncePerSession } from '@/utils/monetagAds';
 import styles from './QuizCard.module.css';
 
 type Quiz = {
@@ -60,7 +59,7 @@ function getUrgencyText(quiz: Quiz) {
   }
 
   if (quiz.points >= 20) {
-    return '🎯 High reward quiz';
+    return '🎯 High points quiz';
   }
 
   return '⏳ Limited plays today';
@@ -99,10 +98,7 @@ export default function QuizCard({ quiz }: QuizCardProps) {
   const handleStartQuiz = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (quiz.isLocked) {
       event.preventDefault();
-      return;
     }
-
-    openDirectAdOncePerSession();
   };
 
   const onlineText = quiz.onlineText ?? `${onlineCount} players online`;
@@ -139,7 +135,7 @@ export default function QuizCard({ quiz }: QuizCardProps) {
 
       <div className={styles.reward}>
         <div className={styles.rewardValue}>+{quiz.points}</div>
-        <div className={styles.rewardLabel}>Reward Points</div>
+        <div className={styles.rewardLabel}>Practice Points</div>
       </div>
 
       {quiz.attemptsText && (

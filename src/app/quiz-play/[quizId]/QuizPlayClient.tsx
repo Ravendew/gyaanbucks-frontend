@@ -2,11 +2,6 @@
 
 import Header from '@/components/Header/Header';
 import { playQuizFeedback } from '@/utils/quizFeedback';
-import {
-  loadPopunderEvery2QuizClaims,
-  openClaimDirectAdOncePerSession,
-  openSponsorBreakAd,
-} from '@/utils/monetagAds';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -128,7 +123,6 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   const allowLeaveRef = useRef(false);
   const shouldBlockExitRef = useRef(false);
   const quizUrlRef = useRef('');
-  const sponsorBreakShownRef = useRef<Set<number>>(new Set());
 
   const [quiz, setQuiz] = useState<BackendQuiz | null>(null);
   const [loading, setLoading] = useState(true);
@@ -146,7 +140,6 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   const [showPointsPop, setShowPointsPop] = useState(false);
   const [confettiPlayed, setConfettiPlayed] = useState(false);
   const [showExitPopup, setShowExitPopup] = useState(false);
-  const [showSponsorBreak, setShowSponsorBreak] = useState(false);
   const [isGuestUser, setIsGuestUser] = useState(false);
 
   const fetchUserWallet = async () => {
@@ -305,14 +298,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
   }, [isFinished, isGuestUser]);
 
   useEffect(() => {
-    if (
-      !quiz ||
-      isFinished ||
-      isLocked ||
-      showSponsorBreak ||
-      questions.length === 0
-    )
-      return;
+    if (!quiz || isFinished || isLocked || questions.length === 0) return;
 
     if (timeLeft <= 0) {
       setIsFinished(true);
@@ -324,24 +310,17 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, [
-    quiz,
-    timeLeft,
-    isFinished,
-    isLocked,
-    showSponsorBreak,
-    questions.length,
-  ]);
+  }, [quiz, timeLeft, isFinished, isLocked, questions.length]);
 
   useEffect(() => {
-    if (selected === null || isFinished || isLocked || showSponsorBreak) return;
+    if (selected === null || isFinished || isLocked) return;
 
     const timer = window.setTimeout(() => {
       goNext();
     }, 1200);
 
     return () => window.clearTimeout(timer);
-  }, [selected, isFinished, isLocked, showSponsorBreak]);
+  }, [selected, isFinished, isLocked]);
 
   useEffect(() => {
     if (!isFinished || confettiPlayed || questions.length === 0) return;
@@ -400,30 +379,7 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
       return;
     }
 
-    const nextIndex = currentIndex + 1;
-
-    if (
-      nextIndex > 0 &&
-      nextIndex % 10 === 0 &&
-      nextIndex < questions.length &&
-      !sponsorBreakShownRef.current.has(nextIndex)
-    ) {
-      sponsorBreakShownRef.current.add(nextIndex);
-      setShowSponsorBreak(true);
-      return;
-    }
-
-    setCurrentIndex(nextIndex);
-    setSelected(null);
-  };
-
-  const handleContinueAfterSponsorBreak = () => {
-    openSponsorBreakAd();
-
-    const nextIndex = currentIndex + 1;
-
-    setShowSponsorBreak(false);
-    setCurrentIndex(nextIndex);
+    setCurrentIndex((prev) => prev + 1);
     setSelected(null);
   };
 
@@ -441,9 +397,6 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
       handleLoginToSavePoints();
       return;
     }
-
-    openClaimDirectAdOncePerSession();
-    loadPopunderEvery2QuizClaims();
 
     try {
       const res = await fetch(`${API_BASE_URL}/users/claim-reward`, {
@@ -548,33 +501,6 @@ export default function QuizPlayClient({ quizSlug }: QuizPlayClientProps) {
             <Link href="/quizzes" className={styles.primaryButton}>
               Practice Other Quizzes
             </Link>
-          </div>
-        </section>
-      </main>
-    );
-  }
-
-  if (showSponsorBreak) {
-    return (
-      <main className={styles.page}>
-        <Header />
-
-        <section className={styles.centerSection}>
-          <div className={styles.statusCard}>
-            <span className={styles.statusBadge}>🎯 Sponsor Break</span>
-            <h1>Great progress!</h1>
-            <p>
-              You completed {currentIndex + 1} questions. Continue now to
-              practice the next set.
-            </p>
-
-            <button
-              type="button"
-              className={styles.primaryButton}
-              onClick={handleContinueAfterSponsorBreak}
-            >
-              Continue Quiz
-            </button>
           </div>
         </section>
       </main>
