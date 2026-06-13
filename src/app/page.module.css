@@ -1,552 +1,296 @@
-.learningSection {
+.directory {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 44px 20px;
+  padding: 52px 20px 46px;
 }
 
-.learningCard {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 85% 15%,
-      rgba(248, 197, 44, 0.36),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 92% 86%,
-      rgba(22, 163, 74, 0.24),
-      transparent 32%
-    ),
-    linear-gradient(135deg, #ecfdf5 0%, #ffffff 48%, #fff7d6 100%);
-  border: 1px solid rgba(22, 163, 74, 0.22);
-  border-radius: 30px;
-  padding: 38px;
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  align-items: center;
-  gap: 34px;
-  box-shadow: 0 22px 55px rgba(6, 95, 70, 0.12);
-}
-
-.learningContent {
+.sectionHead {
   max-width: 760px;
+  margin-bottom: 30px;
 }
 
-.learningBadge {
-  display: inline-flex;
-  align-items: center;
-  background: #dcfce7;
-  color: #065f46;
-  border: 1px solid rgba(22, 163, 74, 0.22);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 900;
-  margin-bottom: 16px;
-}
-
-.learningTitle {
-  font-size: 34px;
-  line-height: 1.15;
-  font-weight: 950;
-  color: #101827;
-  margin-bottom: 14px;
-  letter-spacing: -0.8px;
-}
-
-.learningText {
-  font-size: 16px;
-  line-height: 1.8;
-  color: #4b5563;
-  margin-bottom: 22px;
-}
-
-.learningActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-}
-
-.primaryBtn,
-.secondaryBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  padding: 13px 20px;
-  font-weight: 900;
-  text-decoration: none;
-  transition: 0.2s ease;
-}
-
-.primaryBtn {
-  background: linear-gradient(135deg, #22c55e, #065f46);
-  color: #ffffff;
-  box-shadow: 0 14px 30px rgba(22, 163, 74, 0.3);
-}
-
-.secondaryBtn {
-  background: #ffffff;
-  color: #065f46;
-  border: 1px solid rgba(22, 163, 74, 0.22);
-}
-
-.primaryBtn:hover,
-.secondaryBtn:hover {
-  transform: translateY(-2px);
-}
-
-.learningVisual {
-  display: grid;
-  gap: 14px;
-}
-
-.visualCard {
-  background: rgba(255, 255, 255, 0.84);
-  border: 1px solid rgba(22, 163, 74, 0.16);
-  border-radius: 20px;
-  padding: 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 14px 30px rgba(16, 24, 39, 0.06);
-  animation: floatCard 3.2s ease-in-out infinite;
-}
-
-.visualCard:nth-child(2) {
-  animation-delay: 0.5s;
-}
-
-.visualCard:nth-child(3) {
-  animation-delay: 1s;
-}
-
-.visualCard span {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: #ecfdf5;
-  font-size: 22px;
-}
-
-.visualCard strong {
-  color: #101827;
-  font-size: 15px;
-}
-
-@keyframes floatCard {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-8px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 900px) {
-  .learningCard {
-    grid-template-columns: 1fr;
-    padding: 28px;
-  }
-
-  .learningTitle {
-    font-size: 28px;
-  }
-}
-
-.toolsSection {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 44px 20px;
-}
-
-.toolsHeader {
-  max-width: 760px;
-  margin-bottom: 24px;
-}
-
-.toolsBadge {
+.sectionHead span {
   display: inline-flex;
   align-items: center;
   background: #ecfdf5;
   color: #065f46;
-  border: 1px solid rgba(22, 163, 74, 0.22);
+  border: 1px solid rgba(22, 163, 74, 0.2);
   border-radius: 999px;
   padding: 8px 14px;
   font-size: 13px;
-  font-weight: 900;
-  margin-bottom: 14px;
+  font-weight: 950;
+  margin-bottom: 12px;
 }
 
-.toolsTitle {
+.sectionHead h2 {
   color: #101827;
   font-size: 34px;
   line-height: 1.15;
   font-weight: 950;
-  margin: 0 0 12px;
   letter-spacing: -0.8px;
-}
-
-.toolsText {
-  color: #4b5563;
-  font-size: 16px;
-  line-height: 1.8;
-  margin: 0;
-}
-
-.toolsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-}
-
-.toolCard {
-  position: relative;
-  overflow: hidden;
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
-  background:
-    radial-gradient(
-      circle at 88% 12%,
-      rgba(248, 197, 44, 0.34),
-      transparent 30%
-    ),
-    linear-gradient(135deg, #ffffff, #ecfdf5);
-  border: 1px solid rgba(22, 163, 74, 0.16);
-  border-radius: 26px;
-  padding: 22px;
-  text-decoration: none;
-  box-shadow: 0 18px 44px rgba(6, 95, 70, 0.09);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.toolCard:hover {
-  transform: translateY(-5px);
-  border-color: rgba(22, 163, 74, 0.34);
-  box-shadow: 0 24px 58px rgba(6, 95, 70, 0.13);
-}
-
-.toolIcon {
-  width: 50px;
-  height: 50px;
-  display: grid;
-  place-items: center;
-  background: #ffffff;
-  border: 1px solid rgba(22, 163, 74, 0.14);
-  border-radius: 17px;
-  font-size: 25px;
-  margin-bottom: 18px;
-  box-shadow: 0 12px 26px rgba(16, 24, 39, 0.06);
-}
-
-.toolCard h3 {
-  color: #101827;
-  font-size: 18px;
-  font-weight: 950;
   margin: 0 0 10px;
 }
 
-.toolCard p {
-  color: #6b7280;
-  font-size: 14px;
-  line-height: 1.65;
-  margin: 0 0 18px;
-}
-
-.toolCard strong {
-  color: #065f46;
-  font-size: 14px;
-  font-weight: 950;
-  margin-top: auto;
-}
-
-.toolsAction {
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-@media (max-width: 1000px) {
-  .toolsGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 620px) {
-  .toolsSection {
-    padding: 34px 16px;
-  }
-
-  .toolsTitle {
-    font-size: 28px;
-  }
-
-  .toolsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .toolCard {
-    min-height: auto;
-  }
-}
-
-.quickCalcSection {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 44px 20px 24px;
-}
-
-.quickCalcCard {
-  display: grid;
-  grid-template-columns: 1fr 430px;
-  gap: 28px;
-  align-items: center;
-  padding: 30px;
-  border-radius: 30px;
-  background:
-    radial-gradient(
-      circle at 88% 12%,
-      rgba(248, 197, 44, 0.3),
-      transparent 32%
-    ),
-    linear-gradient(135deg, #ffffff, #ecfdf5);
-  border: 1px solid rgba(22, 163, 74, 0.18);
-  box-shadow: 0 22px 58px rgba(6, 95, 70, 0.1);
-}
-
-.quickCalcBadge {
-  display: inline-flex;
-  align-items: center;
-  background: #ecfdf5;
-  color: #065f46;
-  border: 1px solid rgba(22, 163, 74, 0.22);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 900;
-  margin-bottom: 14px;
-}
-
-.quickCalcContent h2 {
-  color: #101827;
-  font-size: 34px;
-  line-height: 1.15;
-  font-weight: 950;
-  margin: 0 0 12px;
-  letter-spacing: -0.8px;
-}
-
-.quickCalcContent p {
-  max-width: 620px;
+.sectionHead p {
   color: #4b5563;
   font-size: 16px;
   line-height: 1.75;
   margin: 0;
 }
 
-.quickCalcBox {
-  padding: 22px;
-  border-radius: 24px;
+.directoryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.groupCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 330px;
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(248, 197, 44, 0.32),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #ffffff, #ecfdf5);
+  border: 1px solid rgba(22, 163, 74, 0.16);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 18px 46px rgba(6, 95, 70, 0.09);
+}
+
+.groupIcon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
   background: #ffffff;
   border: 1px solid rgba(22, 163, 74, 0.14);
-  box-shadow: 0 14px 34px rgba(16, 24, 39, 0.06);
+  font-size: 30px;
+  margin-bottom: 18px;
+  box-shadow: 0 12px 26px rgba(16, 24, 39, 0.06);
 }
 
-.quickCalcBox label {
-  display: block;
+.groupCard h3 {
   color: #101827;
-  font-size: 14px;
-  font-weight: 900;
-  margin-bottom: 10px;
-}
-
-.quickCalcForm {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-}
-
-.quickCalcForm input {
-  min-height: 46px;
-  border-radius: 14px;
-  border: 1px solid rgba(22, 163, 74, 0.18);
-  padding: 0 14px;
-  color: #101827;
-  font-weight: 700;
-  outline: none;
-}
-
-.quickCalcForm button {
-  min-height: 46px;
-  border: 0;
-  border-radius: 999px;
-  padding: 0 18px;
-  background: linear-gradient(135deg, #22c55e, #065f46);
-  color: #ffffff;
+  font-size: 20px;
+  line-height: 1.25;
+  margin: 0 0 14px;
   font-weight: 950;
-  cursor: pointer;
 }
 
-.quickCalcError {
-  margin: 10px 0 0;
-  color: #ef4444;
-  font-size: 13px;
-  font-weight: 800;
+.groupCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.quickCalcResult {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 16px;
+.groupCard li {
+  margin-bottom: 9px;
 }
 
-.quickCalcResult div {
-  padding: 13px 10px;
-  border-radius: 16px;
-  text-align: center;
-  background: #ecfdf5;
-  border: 1px solid rgba(22, 163, 74, 0.14);
-}
-
-.quickCalcResult strong {
-  display: block;
+.groupCard a {
   color: #065f46;
-  font-size: 24px;
-  line-height: 1;
-  font-weight: 950;
-}
-
-.quickCalcResult span {
-  display: block;
-  margin-top: 5px;
-  color: #6b7280;
-  font-size: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.4;
   font-weight: 800;
 }
 
-.quickCalcLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
+.groupCard a:hover {
+  color: #16a34a;
+  text-decoration: underline;
 }
 
-.quickCalcLinks a {
+.allToolsWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.allToolsBtn {
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  padding: 0 11px;
+  justify-content: center;
+  background: linear-gradient(135deg, #22c55e, #065f46);
+  color: #ffffff;
   border-radius: 999px;
-  background: #f7f9fc;
-  color: #065f46;
-  border: 1px solid rgba(22, 163, 74, 0.12);
-  font-size: 12px;
-  font-weight: 900;
+  padding: 0 24px;
   text-decoration: none;
+  font-size: 15px;
+  font-weight: 950;
+  box-shadow: 0 14px 32px rgba(22, 163, 74, 0.28);
 }
 
-@media (max-width: 900px) {
-  .quickCalcCard {
-    grid-template-columns: 1fr;
-    padding: 24px;
+.contentSection {
+  background:
+    radial-gradient(
+      circle at 12% 8%,
+      rgba(248, 197, 44, 0.16),
+      transparent 22%
+    ),
+    linear-gradient(180deg, #f7f9fc 0%, #ecfdf5 100%);
+  padding: 56px 20px;
+}
+
+.contentBox {
+  max-width: 980px;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid rgba(22, 163, 74, 0.14);
+  border-radius: 30px;
+  padding: 44px;
+  box-shadow: 0 22px 60px rgba(6, 95, 70, 0.1);
+}
+
+.contentBox h2 {
+  color: #101827;
+  font-size: 30px;
+  line-height: 1.25;
+  margin: 34px 0 14px;
+  font-weight: 950;
+  letter-spacing: -0.5px;
+}
+
+.contentBox h2:first-child {
+  margin-top: 0;
+}
+
+.contentBox p {
+  font-size: 17px;
+  line-height: 1.9;
+  margin: 0 0 18px;
+}
+
+.ctaBox {
+  margin-top: 34px;
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(248, 197, 44, 0.26),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #ecfdf5, #ffffff);
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: 24px;
+  padding: 26px;
+  box-shadow: 0 14px 34px rgba(16, 24, 39, 0.08);
+}
+
+.ctaBox h3 {
+  color: #065f46;
+  font-size: 22px;
+  margin: 0 0 16px;
+  font-weight: 950;
+}
+
+.ctaBox div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ctaBox a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #065f46);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.faqSection {
+  background: #f7f9fc;
+  padding: 54px 20px;
+}
+
+.faqInner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.faqCard {
+  background: #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.14);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 16px 38px rgba(6, 95, 70, 0.08);
+}
+
+.faqCard h3 {
+  color: #101827;
+  font-size: 18px;
+  font-weight: 950;
+  margin: 0 0 10px;
+}
+
+.faqCard p {
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+@media (max-width: 1000px) {
+  .directoryGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .quickCalcContent h2 {
+  .faqGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .directory {
+    padding: 38px 16px;
+  }
+
+  .sectionHead h2 {
     font-size: 28px;
   }
-}
 
-@media (max-width: 560px) {
-  .quickCalcSection {
-    padding: 32px 16px 18px;
+  .directoryGrid {
+    grid-template-columns: 1fr;
   }
 
-  .quickCalcCard {
-    padding: 20px;
+  .groupCard {
+    min-height: auto;
+  }
+
+  .contentSection {
+    padding: 34px 16px;
+  }
+
+  .contentBox {
+    padding: 24px;
     border-radius: 24px;
   }
 
-  .quickCalcForm {
-    grid-template-columns: 1fr;
+  .contentBox h2 {
+    font-size: 24px;
   }
 
-  .quickCalcForm button {
-    width: 100%;
+  .contentBox p {
+    font-size: 15px;
   }
 
-  .quickCalcResult {
-    grid-template-columns: 1fr;
+  .faqSection {
+    padding: 36px 16px;
   }
-}
-
-.quickCalcAnswer {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 20px;
-  background:
-    radial-gradient(
-      circle at 90% 10%,
-      rgba(248, 197, 44, 0.22),
-      transparent 34%
-    ),
-    linear-gradient(135deg, #ecfdf5, #ffffff);
-  border: 1px solid rgba(22, 163, 74, 0.14);
-}
-
-.quickCalcAnswerLabel {
-  display: block;
-  color: #065f46;
-  font-size: 12px;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.quickCalcMiniStats {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.quickCalcMiniStats p {
-  margin: 0;
-  color: #4b5563;
-  font-size: 13px;
-  line-height: 1.45;
-  font-weight: 800;
-}
-
-.quickCalcMiniStats strong {
-  color: #065f46;
-  font-weight: 950;
-}
-
-.quickCalcDetailBtn {
-  display: flex;
-  width: 100%;
-  min-height: 42px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 14px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #22c55e, #065f46);
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 950;
-  box-shadow: 0 12px 26px rgba(6, 95, 70, 0.18);
 }

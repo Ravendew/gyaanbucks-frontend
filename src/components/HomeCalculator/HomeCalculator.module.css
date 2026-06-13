@@ -1,0 +1,154 @@
+.calculatorSection {
+  padding: 58px 20px;
+  background:
+    radial-gradient(
+      circle at 86% 20%,
+      rgba(248, 197, 44, 0.36),
+      transparent 18%
+    ),
+    linear-gradient(135deg, #fff7d6 0%, #ecfdf5 48%, #bbf7d0 100%);
+  border-bottom: 1px solid rgba(22, 163, 74, 0.16);
+}
+
+.wrapper {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 430px;
+  gap: 42px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  background: #ffffff;
+  color: #065f46;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: 999px;
+  padding: 9px 15px;
+  font-size: 13px;
+  font-weight: 950;
+  margin-bottom: 18px;
+}
+
+.content h1 {
+  max-width: 700px;
+  color: #101827;
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 1.02;
+  font-weight: 950;
+  letter-spacing: -2px;
+  margin: 0;
+}
+
+.content p {
+  max-width: 650px;
+  color: #374151;
+  font-size: 17px;
+  line-height: 1.8;
+  font-weight: 650;
+  margin: 20px 0 0;
+}
+
+.calculatorCard {
+  background: #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: 30px;
+  padding: 20px;
+  box-shadow: 0 24px 60px rgba(6, 95, 70, 0.18);
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tabs button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px;
+  background: #ecfdf5;
+  color: #065f46;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.activeTab {
+  background: linear-gradient(135deg, #22c55e, #065f46) !important;
+  color: #ffffff !important;
+}
+
+.display {
+  min-height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 0 18px;
+  border-radius: 20px;
+  background: #101827;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 950;
+  margin-bottom: 14px;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.keys button {
+  min-height: 52px;
+  border: 0;
+  border-radius: 16px;
+  background: #f7f9fc;
+  color: #101827;
+  font-size: 16px;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(22, 163, 74, 0.12);
+}
+
+.keys button:hover {
+  background: #ecfdf5;
+}
+
+.equalKey {
+  background: linear-gradient(135deg, #22c55e, #065f46) !important;
+  color: #ffffff !important;
+}
+
+.clearKey {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+@media (max-width: 900px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .calculatorSection {
+    padding: 34px 16px;
+  }
+
+  .calculatorCard {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .content h1 {
+    font-size: 36px;
+  }
+
+  .keys button {
+    min-height: 48px;
+    font-size: 14px;
+  }
+}
